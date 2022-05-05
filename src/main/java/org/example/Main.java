@@ -47,14 +47,22 @@ public class Main {
 
     public static void main(String[] args) throws IOException, JSONException, ParseException {
 
-        String projName ="SYNCOPE";
-        String projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\syncope 1.2.10\\syncope";
+//        String projName ="SYNCOPE";
+//        String projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\syncope 1.2.10\\syncope";
+        String projName ="BOOKKEEPER";
+        String projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\bookkeeper per bugseeker\\bookkeeper";
 
         allRelease = getAllRelease(projName);
+        orderRelease();
         halfRelease = getHalfReleases(allRelease);
+//        for(Release r: halfRelease)
+//            System.out.println(r.name);
+//        System.exit(200);
+
+
         ArrayList<Issue> allIssues  = getIssueIdOfProject(projName);
         ArrayList<Issue> valuableIssue = new ArrayList<>();
-        int index=0;
+        int index;
         for(Issue i: allIssues){
             // delete issue with IV > halfRelease
             index=0;
@@ -68,9 +76,9 @@ public class Main {
         }
         System.out.println("|valuableIssue|="+valuableIssue.size());
 
-
         Excel excel = new Excel(projDirName);
-        FindCommits github = new FindCommits(projDirName + "\\.git");
+        //FindCommits github = new FindCommits(projDirName + "\\.git", true);
+        FindCommits github = new FindCommits(projDirName + "\\.git", false);
         github.getReleaseFileList(projName, excel, projDirName);
         ArrayList<Commit> commit_id = new ArrayList<>();
         int k=0;
@@ -105,8 +113,33 @@ public class Main {
 
     }
 
+    private static void orderRelease() {
+        ArrayList<Release> orderedRelease = new ArrayList<>();
+        for(Release rr: allRelease){
+            if (orderedRelease.size()==0)
+                orderedRelease.add(rr);
+            else{
+                if(rr.name.equalsIgnoreCase("4.0.0")) {
 
+                    int ciao=2;
+                    if(ciao==0) System.out.println();
+                }
+                int count=0;
+                while(count< orderedRelease.size()){
+                    if((orderedRelease.get(count).releaseDate).after(rr.releaseDate)) break;
+                    count++;
+                }
 
+                if(count==orderedRelease.size())
+                    orderedRelease.add(rr);
+                else
+                    orderedRelease.add(count,rr);
+
+            }
+
+        }
+        allRelease=orderedRelease;
+    }
 
 
 }

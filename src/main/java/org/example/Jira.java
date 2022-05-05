@@ -58,9 +58,9 @@ public class Jira {
 
                 Release element = new Release(nameRelease, dateRelease);
                 releases.add(element);
-//                System.out.println(nameRelease);
-//                System.out.println(dateRelease);
-//                System.out.println("+++++++++++++++++++++++++++++++");
+                System.out.println(nameRelease);
+                System.out.println(dateRelease);
+                System.out.println("+++++++++++++++++++++++++++++++");
             }
         }
 

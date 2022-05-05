@@ -25,13 +25,17 @@ import static org.example.Main.halfRelease;
 
 public class FindCommits {
     private Repository repo;
+    private String releaseAddingName;
     private String originalRelease;
 
-    public FindCommits(String gitPath){
+    public FindCommits(String gitPath, Boolean syncope){
         // gitPath
         try {
             FileRepositoryBuilder b = new FileRepositoryBuilder();
             this.repo = b.setGitDir(new File(gitPath)).build();
+            if(syncope) releaseAddingName = "syncope";
+            else releaseAddingName = "release";
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -59,7 +63,7 @@ public class FindCommits {
         int i=0;
         for(Release r: halfRelease) {
             System.out.println(i+") checkout to "+r.name+"++++++++++++++++++++++++++++++++++");
-            checkoutTo(projName.toLowerCase() + "-" + r.name);
+            checkoutTo(this.releaseAddingName + "-" + r.name);
             r.files = (ArrayList<String>) excel.listOfJavaFile(projDirName);
             i++;
         }
