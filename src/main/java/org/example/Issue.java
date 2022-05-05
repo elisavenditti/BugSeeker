@@ -5,8 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import static java.lang.System.exit;
 import static org.example.Main.allRelease;
 
 public class Issue {
@@ -63,39 +61,6 @@ public class Issue {
         System.out.println(this.affectedVersions);
         return allRelease.get(minIndex).name;
     }
-//        String definitiveIV = "999.999.999";
-//
-//        for
-//
-//        for (String iv: this.affectedVersions){
-//            int i=0;
-//            String[] partsIV = definitiveIV.split("\\.");
-//            String[] parts = iv.split("\\.");
-//            Boolean smaller = false;
-//            for(String p: partsIV){
-//                try {
-//
-//
-//                if(Integer.parseInt(p) > Integer.parseInt(parts[i])){
-//                    smaller = true;
-//                    definitiveIV = iv;
-//                    break;
-//                }else if(Integer.parseInt(p) < Integer.parseInt(parts[i])){
-//                    smaller = false;
-//                    break;
-//                }
-//                i++;
-//                }catch (Exception e){
-//                    System.out.println(this.affectedVersions);
-//                    exit(404);
-//                }
-//
-//
-//            }
-//        }
-//
-//        return definitiveIV;
-//    }
     public Issue(String key, ArrayList<String> fixVersions, ArrayList<String> affectedVersions, String resolutionDate) {
         this.key = key;
         this.jiraFixVersions = fixVersions;

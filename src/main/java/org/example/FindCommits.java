@@ -27,17 +27,6 @@ public class FindCommits {
     private Repository repo;
     private String originalRelease;
 
-    public FindCommits(String gitPath, String originalTag){
-        // gitPath
-        try {
-            FileRepositoryBuilder b = new FileRepositoryBuilder();
-            this.repo = b.setGitDir(new File(gitPath)).build();
-            this.originalRelease = originalTag;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public FindCommits(String gitPath){
         // gitPath
         try {
@@ -58,8 +47,6 @@ public class FindCommits {
         }
     }
 
-
-
     public void resetRepo(){
         try {
             Git git = new Git(repo);
@@ -68,42 +55,6 @@ public class FindCommits {
             throw new RuntimeException(e);
         }
     }
-    public List<String> findCommitWithSpecificText(String text, String checkoutVersion, Boolean checkout){
-        List<String> commitId = new ArrayList<>();
-        Git git = new Git(repo);
-        try {
-            if (checkout){
-                try {
-
-                    git.checkout().setName(checkoutVersion).call();
-                } catch (RefNotFoundException e) {
-                    git.close();
-                    return new ArrayList<>();
-                }
-            }
-
-
-            Iterable<RevCommit> log = git.log().call();
-            for(RevCommit i: log){
-                String msg = i.getFullMessage();
-                if(msg.contains(text)){
-
-                    System.out.println("Found Commit: " + i);
-                    System.out.println("--> " + msg);
-                    commitId.add(i.getId().toString());
-                }
-
-            }
-            git.close();
-            return commitId;
-
-        } catch (NoHeadException e) {
-            throw new RuntimeException(e);
-        } catch (GitAPIException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     public void getReleaseFileList(String projName, Excel excel, String projDirName){
         int i=0;
         for(Release r: halfRelease) {

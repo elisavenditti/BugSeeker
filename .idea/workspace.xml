@@ -4,23 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Commit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/FindCommits.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Homework.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Issue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Jira.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Release.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/org/example/AppTest.java" afterDir="false" />
+    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="funzionaaaa">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Commit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Commit.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/FindCommits.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/FindCommits.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Homework.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Issue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Issue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Jira.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Jira.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +51,7 @@
   <component name="RunManager" selected="Application.Main">
     <configuration name="Issue" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Issue" />
-      <module name="FalessiJira" />
+      <module name="BugSeeker" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.example.*" />
@@ -72,7 +64,7 @@
     </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
-      <module name="FalessiJira" />
+      <module name="BugSeeker" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.example.*" />
@@ -85,7 +77,7 @@
     </configuration>
     <configuration name="org.example.Excel" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Excel" />
-      <module name="FalessiJira" />
+      <module name="BugSeeker" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.example.*" />
@@ -98,7 +90,7 @@
     </configuration>
     <configuration name="org.example.FindCommits" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.FindCommits" />
-      <module name="FalessiJira" />
+      <module name="BugSeeker" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.example.*" />
@@ -111,13 +103,26 @@
     </configuration>
     <configuration name="org.example.Homework" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.example.Homework" />
-      <module name="FalessiJira" />
+      <module name="BugSeeker" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="org.example.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="BugSeeker" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="BugSeeker" />
+      <option name="filePath" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -141,6 +146,14 @@
       <option name="presentableId" value="Default" />
       <updated>1650383299709</updated>
     </task>
+    <task id="LOCAL-00001" summary="funzionaaaa">
+      <created>1651759365616</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1651759365616</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -153,5 +166,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="funzionaaaa" />
+    <option name="LAST_COMMIT_MESSAGE" value="funzionaaaa" />
   </component>
 </project>
