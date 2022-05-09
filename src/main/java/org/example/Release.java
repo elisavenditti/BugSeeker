@@ -14,6 +14,7 @@ public class Release {
     public Date releaseDate;
     public ArrayList<String> files;
     public ArrayList<String> buggyFiles;
+    public int index;
 
     public Release next(){
         int i=0;
@@ -29,6 +30,7 @@ public class Release {
         this.buggyFiles = new ArrayList<>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String releaseDateString;
+        this.index=-1;
         try{
             releaseDateString = releaseDate.substring(0, 10);
             this.releaseDate = df.parse(releaseDateString);

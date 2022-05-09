@@ -108,6 +108,7 @@ public class Jira {
                 String versionJsonString = currentJson.getJSONObject("fields").get("versions").toString();
                 String fixVersionsJsonString = currentJson.getJSONObject("fields").get("fixVersions").toString();
                 String resolutionDate = currentJson.getJSONObject("fields").get("resolutiondate").toString();
+                String creationDate = currentJson.getJSONObject("fields").get("created").toString();
 
                 JSONArray versionJsonArray = new JSONArray(versionJsonString);
                 JSONArray fixVersionJsonArray = new JSONArray(fixVersionsJsonString);
@@ -127,8 +128,19 @@ public class Jira {
                         fixVersions.add(curr);
                 }
 
-                Issue issue = new Issue(key, fixVersions, affectedVersions, resolutionDate);
-                bugInfo.add(issue);
+                Issue issue = new Issue(key, fixVersions, affectedVersions, resolutionDate, creationDate);
+                int ivIndex, ovIndex, fvIndex;
+                if (issue.injectedVersion != null)
+                    ivIndex = issue.injectedVersion.index;
+                else
+                    ivIndex = -1;
+                ovIndex = issue.openingVersion.index;
+                fvIndex = issue.fixVersion.index;
+
+                // scarto l'issue se non è post release (ha IV=OV=FV) e se presenta un'inconsistenza tra ov ed fv (OV>FV)
+
+                if((ovIndex <= fvIndex) && !((ivIndex==ovIndex)&&(ovIndex==fvIndex)))
+                    bugInfo.add(issue);
             }
         } while (i < total);
 

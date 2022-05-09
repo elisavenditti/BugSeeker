@@ -25,6 +25,7 @@ import static org.example.Main.halfRelease;
 
 public class FindCommits {
     private Repository repo;
+    private String issueText;
     private String releaseAddingName;
     private String originalRelease;
 
@@ -69,15 +70,19 @@ public class FindCommits {
         }
     }
 
-    public List<Commit> getAllCommitsOfIssue(Issue issue){
+    public List<Commit> getAllCommitsOfIssue(Issue issue, Boolean syncope){
         List<Commit> commitIds = new ArrayList<>();
         Git git = new Git(repo);
+        if(syncope) this.issueText = "[" + issue.key + "]";
+        else this.issueText = issue.key+":";
         try {
             Iterable<RevCommit> log = git.log().all().call();
             for(RevCommit i: log){
-                String msg = i.getFullMessage();
-                if(msg.contains(issue.key)){
 
+                String msg = i.getFullMessage();
+                if(msg.contains(this.issueText)){
+//                if(msg.contains(issue.key)){
+                    //System.out.println(issue.key+" -->"+msg);
                     PersonIdent authorIdent = i.getAuthorIdent();
                     Date authorDate = authorIdent.getWhen();
 
@@ -89,6 +94,7 @@ public class FindCommits {
 
             }
             git.close();
+
             return commitIds;
 
         } catch (NoHeadException e) {
