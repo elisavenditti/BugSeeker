@@ -28,7 +28,7 @@ public class Issue {
             i++;
         }
         int size = allRelease.size();
-        if (i==size) return allRelease.get(size-1);
+        if (i==size) return null;
         return allRelease.get(i);
     }
 
@@ -47,7 +47,7 @@ public class Issue {
     }
 
     private void consistencyCheck(){
-        if(this.injectedVersion != null)
+        if(this.injectedVersion != null && this.openingVersion !=null)
             if(this.injectedVersion.index > this.openingVersion.index)
                 this.injectedVersion = null;
     }

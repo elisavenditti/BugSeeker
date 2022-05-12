@@ -58,9 +58,9 @@ public class Jira {
 
                 Release element = new Release(nameRelease, dateRelease);
                 releases.add(element);
-                System.out.println(nameRelease);
-                System.out.println(dateRelease);
-                System.out.println("+++++++++++++++++++++++++++++++");
+//                System.out.println(nameRelease);
+//                System.out.println(dateRelease);
+//                System.out.println("+++++++++++++++++++++++++++++++");
             }
         }
 
@@ -77,7 +77,7 @@ public class Jira {
         for(Release element: allRelease){
             halfRelease.add(element);
             i++;
-            if(i==halfSize) break;
+            if(i==/*2)break;*/halfSize) break;
         }
         return halfRelease;
     }
@@ -129,6 +129,8 @@ public class Jira {
                 }
 
                 Issue issue = new Issue(key, fixVersions, affectedVersions, resolutionDate, creationDate);
+                System.out.println("1");
+                if(issue.fixVersion == null || issue.openingVersion==null) continue;
                 int ivIndex, ovIndex, fvIndex;
                 if (issue.injectedVersion != null)
                     ivIndex = issue.injectedVersion.index;

@@ -8,8 +8,10 @@ public class Commit {
     private String commitId;
     private Date commitDate;
     public Release release;
+    public String author;
+    public int releaseIndex;
     private Issue issue;
-    public ArrayList<String> changedFiles;
+    public ArrayList<MyFile> changedFiles;
 
     private Release getReleaseFromDate(){
         int i=0;
@@ -18,7 +20,11 @@ public class Commit {
             i++;
         }
         int size = allRelease.size();
-        if (i==size) return allRelease.get(size-1);
+        if (i==size) {
+            this.releaseIndex=-1;
+            return null;        //il commit appartiene alla release corrente (che ancora deve uscire)
+        }
+        this.releaseIndex = i;
         return allRelease.get(i);
     }
 
@@ -29,13 +35,21 @@ public class Commit {
     }
 
 
-    public Commit(String cid, Date data, Issue issue){
+    public Commit(String cid, String author, Date data, Issue issue){
+
+
         this.issue = issue;
         this.commitId = cid;
+        this.author = author;
         this.commitDate = data;
         this.release = getReleaseFromDate();
         this.changedFiles = new ArrayList<>();
 
+
+    }
+    public Commit(String cid){
+        this.commitId = cid;
+        this.changedFiles = new ArrayList<>();
     }
 
 }

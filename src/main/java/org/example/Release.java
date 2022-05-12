@@ -7,30 +7,30 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static org.example.Main.allRelease;
+import static org.example.Main.rootLen;
 
 public class Release {
 
     public String name;
     public Date releaseDate;
-    public ArrayList<String> files;
-    public ArrayList<String> buggyFiles;
+    public ArrayList<MyFile> files;
+    public ArrayList<MyFile> filesWithMetric;
+    public ArrayList<MyFile> buggyFiles;
     public int index;
 
     public Release next(){
-        int i=0;
-        for (Release r: allRelease){
-            if(this.name.equalsIgnoreCase(r.name)) break;
-            i++;
-        }
-        return allRelease.get(i+1);
+        return allRelease.get(index+1);
 
     }
+
     public Release(String name, String releaseDate){
         this.name = name;
         this.buggyFiles = new ArrayList<>();
+        this.files = new ArrayList<>();
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String releaseDateString;
         this.index=-1;
+        this.filesWithMetric = new ArrayList<>();
         try{
             releaseDateString = releaseDate.substring(0, 10);
             this.releaseDate = df.parse(releaseDateString);

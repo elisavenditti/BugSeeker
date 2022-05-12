@@ -1,7 +1,7 @@
 package org.example;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -19,14 +19,15 @@ public class Excel {
     }
 
 
-    public List<String> listOfJavaFile(String rootDirName){
+    public ArrayList<MyFile> listOfJavaFile(String rootDirName){
         File rootDir = new File(rootDirName);
-        List<String> resultList = new ArrayList<>();
+        ArrayList<MyFile> resultList = new ArrayList<>();
 
         File[] fList = rootDir.listFiles();
         for (File file : fList) {
             if (file.isFile() && file.getName().contains(".java")) {
-                resultList.add(file.getAbsolutePath());
+                MyFile myFile = new MyFile(file.getAbsolutePath());
+                resultList.add(myFile);
             } else if (file.isDirectory() && !(file.getName().equalsIgnoreCase("target"))) {
                 resultList.addAll(listOfJavaFile(file.getAbsolutePath()));
             }
@@ -36,7 +37,9 @@ public class Excel {
     }
 
     private int insertCells(XSSFSheet sheet, int rowCount, Release release){
-        for (String name : release.files) {
+        String name;
+        for (MyFile myFile : release.files) {
+            name = myFile.pathname;
             Row row = sheet.createRow(rowCount);
 
             int j = name.length();
@@ -44,17 +47,65 @@ public class Excel {
             String buggy;
             Cell releaseCell = row.createCell(0);
             Cell nameCell = row.createCell(1);
-            Cell bugCell = row.createCell(2);
+            Cell sizeCell = row.createCell(2);
+            Cell locTouchedCell = row.createCell(3);
+            Cell nRevCell = row.createCell(4);
+            Cell nAuthorsCell = row.createCell(5);
+            Cell locAddedCell = row.createCell(6);
+            Cell maxLocAddedCell = row.createCell(7);
+            Cell avgLocAddedCell = row.createCell(8);
+            Cell chgSetSizeCell = row.createCell(9);
+            Cell maxChgSetSizeCell = row.createCell(10);
+            Cell avgChgSetSizeCell = row.createCell(11);
+            Cell bugCell = row.createCell(12);
             releaseCell.setCellValue(release.name);
             shortName = name.substring(rootLen,j);
             nameCell.setCellValue(shortName);
 
             String currRelease = releaseCell.getStringCellValue();
-
-            if(release.buggyFiles.contains(shortName))
+            Boolean bug = false;
+            for(MyFile buggyFile: release.buggyFiles){
+                if(buggyFile.pathname.equalsIgnoreCase(shortName)){
+                    bug=true;
+                    break;
+                }
+            }
+            if(bug)
                 buggy = "Yes";
             else
                 buggy = "No";
+
+            int avgLocAdded = 0;
+            int avgChgSetSize = 0;
+            int maxLocAdded = 0;
+            int maxChgSetSize = 0;
+            if(myFile.locAddedList.size()!=0) {
+                for (Integer add : myFile.locAddedList) {
+                    if(add>maxLocAdded) maxLocAdded = add;
+                    avgLocAdded = avgLocAdded + add;
+                }
+                avgLocAdded = avgLocAdded / (myFile.locAddedList.size());
+            }
+            if(myFile.chgSetSizeList.size()!=0) {
+                for (Integer add : myFile.chgSetSizeList) {
+                    if(add>maxChgSetSize) maxChgSetSize = add;
+                    avgChgSetSize = avgChgSetSize + add;
+                }
+                avgChgSetSize = avgChgSetSize / (myFile.chgSetSizeList.size());
+            }
+
+
+            sizeCell.setCellValue(myFile.loc);
+            locTouchedCell.setCellValue(myFile.locTouched);
+            nRevCell.setCellValue(myFile.nRevisions);
+            nAuthorsCell.setCellValue(myFile.nAuthors);
+            locAddedCell.setCellValue(myFile.locAdded);
+            maxLocAddedCell.setCellValue(maxLocAdded);
+            avgLocAddedCell.setCellValue(avgLocAdded);
+            chgSetSizeCell.setCellValue(myFile.chgSetSize);
+            maxChgSetSizeCell.setCellValue(maxChgSetSize);
+            avgChgSetSizeCell.setCellValue(avgChgSetSize);
+
 
             bugCell.setCellValue(buggy);
 
