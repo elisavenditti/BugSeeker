@@ -131,7 +131,7 @@ public class Excel {
     }
 
 
-    public void populate(String projectName, int walkforwardStep) throws IOException {
+    public void populate(String projectName, int walkforwardStep)  {
 
         String excelName = projectName.toLowerCase() + walkforwardStep + ".xlsx";
         XSSFWorkbook workbook;
@@ -150,10 +150,13 @@ public class Excel {
         System.out.println("[training "+walkforwardStep+"] excel completato");
 
 
-        FileOutputStream outputStream = new FileOutputStream(excelName);
-        workbook.write(outputStream);
-        workbook.close();
-        outputStream.close();
+        try(FileOutputStream outputStream = new FileOutputStream(excelName)) {
+            workbook.write(outputStream);
+            workbook.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     public void populateTesting(String projectName, int testReleaseIndex) throws IOException {
