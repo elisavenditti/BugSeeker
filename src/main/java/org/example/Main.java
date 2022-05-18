@@ -118,76 +118,76 @@ public class Main {
         orderRelease();
         deleteDuplicate();
         halfRelease = getHalfReleases(allRelease);
-//        ArrayList<Issue> allIssues  = getIssueIdOfProject(projName);
-//
-//        Proportion proportion = new Proportion();
-//        ArrayList<Float> pinc = proportion.incremental(allIssues, true);
-//        allIssues = proportion.addMissingInjectedVersions(pinc, allIssues, true);
-//
-//
-//        Git github = new Git(projDirName + "\\.git", syncope);
-//        github.getReleaseFileList(excel, projDirName);
-//
-//
-//        int trainingBoundary;
-//        boolean testing = false;
-//        ArrayList<Release> toRestoreAllRelease = allRelease;
-//        ArrayList<Release> toRestoreHalfRelease = halfRelease;
-//
-//        for(trainingBoundary=0; trainingBoundary< halfRelease.size(); trainingBoundary++) {
-//            allRelease=toRestoreAllRelease;
-//            halfRelease=toRestoreHalfRelease;
-//            // the last loop's iteration is dedicated to TESTING
-//            if(trainingBoundary == halfRelease.size() - 1){
-//                testing = true;
-//                // testing set must be labeled with the whole information
-//                ArrayList<Float> p = new ArrayList<>();
-//                p.add(proportion.globalP(allIssues));
-//                allIssues = proportion.addMissingInjectedVersions(p, allIssues, false);
-//            }
-//
-//            ArrayList<Issue> valuableIssue = new ArrayList<>();
-//            for (Issue i : allIssues) {
-//                // for testing set delete issue with IV greater than releases in the first half
-//                if(testing && i.injectedVersion.index<=halfRelease.size()-1) valuableIssue.add(i);
-//
-//                // for training set delete issue with FV > trainingBoundary (I CAN'T SEE FUTURE INFORMATION)
-//                if (!testing && i.fixVersion.index <= trainingBoundary) valuableIssue.add(i);
-//
-//            }
-//
-//            ArrayList<Commit> commitId = new ArrayList<>();
-//            for (Issue i : valuableIssue) {
-//                ArrayList<Commit> list = github.getAllCommitsOfIssue(i, syncope);
-//                commitId.addAll(list);
-//            }
-//            github.getMetrics();
-//
-//            for (Release release : halfRelease) {
-//
-//                for (Issue i : valuableIssue) {
-//                    if (isReleaseContainedIn(release, i.injectedVersion, i.fixVersion, false)) {
-//                        for (Commit com : commitId) {
-//
-//                            if (isReleaseContainedIn(com.release, release.next(), i.fixVersion, true)) {
-//                                if (com.changedFiles != null && com.changedFiles.size() > 0)
-//                                    release.buggyFiles.addAll(com.changedFiles);
-//                            }
-//
-//
-//                        }
-//                    }
-//                }
-//            }
-//
-//            if(!(trainingBoundary==halfRelease.size() -1))
-//                excel.populate(projName, trainingBoundary);
-//            else { //popolare gli excel di testing
-//                int testReleaseIndex;
-//                for(testReleaseIndex=1; testReleaseIndex< halfRelease.size(); testReleaseIndex++)
-//                    excel.populateTesting(projName, testReleaseIndex);
-//            }
-//        }
+        ArrayList<Issue> allIssues  = getIssueIdOfProject(projName);
+
+        Proportion proportion = new Proportion();
+        ArrayList<Float> pinc = proportion.incremental(allIssues, true);
+        allIssues = proportion.addMissingInjectedVersions(pinc, allIssues, true);
+
+
+        Git github = new Git(projDirName + "\\.git", syncope);
+        github.getReleaseFileList(excel, projDirName);
+
+
+        int trainingBoundary;
+        boolean testing = false;
+        ArrayList<Release> toRestoreAllRelease = allRelease;
+        ArrayList<Release> toRestoreHalfRelease = halfRelease;
+
+        for(trainingBoundary=0; trainingBoundary< halfRelease.size(); trainingBoundary++) {
+            allRelease=toRestoreAllRelease;
+            halfRelease=toRestoreHalfRelease;
+            // the last loop's iteration is dedicated to TESTING
+            if(trainingBoundary == halfRelease.size() - 1){
+                testing = true;
+                // testing set must be labeled with the whole information
+                ArrayList<Float> p = new ArrayList<>();
+                p.add(proportion.globalP(allIssues));
+                allIssues = proportion.addMissingInjectedVersions(p, allIssues, false);
+            }
+
+            ArrayList<Issue> valuableIssue = new ArrayList<>();
+            for (Issue i : allIssues) {
+                // for testing set delete issue with IV greater than releases in the first half
+                if(testing && i.injectedVersion.index<=halfRelease.size()-1) valuableIssue.add(i);
+
+                // for training set delete issue with FV > trainingBoundary (I CAN'T SEE FUTURE INFORMATION)
+                if (!testing && i.fixVersion.index <= trainingBoundary) valuableIssue.add(i);
+
+            }
+
+            ArrayList<Commit> commitId = new ArrayList<>();
+            for (Issue i : valuableIssue) {
+                ArrayList<Commit> list = github.getAllCommitsOfIssue(i, syncope);
+                commitId.addAll(list);
+            }
+            github.getMetrics();
+
+            for (Release release : halfRelease) {
+
+                for (Issue i : valuableIssue) {
+                    if (isReleaseContainedIn(release, i.injectedVersion, i.fixVersion, false)) {
+                        for (Commit com : commitId) {
+
+                            if (isReleaseContainedIn(com.release, release.next(), i.fixVersion, true)) {
+                                if (com.changedFiles != null && com.changedFiles.size() > 0)
+                                    release.buggyFiles.addAll(com.changedFiles);
+                            }
+
+
+                        }
+                    }
+                }
+            }
+
+            if(!(trainingBoundary==halfRelease.size() -1))
+                excel.populate(projName, trainingBoundary);
+            else { //popolare gli excel di testing
+                int testReleaseIndex;
+                for(testReleaseIndex=1; testReleaseIndex< halfRelease.size(); testReleaseIndex++)
+                    excel.populateTesting(projName, testReleaseIndex);
+            }
+        }
 
         Weka w = new Weka();
         w.createArff(halfRelease.size(), syncope);

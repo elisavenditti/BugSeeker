@@ -172,7 +172,7 @@ public class Weka {
         performance.add(projName);
         String trainingReleases = "";
         for(int index=0; index<=trainingIndex; index++){
-            trainingReleases = trainingIndex +", " + halfRelease.get(index).name;
+            trainingReleases = trainingReleases +", " + halfRelease.get(index).name;
         }
         performance.add(trainingReleases);
         performance.add(classifier);
@@ -243,7 +243,7 @@ public class Weka {
 
         for(int i=0; i<numIterations; i++){
             try {
-                walkforwardStep(arffTraining.get(i), arffTesting.get(i), i+1);
+                walkforwardStep(arffTraining.get(i), arffTesting.get(i), i);
                 System.out.println("[walkforward step] "+i);
             } catch (Exception e) {
                 throw new RuntimeException(e);
