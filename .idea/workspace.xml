@@ -4,147 +4,63 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="ho aggiunto il calcolo delle metriche">
-      <change afterPath="$PROJECT_DIR$/.github/workflows/sonarcloud.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper-report.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper-testing0.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper-testing0.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper-testing1.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper-testing1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper-testing2.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper-testing2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper-testing3.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper-testing3.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper0.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper0.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper1.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper2.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper3.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/bookkeeper3.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/sonar-project.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Proportion.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Prova.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Weka.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing0.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing0.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing1.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing10.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing10.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing11.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing11.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing12.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing12.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing13.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing13.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing14.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing14.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing15.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing15.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing16.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing16.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing17.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing17.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing18.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing18.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing19.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing19.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing2.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing20.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing20.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing21.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing21.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing22.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing22.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing23.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing23.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing24.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing24.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing25.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing25.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing26.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing26.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing3.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing3.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing4.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing4.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing5.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing5.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing6.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing6.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing7.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing7.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing8.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing8.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing9.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope-testing9.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope0.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope0.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope1.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope1.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope10.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope10.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope11.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope11.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope12.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope12.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope13.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope13.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope14.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope14.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope15.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope15.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope16.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope16.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope17.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope17.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope18.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope18.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope19.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope19.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope2.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope2.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope20.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope20.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope21.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope21.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope22.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope22.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope23.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope23.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope24.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope24.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope25.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope25.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope26.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope26.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope3.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope3.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope4.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope4.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope5.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope5.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope6.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope6.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope7.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope7.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope8.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope8.xlsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope9.arff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/syncope9.xlsx" afterDir="false" />
+    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="walkforward implementato, nel codice ci sono le funzioni (ancora primitive) per il filtering e il sampling">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Commit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Commit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Git.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Git.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Issue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Issue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Jira.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Jira.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/MetricsCalculator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/MetricsCalculator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Release.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Release.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing0.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing0.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing1.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing1.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing10.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing10.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing11.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing11.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing12.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing12.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing13.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing13.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing14.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing14.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing15.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing15.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing16.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing17.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing18.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing19.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing2.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing2.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing20.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing21.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing22.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing23.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing24.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing25.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing26.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing3.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing3.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing4.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing4.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing5.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing5.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing6.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing6.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing7.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing7.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing8.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing8.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope-testing9.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing9.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope0.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope0.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope1.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope1.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope10.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope10.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope11.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope11.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope12.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope12.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope13.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope13.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope14.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope14.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope15.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope15.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope16.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope17.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope18.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope19.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope2.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope2.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope20.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope21.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope22.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope23.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope24.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope25.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope26.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope3.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope3.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope4.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope4.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope5.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope5.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope6.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope6.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope7.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope7.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope8.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope8.arff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/syncope9.arff" beforeDir="false" afterPath="$PROJECT_DIR$/syncope9.arff" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -293,7 +209,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652372562931</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="walkforward implementato, nel codice ci sono le funzioni (ancora primitive) per il filtering e il sampling">
+      <created>1652888878850</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1652888878850</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -312,7 +235,8 @@
     <MESSAGE value="aggiunta la compatibilità con bookkeeper" />
     <MESSAGE value="aggiunto proportion" />
     <MESSAGE value="ho aggiunto il calcolo delle metriche" />
-    <option name="LAST_COMMIT_MESSAGE" value="ho aggiunto il calcolo delle metriche" />
+    <MESSAGE value="walkforward implementato, nel codice ci sono le funzioni (ancora primitive) per il filtering e il sampling" />
+    <option name="LAST_COMMIT_MESSAGE" value="walkforward implementato, nel codice ci sono le funzioni (ancora primitive) per il filtering e il sampling" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
