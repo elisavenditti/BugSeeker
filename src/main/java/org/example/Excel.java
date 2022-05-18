@@ -24,11 +24,12 @@ public class Excel {
         ArrayList<MyFile> resultList = new ArrayList<>();
 
         File[] fList = rootDir.listFiles();
+        if(fList == null) return null;
         for (File file : fList) {
             if (file.isFile() && file.getName().contains(".java")) {
                 MyFile myFile = new MyFile(file.getAbsolutePath());
                 resultList.add(myFile);
-            } else if (file.isDirectory() && !(file.getName().equalsIgnoreCase("target"))) {
+            } else if (file.isDirectory() && !(file.getName().contains("test")) && !(file.getName().equalsIgnoreCase("target"))) {
                 resultList.addAll(listOfJavaFile(file.getAbsolutePath()));
             }
         }
@@ -58,57 +59,71 @@ public class Excel {
             Cell maxChgSetSizeCell = row.createCell(10);
             Cell avgChgSetSizeCell = row.createCell(11);
             Cell bugCell = row.createCell(12);
-            releaseCell.setCellValue(release.name);
-            shortName = name.substring(rootLen,j);
-            nameCell.setCellValue(shortName);
 
-            String currRelease = releaseCell.getStringCellValue();
-            Boolean bug = false;
-            for(MyFile buggyFile: release.buggyFiles){
-                if(buggyFile.pathname.equalsIgnoreCase(shortName)){
-                    bug=true;
-                    break;
+            if(rowCount==0){
+                releaseCell.setCellValue("Version");
+                nameCell.setCellValue("Filename");
+                sizeCell.setCellValue("LOC");
+                locTouchedCell.setCellValue("LOC Touched");
+                nRevCell.setCellValue("nRevisions");
+                nAuthorsCell.setCellValue("nAuthors");
+                locAddedCell.setCellValue("LOC Added");
+                maxLocAddedCell.setCellValue("max LocAdded");
+                avgLocAddedCell.setCellValue("avgLocAdded");
+                chgSetSizeCell.setCellValue("chgSetSize");
+                maxChgSetSizeCell.setCellValue("maxChgSetSize");
+                avgChgSetSizeCell.setCellValue("avgChgSetSize");
+                bugCell.setCellValue("Buggy");
+            }else {
+
+                releaseCell.setCellValue(release.name);
+                shortName = name.substring(rootLen, j);
+                nameCell.setCellValue(shortName);
+
+                boolean bug = false;
+                for (MyFile buggyFile : release.buggyFiles) {
+                    if (buggyFile.pathname.equalsIgnoreCase(shortName)) {
+                        bug = true;
+                        break;
+                    }
                 }
-            }
-            if(bug)
-                buggy = "Yes";
-            else
-                buggy = "No";
+                if (bug)
+                    buggy = "Yes";
+                else
+                    buggy = "No";
 
-            int avgLocAdded = 0;
-            int avgChgSetSize = 0;
-            int maxLocAdded = 0;
-            int maxChgSetSize = 0;
-            if(myFile.locAddedList.size()!=0) {
-                for (Integer add : myFile.locAddedList) {
-                    if(add>maxLocAdded) maxLocAdded = add;
-                    avgLocAdded = avgLocAdded + add;
+                int avgLocAdded = 0;
+                int avgChgSetSize = 0;
+                int maxLocAdded = 0;
+                int maxChgSetSize = 0;
+                if (myFile.locAddedList.size() != 0) {
+                    for (Integer add : myFile.locAddedList) {
+                        if (add > maxLocAdded) maxLocAdded = add;
+                        avgLocAdded = avgLocAdded + add;
+                    }
+                    avgLocAdded = avgLocAdded / (myFile.locAddedList.size());
                 }
-                avgLocAdded = avgLocAdded / (myFile.locAddedList.size());
-            }
-            if(myFile.chgSetSizeList.size()!=0) {
-                for (Integer add : myFile.chgSetSizeList) {
-                    if(add>maxChgSetSize) maxChgSetSize = add;
-                    avgChgSetSize = avgChgSetSize + add;
+                if (myFile.chgSetSizeList.size() != 0) {
+                    for (Integer add : myFile.chgSetSizeList) {
+                        if (add > maxChgSetSize) maxChgSetSize = add;
+                        avgChgSetSize = avgChgSetSize + add;
+                    }
+                    avgChgSetSize = avgChgSetSize / (myFile.chgSetSizeList.size());
                 }
-                avgChgSetSize = avgChgSetSize / (myFile.chgSetSizeList.size());
+
+
+                sizeCell.setCellValue(myFile.loc);
+                locTouchedCell.setCellValue(myFile.locTouched);
+                nRevCell.setCellValue(myFile.nRevisions);
+                nAuthorsCell.setCellValue(myFile.nAuthors);
+                locAddedCell.setCellValue(myFile.locAdded);
+                maxLocAddedCell.setCellValue(maxLocAdded);
+                avgLocAddedCell.setCellValue(avgLocAdded);
+                chgSetSizeCell.setCellValue(myFile.chgSetSize);
+                maxChgSetSizeCell.setCellValue(maxChgSetSize);
+                avgChgSetSizeCell.setCellValue(avgChgSetSize);
+                bugCell.setCellValue(buggy);
             }
-
-
-            sizeCell.setCellValue(myFile.loc);
-            locTouchedCell.setCellValue(myFile.locTouched);
-            nRevCell.setCellValue(myFile.nRevisions);
-            nAuthorsCell.setCellValue(myFile.nAuthors);
-            locAddedCell.setCellValue(myFile.locAdded);
-            maxLocAddedCell.setCellValue(maxLocAdded);
-            avgLocAddedCell.setCellValue(avgLocAdded);
-            chgSetSizeCell.setCellValue(myFile.chgSetSize);
-            maxChgSetSizeCell.setCellValue(maxChgSetSize);
-            avgChgSetSizeCell.setCellValue(avgChgSetSize);
-
-
-            bugCell.setCellValue(buggy);
-
             rowCount++;
 
         }
@@ -116,9 +131,57 @@ public class Excel {
     }
 
 
-    public String populate(String projectName) throws IOException {
+    public void populate(String projectName, int walkforwardStep) throws IOException {
 
-        String excelName = projectName.toLowerCase() + ".xlsx";
+        String excelName = projectName.toLowerCase() + walkforwardStep + ".xlsx";
+        XSSFWorkbook workbook;
+        XSSFSheet sheet;
+        int rowCount = 0;
+
+        workbook = new XSSFWorkbook();
+        sheet = workbook.createSheet(projectName + "buggy classes");
+        int c=0;
+        for(Release r: halfRelease){
+            if(c>walkforwardStep) break;
+            rowCount = insertCells(sheet, rowCount, r);
+            c++;
+        }
+
+        System.out.println("[training "+walkforwardStep+"] excel completato");
+
+
+        FileOutputStream outputStream = new FileOutputStream(excelName);
+        workbook.write(outputStream);
+        workbook.close();
+        outputStream.close();
+    }
+
+    public void populateTesting(String projectName, int testReleaseIndex) throws IOException {
+
+        int actualStep = testReleaseIndex-1;
+        String excelName = projectName.toLowerCase() + "-testing" + actualStep + ".xlsx";
+        XSSFWorkbook workbook;
+        XSSFSheet sheet;
+        int rowCount = 0;
+
+        workbook = new XSSFWorkbook();
+        sheet = workbook.createSheet(projectName + "buggy classes");
+
+        insertCells(sheet, rowCount, halfRelease.get(testReleaseIndex));
+
+
+        System.out.println("[training "+testReleaseIndex+"] excel completato");
+
+
+        FileOutputStream outputStream = new FileOutputStream(excelName);
+        workbook.write(outputStream);
+        workbook.close();
+        outputStream.close();
+    }
+
+    /*public String populate(String projectName) throws IOException {
+
+        String excelName = projectName.toLowerCase() + walkforwardStep + ".xlsx";
         XSSFWorkbook workbook;
         XSSFSheet sheet;
         int rowCount = 0;
@@ -138,7 +201,7 @@ public class Excel {
         workbook.close();
         outputStream.close();
         return excelName;
-    }
+    }*/
 
 
 }

@@ -1,0 +1,21 @@
+% 1. Title: Iris Plants Database
+% 
+% 2. Sources:
+%      (a) Creator: Elisa Venditti
+%      (b) Donor: Elisa Venditti
+%      (c) Date: May, 2022
+% 
+@RELATION buggy
+
+@ATTRIBUTE size  NUMERIC
+@ATTRIBUTE locTouched   NUMERIC
+@ATTRIBUTE revisionNumber  NUMERIC
+@ATTRIBUTE authorNumber   NUMERIC
+@ATTRIBUTE locAdded   NUMERIC
+@ATTRIBUTE maxLocAdded   NUMERIC
+@ATTRIBUTE avgLocAdded   NUMERIC
+@ATTRIBUTE chgSetSize   NUMERIC
+@ATTRIBUTE maxChgSetSize   NUMERIC
+@ATTRIBUTE avgChgSetSize   NUMERIC
+@ATTRIBUTE class        {Yes, No}
+@DATA

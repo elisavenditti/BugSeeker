@@ -4,7 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import static java.lang.Math.floor;
 
@@ -21,10 +21,9 @@ public class Jira {
     public static JSONArray readJsonArrayFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
-            JSONArray json = new JSONArray(jsonText);
-            return json;
+            return new JSONArray(jsonText);
         } finally {
             is.close();
         }
@@ -33,10 +32,9 @@ public class Jira {
     public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
-            JSONObject json = new JSONObject(jsonText);
-            return json;
+            return new JSONObject(jsonText);
         } finally {
             is.close();
         }
@@ -54,13 +52,13 @@ public class Jira {
             String nameRelease = json.getJSONObject(i).get("name").toString();
             String released = json.getJSONObject(i).get("released").toString();
             if(released.equalsIgnoreCase("true")){
-                String dateRelease = json.getJSONObject(i).get("releaseDate").toString();
-
-                Release element = new Release(nameRelease, dateRelease);
-                releases.add(element);
-//                System.out.println(nameRelease);
-//                System.out.println(dateRelease);
-//                System.out.println("+++++++++++++++++++++++++++++++");
+                try{
+                    String dateRelease = json.getJSONObject(i).get("releaseDate").toString();
+                    Release element = new Release(nameRelease, dateRelease);
+                    releases.add(element);
+                }catch (JSONException e){
+                    System.out.println("["+projName+"] - una release non possiede la data di rilascio. Release saltata.");
+                }
             }
         }
 
@@ -77,7 +75,7 @@ public class Jira {
         for(Release element: allRelease){
             halfRelease.add(element);
             i++;
-            if(i==/*2)break;*/halfSize) break;
+            if(i == halfSize) break;
         }
         return halfRelease;
     }
@@ -88,14 +86,14 @@ public class Jira {
         ArrayList<Issue> bugInfo = new ArrayList<>();
         int len, fixLen;
 
-        Integer j = 0, i = 0, total = 1;
+        int j, i = 0, total;
 
         do {
             j = i + 1000;
             String url = "https://issues.apache.org/jira/rest/api/2/search?jql=project%20%3D%20" + projName +
                     "%20AND%20issuetype%20%3D%20Bug%20AND%20(%22status%22%20%3D%22resolved%22%20OR%20%22status" +
                     "%22%20%3D%20%22closed%22)%20AND%20%20%22resolution%22%20%3D%20%22fixed%22%20&fields=key," +
-                    "resolutiondate,versions,created,fixVersions&startAt="+i.toString()+ "&maxResults="+ j.toString();
+                    "resolutiondate,versions,created,fixVersions&startAt="+i+ "&maxResults="+ j;
 
             JSONObject json = readJsonFromUrl(url);
             JSONArray issues = json.getJSONArray("issues");
@@ -129,8 +127,9 @@ public class Jira {
                 }
 
                 Issue issue = new Issue(key, fixVersions, affectedVersions, resolutionDate, creationDate);
-                System.out.println("1");
+                // discard issues without FV or OV (I can't claculate them in other ways)
                 if(issue.fixVersion == null || issue.openingVersion==null) continue;
+
                 int ivIndex, ovIndex, fvIndex;
                 if (issue.injectedVersion != null)
                     ivIndex = issue.injectedVersion.index;
@@ -139,10 +138,11 @@ public class Jira {
                 ovIndex = issue.openingVersion.index;
                 fvIndex = issue.fixVersion.index;
 
-                // scarto l'issue se non è post release (ha IV=OV=FV) e se presenta un'inconsistenza tra ov ed fv (OV>FV)
-
-                if((ovIndex <= fvIndex) && !((ivIndex==ovIndex)&&(ovIndex==fvIndex)))
-                    bugInfo.add(issue);
+                // discard issues with OV and FV inconsistent (OV>=FV) and issues pre-release (IV=OV=FV)
+                if(!((ivIndex==ovIndex)&&(ovIndex==fvIndex))) {
+                    if (ovIndex < fvIndex)
+                        bugInfo.add(issue);
+                }
             }
         } while (i < total);
 

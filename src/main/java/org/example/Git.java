@@ -1,6 +1,5 @@
 package org.example;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
 import org.eclipse.jgit.diff.Edit;
@@ -28,10 +27,9 @@ public class Git {
     private Repository repo;
     private String issueText;
     private String releaseAddingName;
-    private String originalRelease;
 
     public Git(String gitPath, Boolean syncope){
-        // gitPath
+
         try {
             FileRepositoryBuilder b = new FileRepositoryBuilder();
             this.repo = b.setGitDir(new File(gitPath)).build();
@@ -53,15 +51,7 @@ public class Git {
         }
     }
 
-    public void resetRepo(){
-        try {
-            org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
-            git.checkout().setName(originalRelease).call();
-        } catch (GitAPIException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    public void getReleaseFileList(String projName, Excel excel, String projDirName){
+    public void getReleaseFileList(Excel excel, String projDirName){
         int i=0;
         for(Release r: halfRelease) {
             System.out.println(i+") checkout to "+r.name+"++++++++++++++++++++++++++++++++++");
@@ -76,37 +66,38 @@ public class Git {
 
     }
 
-    public List<Commit> getAllCommitsOfIssue(Issue issue, Boolean syncope){
-        List<Commit> commitIds = new ArrayList<>();
+    public ArrayList<Commit> getAllCommitsOfIssue(Issue issue, Boolean syncope){
+        ArrayList<Commit> commitIds = new ArrayList<>();
         org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
-        if(syncope) this.issueText = "[" + issue.key + "]";
-        else this.issueText = issue.key+":";
+
+        if(syncope)
+            this.issueText = "[" + issue.key + "]";
+        else
+            this.issueText = issue.key+":";
+
         try {
             Iterable<RevCommit> log = git.log().all().call();
             for(RevCommit i: log){
                 String msg = i.getFullMessage();
                 if(msg.contains(this.issueText)) {
-                    PersonIdent authorIdent = i.getAuthorIdent();
-                    String author = authorIdent.getName();
-                    Date authorDate = authorIdent.getWhen();
-                    Commit c = new Commit(i.getId().toString(), author, authorDate, issue);
-                    String csha = c.getCommitSha();
+                    PersonIdent authorIdentity = i.getAuthorIdent();
+                    String author = authorIdentity.getName();
+                    Date authorDate = authorIdentity.getWhen();
+                    Commit c = new Commit(i.getId().toString(), author, authorDate);
+                    String cSha = c.getCommitSha();
                     try {
-                        c.changedFiles.addAll(compareCommitWithPrevious(csha));
+                        c.changedFiles.addAll(compareCommitWithPrevious(cSha));
                     }catch (MyException e) {
                         System.out.println(e.getMessage());
                     }
-                    commitIds.add(c);
+                    if(c.release!=null)
+                        commitIds.add(c);
                 }
             }
             git.close();
             return commitIds;
 
-        } catch (NoHeadException e) {
-            throw new RuntimeException(e);
-        } catch (GitAPIException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (GitAPIException | IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -118,7 +109,7 @@ public class Git {
         org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
         ObjectReader reader = git.getRepository().newObjectReader();
         CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-        ObjectId oldTree = null;
+        ObjectId oldTree;
         try {
             oldTree = git.getRepository().resolve( commitSha+"~1^{tree}" );
             try{
@@ -139,7 +130,7 @@ public class Git {
 
             int linesAdded ;
             int linesDeleted;
-            int locTouched = 0; // aggiunte + modificate + cancellate
+            int locTouched; // added + modified + deleted
 
             List<DiffEntry> entries = diffFormatter.scan( oldTreeIter, newTreeIter );
 
@@ -179,7 +170,7 @@ public class Git {
         org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
         ObjectReader reader = git.getRepository().newObjectReader();
         CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-        ObjectId oldTree = null;
+        ObjectId oldTree;
         try {
             oldTree = git.getRepository().resolve( commitSha+"~1^{tree}" );
             try{
@@ -198,13 +189,15 @@ public class Git {
 
 
             for( DiffEntry entry : entries ) {
-                //String s = entry.getNewPath().replaceAll("/","\\\\");
-                String s;
-                if(entry.getChangeType().equals(DiffEntry.ChangeType.DELETE))
-                    s = entry.getOldPath().replaceAll("/","\\\\");
-                else
-                    s = entry.getNewPath().replaceAll("/","\\\\");
-                changedFiles.add(new MyFile(s));
+                if(entry.getChangeType()==DiffEntry.ChangeType.DELETE||
+                        entry.getChangeType()==DiffEntry.ChangeType.MODIFY){
+                    String s;
+//                    if(entry.getChangeType().equals(DiffEntry.ChangeType.DELETE))
+//                        s = entry.getOldPath().replaceAll("/","\\\\");
+//                    else
+                        s = entry.getNewPath().replaceAll("/","\\\\");
+                    changedFiles.add(new MyFile(s));
+                }
             }
             return changedFiles;
         } catch (IOException e) {
@@ -220,67 +213,25 @@ public class Git {
 
             Iterable<RevCommit> log = git.log().all().call();
             for(RevCommit i: log){
-                PersonIdent authorIdent = i.getAuthorIdent();
-                String author = authorIdent.getName();
-                Date authorDate = authorIdent.getWhen();
-                Commit c = new Commit(i.getId().toString(), author, authorDate, null);
+                PersonIdent authorIdentity = i.getAuthorIdent();
+                Commit c = new Commit(i.getId().toString(), authorIdentity.getName(), authorIdentity.getWhen());
                 commitIds.add(c);
                 if(c.releaseIndex==-1 || c.releaseIndex > (halfRelease.size()-1))
                     continue;
 
-                String csha = c.getCommitSha();
+                String cSha = c.getCommitSha();
 
                 try {
-                    c.changedFiles.addAll(getChangedFileWithLOC(csha));
+                    c.changedFiles.addAll(getChangedFileWithLOC(cSha));
                 } catch (MyException e){
                     System.out.println(e.getMessage());
                 }
 
-
-
                 setMetrics(c);
 
             }
-
-
-            for (Release r: halfRelease) {
-                if(r.index > (halfRelease.size()-1)) continue;
-                System.out.println("Release: "+r.name);
-                int k = 0;
-                for (MyFile f : r.files){
-                    if(k==0)System.out.println(f.pathname);
-
-                    int avgLocAdded = 0;
-                    int avgChgSetSize = 0;
-                    int maxLocAdded = 0;
-                    int maxChgSetSize = 0;
-                    if(f.locAddedList.size()!=0) {
-                        for (Integer add : f.locAddedList) {
-                            if(add>maxLocAdded) maxLocAdded = add;
-                            avgLocAdded = avgLocAdded + add;
-                        }
-                        avgLocAdded = avgLocAdded / (f.locAddedList.size());
-                    }
-                    if(f.chgSetSizeList.size()!=0) {
-                        for (Integer add : f.chgSetSizeList) {
-                            if(add>maxChgSetSize) maxChgSetSize = add;
-                            avgChgSetSize = avgChgSetSize + add;
-                        }
-                        avgChgSetSize = avgChgSetSize / (f.chgSetSizeList.size());
-                    }
-
-                    System.out.println(" *file (" +k + ") - nRev:" + f.nRevisions+" nAuthors:"+f.getNumberOfAuthors() +
-                            " nLocToccate:"+f.locTouched+ " nLocAggiunte:"+f.locAdded + " maxLocAggiunte:" + maxLocAdded + " avgLocAggiunte:"
-                            + avgLocAdded + " chgSetSize:" + f.chgSetSize+ " avgChgSetSize:" + avgChgSetSize+ " maxChgSetSize:" + maxChgSetSize);
-                    k++;
-                }
-            }
             git.close();
-        } catch (NoHeadException e) {
-            throw new RuntimeException(e);
-        } catch (GitAPIException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (GitAPIException | IOException e) {
             throw new RuntimeException(e);
         }
 

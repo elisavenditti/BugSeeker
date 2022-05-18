@@ -19,6 +19,7 @@ public class Issue {
     public Release openingVersion;
     public Release injectedVersion;
     public Date injectedDate;
+    public Boolean toLabel;
 
 
     private Release getReleaseFromDate(Date date){
@@ -48,16 +49,17 @@ public class Issue {
 
     private void consistencyCheck(){
         if(this.injectedVersion != null && this.openingVersion !=null)
-            if(this.injectedVersion.index > this.openingVersion.index)
+            if(this.injectedVersion.index > this.openingVersion.index) {
                 this.injectedVersion = null;
+                this.toLabel = true;
+            }
     }
 
-    private Release getMaxMinRelease(ArrayList<Release> releases, Boolean max){
+    private Release getMinRelease(ArrayList<Release> releases){
         Release ret = null;
         for(Release r: releases){
             if(ret==null) ret = r;
-            else if(max && r.releaseDate.after(ret.releaseDate)) ret=r;
-            else if(!max && r.releaseDate.before(ret.releaseDate)) ret=r;
+            else if(r.releaseDate.before(ret.releaseDate)) ret=r;
         }
         return ret;
     }
@@ -65,7 +67,7 @@ public class Issue {
 
     public Issue(String key, ArrayList<String> fixVersions, ArrayList<String> affectedVersions, String resolutionDate, String creationDate) {
 
-
+        this.toLabel = false;       // default value
         this.key = key;
         this.jiraFixVersions = getReleaseArrayFromStringArray(fixVersions);
         this.jiraAffectedVersions = getReleaseArrayFromStringArray(affectedVersions);
@@ -88,19 +90,15 @@ public class Issue {
         this.openingVersion = this.getReleaseFromDate(this.creationDate);
 
         if(this.jiraAffectedVersions.size()!=0) {
-            this.injectedVersion = this.getMaxMinRelease(jiraAffectedVersions, false);
+            this.injectedVersion = this.getMinRelease(jiraAffectedVersions);
             this.injectedDate = this.injectedVersion.releaseDate;
         }
-        else
-            this.injectedVersion=null;
-
+        else {
+            this.injectedVersion = null;
+            this.toLabel = true;
+        }
         // se IV > OV le Affected Version su jira erano inconsistenti quindi le devo ricalcolare con proportion
         consistencyCheck();
-
-//        System.out.println("["+this.key + "]\n    *jiraav="+affectedVersions
-//                + "\n    *fv="+this.fixVersion.name+" - date:+" + fixDate + " - index:" + this.fixVersion.index
-//                + "\n    *ov="+this.openingVersion.name+" - date:+" + this.creationDate+" - index:" + this.openingVersion.index);
-//        if(injectedVersion!=null) System.out.println("    *iv="+this.injectedVersion.name+" - date:+" + injectedDate + " - index:" + this.injectedVersion.index);
 
     }
 

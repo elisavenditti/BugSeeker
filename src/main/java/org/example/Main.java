@@ -5,7 +5,6 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.example.Jira.*;
 
@@ -13,167 +12,211 @@ public class Main {
 
     public static ArrayList<Release> allRelease;
     public static ArrayList<Release> halfRelease;
-    public static Boolean syncope = true;
     public static int rootLen;
 
-    private static boolean isReleaseContainedIn(Release currRelease, Release iv, Release  fv, Boolean extremeIncluded){
-        int ivIndex = iv.index;
-        int fvIndex = fv.index;
-        int i= currRelease.index;
-        boolean contained = false;
-
-        if(extremeIncluded && i>=ivIndex && i<=fvIndex) contained = true;
-        else if(!extremeIncluded && i>=ivIndex && i<fvIndex) contained = true;
-        return contained;
-    }
 
 
-    private static ArrayList<Float> proportion(ArrayList<Issue> allIssues){
-        ArrayList<ArrayList<Issue>> issuePerRelease = new ArrayList<>();
-        for(int j=0; j< allRelease.size(); j++){
-            issuePerRelease.add(new ArrayList<>());
-        }
-        for(Issue i: allIssues){
-            issuePerRelease.get(i.fixVersion.index).add(i);
-        }
-
-
-        ArrayList<Float> pinc = new ArrayList<>();
-        int count = 0;
-        float p, denominatore;
-        float incrementalMean = 0;
-        int ivIndex, ovIndex, fvIndex;
-        for(ArrayList<Issue> issueInRelease: issuePerRelease) {
-            if(issueInRelease.size()!=0) {
-                // calcola p per questa versione
-                for (Issue iss : issueInRelease) {
-                    if (iss.injectedVersion == null) continue;
-                    count++;
-
-                    ivIndex = iss.injectedVersion.index;
-                    fvIndex = iss.fixVersion.index;
-                    ovIndex = iss.openingVersion.index;
-
-                    if (fvIndex == ovIndex) denominatore = 1;
-                    else denominatore = fvIndex - ovIndex;
-                    p = (fvIndex - ivIndex) / denominatore;
-//                    System.out.println(count+") iv="+ivIndex+" - ov="+ovIndex+" - fv="+fvIndex+" - p="+p);
-                    incrementalMean = incrementalMean + (p - incrementalMean) / count;
-                }
-            }
-
-            pinc.add(incrementalMean);
-
-        }
-        for(Float pp: pinc)System.out.println(pp);
-        return pinc;
-    }
-
-    private static void addMissingInjectedVersions(/*ArrayList<Float>*/ float p, ArrayList<Issue> allIssue){
-        int ivIndex, ovIndex, fvIndex;
-
-        for(Issue iss: allIssue){
-            if(iss.injectedVersion == null) {
-
-                fvIndex = iss.fixVersion.index;
-                ovIndex = iss.openingVersion.index;
-                int diff;
-                if (fvIndex==ovIndex) diff = 1;
-                else diff= fvIndex-ovIndex;
-                //float pToUse = p.get(fvIndex);
-                ivIndex = fvIndex - Math.round(diff*p/*pToUse*/);
-                System.out.println("iv: "+ivIndex+" fv: "+fvIndex+" ov: "+ovIndex);
-                if(ivIndex<0) ivIndex = 0;
-                iss.injectedVersion = allRelease.get(ivIndex);
-            }
-        }
-
-    }
+//    public static void main(String[] args) throws IOException, JSONException, ParseException {
+//
+////        String projName ="SYNCOPE";
+////        String projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\syncope 1.2.10\\syncope";
+//
+//        String projName ="BOOKKEEPER";
+//        String projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\bookkeeper per bugseeker\\bookkeeper";
+//        Boolean syncope = false;
+//        Excel excel = new Excel(projDirName);
+//        String rootDir = projDirName+"\\";
+//        rootLen = rootDir.length();
+//
+//
+//        allRelease = getAllRelease(projName);
+//        orderRelease();
+//        deleteDuplicate();
+//        halfRelease = getHalfReleases(allRelease);
+//
+////        for(Release r: halfRelease)
+////            System.out.println(r.index+") "+r.name + " ("+r.releaseDate.toString()+")");
+//
+//
+//
+//        ArrayList<Issue> allIssues  = getIssueIdOfProject(projName);
+//
+//        Proportion proportion = new Proportion();
+//        ArrayList<Float> pinc = proportion.incremental(allIssues, true);
+//
+//
+//        allIssues = proportion.addMissingInjectedVersions(pinc, allIssues);
+//
+//        ArrayList<Issue> valuableIssue = new ArrayList<>();
+//        for(Issue i: allIssues){
+//            // delete issue with IV > halfRelease
+//            if(i.injectedVersion.index<=halfRelease.size()-1) valuableIssue.add(i);
+//
+//        }
+//        System.out.println("|valuableIssue|="+valuableIssue.size());
+//
+//        Git github = new Git(projDirName + "\\.git", syncope);
+//        github.getReleaseFileList(projName, excel, projDirName);
+//
+//        ArrayList<Commit> commit_id = new ArrayList<>();
+//        int k=0;
+//        for(Issue i: valuableIssue){
+//            System.out.println("* search commit in issue "+k);
+//            List<Commit> list = github.getAllCommitsOfIssue(i, syncope);
+//            commit_id.addAll(list);
+//            k++;
+//
+//        }
+//        System.out.println("|COMMIT|="+commit_id.size());
+//        github.getMetrics();
+//
+//        for(Release release: halfRelease) {
+//
+//            System.out.println("inizializzo excel per: "+release.name);
+//            for (Issue i : valuableIssue) {
+//                if(isReleaseContainedIn(release, i.injectedVersion, i.fixVersion, false)) {
+//                    for(Commit com: commit_id){
+//
+//                        if(isReleaseContainedIn(com.release, release.next(), i.fixVersion, true)){
+//                            if(com.changedFiles!=null && com.changedFiles.size()>0)
+//                                release.buggyFiles.addAll(com.changedFiles);
+//                        }
+//
+//
+//                    }
+//                }
+//            }
+//        }
+//
+//
+//        excel.populate(projName);
+//
+//    }
 
 
 
 
     public static void main(String[] args) throws IOException, JSONException, ParseException {
 
-//        String projName ="SYNCOPE";
-//        String projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\syncope 1.2.10\\syncope";
-        String projName ="BOOKKEEPER";
-        String projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\bookkeeper per bugseeker\\bookkeeper";
+        String projName, projDirName;
+        Boolean syncope = false;
+
+        if(syncope){
+            projName ="SYNCOPE";
+            projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\syncope 1.2.10\\syncope";
+        }else{
+            projName ="BOOKKEEPER";
+            projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\bookkeeper per bugseeker\\bookkeeper";
+        }
+
         Excel excel = new Excel(projDirName);
-        String rootDir = projDirName+"\\";
+        String rootDir = projDirName + "\\";
         rootLen = rootDir.length();
 
 
         allRelease = getAllRelease(projName);
         orderRelease();
-//        if(syncope){
-//            allRelease.add(new Release("3.0.0", longDate));
-//        }
+        deleteDuplicate();
         halfRelease = getHalfReleases(allRelease);
-
-
-//        for(Release r: halfRelease)
-//            System.out.println(r.index+") "+r.name);
-
-
         ArrayList<Issue> allIssues  = getIssueIdOfProject(projName);
 
+        Proportion proportion = new Proportion();
+        ArrayList<Float> pinc = proportion.incremental(allIssues, true);
+        allIssues = proportion.addMissingInjectedVersions(pinc, allIssues, true);
 
-        ArrayList<Float> pinc = proportion(allIssues);
-        int size=pinc.size();
-        addMissingInjectedVersions(pinc.get(size-1), allIssues);
+
+        Git github = new Git(projDirName + "\\.git", syncope);
+        github.getReleaseFileList(excel, projDirName);
 
 
-        ArrayList<Issue> valuableIssue = new ArrayList<>();
-        for(Issue i: allIssues){
-            // delete issue with IV > halfRelease
-            if(i.injectedVersion.index<=halfRelease.size()-1) valuableIssue.add(i);
+        int trainingBoundary;
+        boolean testing = false;
+        ArrayList<Release> toRestoreAllRelease = allRelease;
+        ArrayList<Release> toRestoreHalfRelease = halfRelease;
 
-        }
-        System.out.println("|valuableIssue|="+valuableIssue.size());
+        for(trainingBoundary=0; trainingBoundary< halfRelease.size(); trainingBoundary++) {
+            allRelease=toRestoreAllRelease;
+            halfRelease=toRestoreHalfRelease;
+            // the last loop's iteration is dedicated to TESTING
+            if(trainingBoundary == halfRelease.size() - 1){
+                testing = true;
+                // testing set must be labeled with the whole information
+                ArrayList<Float> p = new ArrayList<>();
+                p.add(proportion.globalP(allIssues));
+                allIssues = proportion.addMissingInjectedVersions(p, allIssues, false);
+            }
 
-//        Git github = new Git(projDirName + "\\.git", true);
-        Git github = new Git(projDirName + "\\.git", false);
-        github.getReleaseFileList(projName, excel, projDirName);
+            ArrayList<Issue> valuableIssue = new ArrayList<>();
+            for (Issue i : allIssues) {
+                // for testing set delete issue with IV greater than releases in the first half
+                if(testing && i.injectedVersion.index<=halfRelease.size()-1) valuableIssue.add(i);
 
-        ArrayList<Commit> commit_id = new ArrayList<>();
-        int k=0;
-        for(Issue i: valuableIssue){
-            System.out.println("* search commit in issue "+k);
-//            List<Commit> list = github.getAllCommitsOfIssue(i, true);
-            List<Commit> list = github.getAllCommitsOfIssue(i, false);
-            commit_id.addAll(list);
-            k++;
+                // for training set delete issue with FV > trainingBoundary (I CAN'T SEE FUTURE INFORMATION)
+                if (!testing && i.fixVersion.index <= trainingBoundary) valuableIssue.add(i);
 
-        }
-        System.out.println("|COMMIT|="+commit_id.size());
-        github.getMetrics();
+            }
 
-//        System.exit(-200);
-        for(Release release: halfRelease) {
-
-            System.out.println("inizializzo excel per: "+release.name);
+            ArrayList<Commit> commitId = new ArrayList<>();
             for (Issue i : valuableIssue) {
-                if(isReleaseContainedIn(release, i.injectedVersion, i.fixVersion, false)) {
-                    for(Commit com: commit_id){
+                ArrayList<Commit> list = github.getAllCommitsOfIssue(i, syncope);
+                commitId.addAll(list);
+            }
+            github.getMetrics();
 
-                        if(isReleaseContainedIn(com.release, release.next(), i.fixVersion, true)){
-                            if(com.changedFiles!=null && com.changedFiles.size()>0)
-                                release.buggyFiles.addAll(com.changedFiles);
+            for (Release release : halfRelease) {
+
+                for (Issue i : valuableIssue) {
+                    if (isReleaseContainedIn(release, i.injectedVersion, i.fixVersion, false)) {
+                        for (Commit com : commitId) {
+
+                            if (isReleaseContainedIn(com.release, release.next(), i.fixVersion, true)) {
+                                if (com.changedFiles != null && com.changedFiles.size() > 0)
+                                    release.buggyFiles.addAll(com.changedFiles);
+                            }
+
+
                         }
-
-
                     }
                 }
             }
+
+            if(!(trainingBoundary==halfRelease.size() -1))
+                excel.populate(projName, trainingBoundary);
+            else { //popolare gli excel di testing
+                int testReleaseIndex;
+                for(testReleaseIndex=1; testReleaseIndex< halfRelease.size(); testReleaseIndex++)
+                    excel.populateTesting(projName, testReleaseIndex);
+            }
         }
 
-
-        excel.populate(projName);
-
+        Weka w = new Weka();
+        w.createArff(halfRelease.size(), syncope);
+        w.walkforward(halfRelease.size(), syncope);
     }
 
-    private static void orderRelease() {
+
+
+
+    public static void deleteDuplicate() {
+        ArrayList<Release> uniqueReleaseList = new ArrayList<>();
+        int thisIndex, nextIndex, lastIndex;
+        lastIndex = allRelease.size()-1;
+        for(Release r: allRelease){
+            thisIndex = r.index;
+            nextIndex = thisIndex+1;
+            if(thisIndex == lastIndex ||
+                    !allRelease.get(thisIndex).releaseDate.equals(allRelease.get(nextIndex).releaseDate))
+                uniqueReleaseList.add(allRelease.get(thisIndex));
+
+        }
+        int z=0;
+        for(Release r: uniqueReleaseList){
+            r.index=z;
+            z++;
+        }
+        allRelease = uniqueReleaseList;
+    }
+    public static void orderRelease() {
         ArrayList<Release> orderedRelease = new ArrayList<>();
         for(Release rr: allRelease){
             if (orderedRelease.size()==0)
@@ -200,6 +243,17 @@ public class Main {
         }
 
         allRelease = orderedRelease;
+    }
+
+    private static boolean isReleaseContainedIn(Release currRelease, Release iv, Release  fv, Boolean extremeIncluded){
+        int ivIndex = iv.index;
+        int fvIndex = fv.index;
+        int i= currRelease.index;
+        boolean contained = false;
+
+        if(extremeIncluded && i>=ivIndex && i<=fvIndex) contained = true;
+        else if(!extremeIncluded && i>=ivIndex && i<fvIndex) contained = true;
+        return contained;
     }
 
 

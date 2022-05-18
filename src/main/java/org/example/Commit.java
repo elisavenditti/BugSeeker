@@ -10,7 +10,6 @@ public class Commit {
     public Release release;
     public String author;
     public int releaseIndex;
-    private Issue issue;
     public ArrayList<MyFile> changedFiles;
 
     private Release getReleaseFromDate(){
@@ -35,10 +34,9 @@ public class Commit {
     }
 
 
-    public Commit(String cid, String author, Date data, Issue issue){
+    public Commit(String cid, String author, Date data){
 
 
-        this.issue = issue;
         this.commitId = cid;
         this.author = author;
         this.commitDate = data;

@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static org.example.Main.allRelease;
-import static org.example.Main.rootLen;
 
 public class Release {
 
@@ -23,7 +22,7 @@ public class Release {
 
     }
 
-    public Release(String name, String releaseDate){
+        public Release(String name, String releaseDate){
         this.name = name;
         this.buggyFiles = new ArrayList<>();
         this.files = new ArrayList<>();
