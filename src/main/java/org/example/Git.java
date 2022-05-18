@@ -86,11 +86,11 @@ public class Git {
                     Commit c = new Commit(i.getId().toString(), author, authorDate);
                     String cSha = c.getCommitSha();
                     try {
-                        c.changedFiles.addAll(compareCommitWithPrevious(cSha));
+                        c.getChangedFiles().addAll(compareCommitWithPrevious(cSha));
                     }catch (MyException e) {
                         System.out.println(e.getMessage());
                     }
-                    if(c.release!=null)
+                    if(c.getRelease()!=null)
                         commitIds.add(c);
                 }
             }
@@ -216,13 +216,13 @@ public class Git {
                 PersonIdent authorIdentity = i.getAuthorIdent();
                 Commit c = new Commit(i.getId().toString(), authorIdentity.getName(), authorIdentity.getWhen());
                 commitIds.add(c);
-                if(c.releaseIndex==-1 || c.releaseIndex > (halfRelease.size()-1))
+                if(c.getReleaseIndex()==-1 || c.getReleaseIndex() > (halfRelease.size()-1))
                     continue;
 
                 String cSha = c.getCommitSha();
 
                 try {
-                    c.changedFiles.addAll(getChangedFileWithLOC(cSha));
+                    c.getChangedFiles().addAll(getChangedFileWithLOC(cSha));
                 } catch (MyException e){
                     System.out.println(e.getMessage());
                 }

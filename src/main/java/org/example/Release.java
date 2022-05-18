@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.example.Main.allRelease;
 
@@ -12,9 +13,9 @@ public class Release {
 
     public String name;
     public Date releaseDate;
-    public ArrayList<MyFile> files;
-    public ArrayList<MyFile> filesWithMetric;
-    public ArrayList<MyFile> buggyFiles;
+    public List<MyFile> files;
+    public List<MyFile> filesWithMetric;
+    public List<MyFile> buggyFiles;
     public int index;
 
     public Release next(){

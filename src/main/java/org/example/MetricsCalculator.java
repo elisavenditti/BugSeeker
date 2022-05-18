@@ -11,19 +11,19 @@ import static org.example.Main.rootLen;
 public class MetricsCalculator {
 
     public static void setMetrics(Commit commit){
-        int releaseIndex = commit.releaseIndex;
-        for(MyFile file : commit.changedFiles){
+        int releaseIndex = commit.getReleaseIndex();
+        for(MyFile file : commit.getChangedFiles()){
             Release rel = halfRelease.get(releaseIndex);
             for(MyFile file2: rel.files){
                 String name = file2.pathname.substring(rootLen);
                 if(file.pathname.equalsIgnoreCase(name)){
                     file2.nRevisions =  file2.nRevisions + 1;
-                    file2.authors.add(commit.author);
+                    file2.authors.add(commit.getAuthor());
                     file2.locTouched = file2.locTouched + file.locTouched;
                     file2.locAddedList.add(file.locAdded);
                     file2.locAdded = file2.locAdded + file.locAdded;
-                    file2.chgSetSize = file2.chgSetSize + commit.changedFiles.size() - 1;
-                    file2.chgSetSizeList.add(commit.changedFiles.size() - 1);
+                    file2.chgSetSize = file2.chgSetSize + commit.getChangedFiles().size() - 1;
+                    file2.chgSetSizeList.add(commit.getChangedFiles().size() - 1);
                     break;
                 }
             }

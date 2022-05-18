@@ -1,16 +1,23 @@
 package org.example;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.example.Main.allRelease;
 
 public class Commit {
     private String commitId;
     private Date commitDate;
-    public Release release;
-    public String author;
-    public int releaseIndex;
-    public ArrayList<MyFile> changedFiles;
+
+    private Release release;
+
+    public String getAuthor() {
+        return author;
+    }
+
+    private String author;
+    private int releaseIndex;
+    private List<MyFile> changedFiles;
 
     private Release getReleaseFromDate(){
         int i=0;
@@ -48,6 +55,34 @@ public class Commit {
     public Commit(String cid){
         this.commitId = cid;
         this.changedFiles = new ArrayList<>();
+    }
+
+
+    public Release getRelease() {
+        return release;
+    }
+
+    public void setRelease(Release release) {
+        this.release = release;
+    }
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public int getReleaseIndex() {
+        return releaseIndex;
+    }
+
+    public void setReleaseIndex(int releaseIndex) {
+        this.releaseIndex = releaseIndex;
+    }
+
+    public List<MyFile> getChangedFiles() {
+        return changedFiles;
+    }
+
+    public void setChangedFiles(ArrayList<MyFile> changedFiles) {
+        this.changedFiles = changedFiles;
     }
 
 }

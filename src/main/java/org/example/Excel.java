@@ -1,6 +1,7 @@
 package org.example;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -19,7 +20,7 @@ public class Excel {
     }
 
 
-    public ArrayList<MyFile> listOfJavaFile(String rootDirName){
+    public List<MyFile> listOfJavaFile(String rootDirName){
         File rootDir = new File(rootDirName);
         ArrayList<MyFile> resultList = new ArrayList<>();
 

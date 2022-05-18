@@ -111,7 +111,7 @@ public class Prova {
 
                 try {
                     System.out.println(index+"...");
-                    c.changedFiles.addAll(compareCommitWithPrevious(csha));
+                    c.getChangedFiles().addAll(compareCommitWithPrevious(csha));
                 } catch (MyException e){
                     System.out.println(e.getMessage());
                 }

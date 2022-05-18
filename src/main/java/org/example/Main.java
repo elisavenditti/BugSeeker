@@ -170,9 +170,9 @@ public class Main {
                     if (isReleaseContainedIn(release, i.injectedVersion, i.fixVersion, false)) {
                         for (Commit com : commitId) {
 
-                            if (isReleaseContainedIn(com.release, release.next(), i.fixVersion, true)) {
-                                if (com.changedFiles != null && com.changedFiles.size() > 0)
-                                    release.buggyFiles.addAll(com.changedFiles);
+                            if (isReleaseContainedIn(com.getRelease(), release.next(), i.fixVersion, true)) {
+                                if (com.getChangedFiles() != null && com.getChangedFiles().size() > 0)
+                                    release.buggyFiles.addAll(com.getChangedFiles());
                             }
 
 
