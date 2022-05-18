@@ -47,7 +47,7 @@ public class Weka {
     private ArrayList<ArrayList<Object>> row;
     private String projName;
 
-    public void createArff(int nRelease, Boolean syncope) throws IOException {
+    public void createArff(int nRelease, Boolean syncope) {
         String trainingName;
         String format = ".xlsx";
         String testNameAdd = "-testing";
@@ -86,48 +86,49 @@ public class Weka {
 
         for(String path: csvNames){
 
-            FileInputStream inputStream = new FileInputStream(path);
+            try(FileInputStream inputStream = new FileInputStream(path)) {
+                Workbook workbook = new XSSFWorkbook(inputStream);
+                Sheet firstSheet = workbook.getSheetAt(0);
+                Iterator<Row> iterator = firstSheet.iterator();
+                String content = header+"@DATA\n";
+                boolean first = true;
+                while (iterator.hasNext()) {
+                    Row nextRow = iterator.next();
+                    if (first){
+                        first=false;
+                        continue;
+                    }
 
+                    double sizeCell = nextRow.getCell(2).getNumericCellValue();
+                    double locTouchedCell = nextRow.getCell(3).getNumericCellValue();
+                    double nRevCell = nextRow.getCell(4).getNumericCellValue();
+                    double nAuthorsCell = nextRow.getCell(5).getNumericCellValue();
+                    double locAddedCell = nextRow.getCell(6).getNumericCellValue();
+                    double maxLocAddedCell = nextRow.getCell(7).getNumericCellValue();
+                    double avgLocAddedCell = nextRow.getCell(8).getNumericCellValue();
+                    double chgSetSizeCell = nextRow.getCell(9).getNumericCellValue();
+                    double maxChgSetSizeCell = nextRow.getCell(10).getNumericCellValue();
+                    double avgChgSetSizeCell = nextRow.getCell(11).getNumericCellValue();
+                    String bugCell = nextRow.getCell(12).getStringCellValue();
 
-            Workbook workbook = new XSSFWorkbook(inputStream);
-            Sheet firstSheet = workbook.getSheetAt(0);
-            Iterator<Row> iterator = firstSheet.iterator();
-            String content = header+"@DATA\n";
-            boolean first = true;
-            while (iterator.hasNext()) {
-                Row nextRow = iterator.next();
-                if (first){
-                    first=false;
-                    continue;
+                    content = content + sizeCell + ","+ locTouchedCell + ","+ nRevCell + ","+ nAuthorsCell +
+                            ","+ locAddedCell + ","+ maxLocAddedCell + ","+ avgLocAddedCell + ","
+                            + chgSetSizeCell + ","+ maxChgSetSizeCell + ","+ avgChgSetSizeCell + ","+ bugCell + "\n";
                 }
 
-                double sizeCell = nextRow.getCell(2).getNumericCellValue();
-                double locTouchedCell = nextRow.getCell(3).getNumericCellValue();
-                double nRevCell = nextRow.getCell(4).getNumericCellValue();
-                double nAuthorsCell = nextRow.getCell(5).getNumericCellValue();
-                double locAddedCell = nextRow.getCell(6).getNumericCellValue();
-                double maxLocAddedCell = nextRow.getCell(7).getNumericCellValue();
-                double avgLocAddedCell = nextRow.getCell(8).getNumericCellValue();
-                double chgSetSizeCell = nextRow.getCell(9).getNumericCellValue();
-                double maxChgSetSizeCell = nextRow.getCell(10).getNumericCellValue();
-                double avgChgSetSizeCell = nextRow.getCell(11).getNumericCellValue();
-                String bugCell = nextRow.getCell(12).getStringCellValue();
+                String filePath = path.substring(0, path.length()-4)+"arff";
+                File file = new File(filePath);
+                BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                bw.write(content);
+                bw.close();
 
-                content = content + sizeCell + ","+ locTouchedCell + ","+ nRevCell + ","+ nAuthorsCell +
-                        ","+ locAddedCell + ","+ maxLocAddedCell + ","+ avgLocAddedCell + ","
-                        + chgSetSizeCell + ","+ maxChgSetSizeCell + ","+ avgChgSetSizeCell + ","+ bugCell + "\n";
+
+
+                workbook.close();
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
-
-            String filePath = path.substring(0, path.length()-4)+"arff";
-            File file = new File(filePath);
-            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            bw.write(content);
-            bw.close();
-
-
-
-            workbook.close();
-            inputStream.close();
 
         }
     }
@@ -230,10 +231,12 @@ public class Weka {
 
         }
 
-        FileOutputStream outputStream = new FileOutputStream(excelName);
-        workbook.write(outputStream);
-        workbook.close();
-        outputStream.close();
+        try(FileOutputStream outputStream = new FileOutputStream(excelName)) {
+            workbook.write(outputStream);
+            workbook.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }

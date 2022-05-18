@@ -62,7 +62,7 @@ public class Proportion {
                     ovIndex = iss.openingVersion.index;
 
                     if (fvIndex == ovIndex) denominatore = 1;
-                    else denominatore = fvIndex - ovIndex;
+                    else denominatore = (float) fvIndex - ovIndex;
                     p = (fvIndex - ivIndex) / denominatore;
                     incrementalMean = incrementalMean + (p - incrementalMean) / count;
                 }
@@ -134,7 +134,7 @@ public float globalP(ArrayList<Issue> allIssues){
             ovIndex = iss.openingVersion.index;
 
             if (fvIndex == ovIndex) denominatore = 1;       // per sicurezza
-            else denominatore = fvIndex - ovIndex;
+            else denominatore = (float)  fvIndex - ovIndex;
             p = (fvIndex - ivIndex) / denominatore;
             incrementalMean = incrementalMean + (p - incrementalMean) / count;
         }

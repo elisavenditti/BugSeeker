@@ -176,10 +176,12 @@ public class Excel {
         System.out.println("[training "+testReleaseIndex+"] excel completato");
 
 
-        FileOutputStream outputStream = new FileOutputStream(excelName);
-        workbook.write(outputStream);
-        workbook.close();
-        outputStream.close();
+        try(FileOutputStream outputStream = new FileOutputStream(excelName)) {
+            workbook.write(outputStream);
+            workbook.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /*public String populate(String projectName) throws IOException {

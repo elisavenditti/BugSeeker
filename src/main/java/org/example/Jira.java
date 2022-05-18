@@ -68,7 +68,7 @@ public class Jira {
     public static ArrayList<Release> getHalfReleases(ArrayList<Release> allRelease){
         int size, halfSize, i;
         size = allRelease.size();
-        halfSize = (int) floor(size/2);
+        halfSize = (int) floor(size/(double)2);
         ArrayList<Release> halfRelease = new ArrayList<>();
 
         i=0;

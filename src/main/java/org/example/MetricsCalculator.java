@@ -41,8 +41,11 @@ public class MetricsCalculator {
 
                 reader = new BufferedReader(new FileReader(f.pathname));
                 int lines = 0;
-                while (reader.readLine() != null) {
-                    lines++;
+                boolean noExit = true;
+                while (noExit) {
+                    String s = reader.readLine();
+                    if(s == null) noExit = false;
+                    else lines++;
                 }
                 reader.close();
                 f.loc = lines;

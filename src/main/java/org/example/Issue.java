@@ -91,7 +91,7 @@ public class Issue {
 
         if(this.jiraAffectedVersions.size()!=0) {
             this.injectedVersion = this.getMinRelease(jiraAffectedVersions);
-            this.injectedDate = this.injectedVersion.releaseDate;
+            if(this.injectedVersion!=null) this.injectedDate = this.injectedVersion.releaseDate;
         }
         else {
             this.injectedVersion = null;

@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
+import static java.lang.Math.floor;
 import static org.example.Jira.*;
 
 public class Main {
@@ -192,6 +193,8 @@ public class Main {
         Weka w = new Weka();
         w.createArff(halfRelease.size(), syncope);
         w.walkforward(halfRelease.size(), syncope);
+
+
     }
 
 
