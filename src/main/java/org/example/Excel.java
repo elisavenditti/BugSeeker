@@ -25,7 +25,7 @@ public class Excel {
         ArrayList<MyFile> resultList = new ArrayList<>();
 
         File[] fList = rootDir.listFiles();
-        if(fList == null) return null;
+        if(fList == null) new ArrayList<>();
         for (File file : fList) {
             if (file.isFile() && file.getName().contains(".java")) {
                 MyFile myFile = new MyFile(file.getAbsolutePath());
@@ -97,14 +97,14 @@ public class Excel {
                 int avgChgSetSize = 0;
                 int maxLocAdded = 0;
                 int maxChgSetSize = 0;
-                if (myFile.locAddedList.size() != 0) {
+                if (!myFile.locAddedList.isEmpty()) {
                     for (Integer add : myFile.locAddedList) {
                         if (add > maxLocAdded) maxLocAdded = add;
                         avgLocAdded = avgLocAdded + add;
                     }
                     avgLocAdded = avgLocAdded / (myFile.locAddedList.size());
                 }
-                if (myFile.chgSetSizeList.size() != 0) {
+                if (!myFile.chgSetSizeList.isEmpty()) {
                     for (Integer add : myFile.chgSetSizeList) {
                         if (add > maxChgSetSize) maxChgSetSize = add;
                         avgChgSetSize = avgChgSetSize + add;
@@ -148,7 +148,7 @@ public class Excel {
             c++;
         }
 
-        System.out.println("[training "+walkforwardStep+"] excel completato");
+        System.err.println("[training "+walkforwardStep+"] excel completato");
 
 
         try(FileOutputStream outputStream = new FileOutputStream(excelName)) {
@@ -174,7 +174,7 @@ public class Excel {
         insertCells(sheet, rowCount, halfRelease.get(testReleaseIndex));
 
 
-        System.out.println("[training "+testReleaseIndex+"] excel completato");
+        System.err.println("[training "+testReleaseIndex+"] excel completato");
 
 
         try(FileOutputStream outputStream = new FileOutputStream(excelName)) {

@@ -81,7 +81,7 @@ public class Commit {
         return changedFiles;
     }
 
-    public void setChangedFiles(ArrayList<MyFile> changedFiles) {
+    public void setChangedFiles(List<MyFile> changedFiles) {
         this.changedFiles = changedFiles;
     }
 
