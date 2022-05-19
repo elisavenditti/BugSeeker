@@ -4,10 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="deleting issue #1">
+    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="deleting issue #2">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Commit.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Commit.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -198,7 +196,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652894161981</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="deleting issue #2">
+      <created>1652894593013</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1652894593013</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -223,7 +228,8 @@
     <MESSAGE value="bug excel riga 153" />
     <MESSAGE value="bug risolti" />
     <MESSAGE value="deleting issue #1" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleting issue #1" />
+    <MESSAGE value="deleting issue #2" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleting issue #2" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
