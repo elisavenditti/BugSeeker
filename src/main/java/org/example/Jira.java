@@ -143,11 +143,11 @@ public class Jira {
                 int ovIndex;
                 int fvIndex;
                 if (issue.getInjectedVersion() != null)
-                    ivIndex = issue.getInjectedVersion().index;
+                    ivIndex = issue.getInjectedVersion().getIndex();
                 else
                     ivIndex = -1;
-                ovIndex = issue.getOpeningVersion().index;
-                fvIndex = issue.getFixVersion().index;
+                ovIndex = issue.getOpeningVersion().getIndex();
+                fvIndex = issue.getFixVersion().getIndex();
 
                 // discard issues with OV and FV inconsistent (OV>=FV) and issues pre-release (IV=OV=FV)
                 if(!((ivIndex==ovIndex)&&(ovIndex==fvIndex)) && ovIndex < fvIndex)

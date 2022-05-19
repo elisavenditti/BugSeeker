@@ -14,7 +14,7 @@ public class MetricsCalculator {
         int releaseIndex = commit.getReleaseIndex();
         for(MyFile file : commit.getChangedFiles()){
             Release rel = Main.getHalfRelease().get(releaseIndex);
-            for(MyFile file2: rel.files){
+            for(MyFile file2: rel.getFiles()){
                 String name = file2.getPathname().substring(Main.getRootLen());
                 if(file.getPathname().equalsIgnoreCase(name)){
                     file2.setnRevisions(file2.getnRevisions() + 1);
@@ -38,7 +38,7 @@ public class MetricsCalculator {
         BufferedReader reader;
         try {
 
-            for(MyFile f: release.files) {
+            for(MyFile f: release.getFiles()) {
 
                 reader = new BufferedReader(new FileReader(f.getPathname()));
                 int lines = 0;

@@ -58,11 +58,11 @@ public class Git {
         int i=0;
         for(Release r: Main.getHalfRelease()) {
             Logger logger = Logger.getLogger(Issue.class.getName());
-            logger.log(Level.INFO, i+") checkout to "+r.name+"++++++++++++++++++++++++++++++++++");
+            logger.log(Level.INFO, i+") checkout to "+r.getName()+"++++++++++++++++++++++++++++++++++");
 
-            checkoutTo(this.releaseAddingName + "-" + r.name);
+            checkoutTo(this.releaseAddingName + "-" + r.getName());
             logger.log(Level.INFO, "inizio a cercare i file");
-            r.files = excel.listOfJavaFile(projDirName);
+            r.setFiles(excel.listOfJavaFile(projDirName));
             logger.log(Level.INFO, "ho finito di cercare i file");
             i++;
             setLoc(r);

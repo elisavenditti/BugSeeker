@@ -90,10 +90,10 @@ public class Main {
             ArrayList<Issue> valuableIssue = new ArrayList<>();
             for (Issue i : allIssues) {
                 // for testing set delete issue with IV greater than releases in the first half
-                if(testing && i.getInjectedVersion().index<=halfRelease.size()-1) valuableIssue.add(i);
+                if(testing && i.getInjectedVersion().getIndex()<=halfRelease.size()-1) valuableIssue.add(i);
 
                 // for training set delete issue with FV > trainingBoundary (I CAN'T SEE FUTURE INFORMATION)
-                if (!testing && i.getFixVersion().index <= trainingBoundary) valuableIssue.add(i);
+                if (!testing && i.getFixVersion().getIndex() <= trainingBoundary) valuableIssue.add(i);
 
             }
 
@@ -112,7 +112,7 @@ public class Main {
 
                             if ((isReleaseContainedIn(com.getRelease(), release.next(), i.getFixVersion(), true)) &&
                                     (com.getChangedFiles() != null && !com.getChangedFiles().isEmpty()))
-                                    release.buggyFiles.addAll(com.getChangedFiles());
+                                    release.addAllBuggyFiles(com.getChangedFiles());
                         }
                     }
                 }
@@ -144,10 +144,10 @@ public class Main {
         int lastIndex;
         lastIndex = allRelease.size()-1;
         for(Release r: allRelease){
-            thisIndex = r.index;
+            thisIndex = r.getIndex();
             nextIndex = thisIndex+1;
             if(thisIndex == lastIndex ||
-                    !allRelease.get(thisIndex).releaseDate.equals(allRelease.get(nextIndex).releaseDate))
+                    !allRelease.get(thisIndex).getReleaseDate().equals(allRelease.get(nextIndex).getReleaseDate()))
                 uniqueReleaseList.add(allRelease.get(thisIndex));
 
         }
@@ -157,7 +157,7 @@ public class Main {
     public static List<Release> indexOrderedReleases(List<Release> releaseList){
         int z=0;
         for(Release r: releaseList){
-            r.index=z;
+            r.setIndex(z);
             z++;
         }
         return releaseList;
@@ -170,7 +170,7 @@ public class Main {
             else{
                 int count=0;
                 while(count< orderedRelease.size()){
-                    if((orderedRelease.get(count).releaseDate).after(rr.releaseDate)) break;
+                    if((orderedRelease.get(count).getReleaseDate()).after(rr.getReleaseDate())) break;
                     count++;
                 }
 
@@ -186,9 +186,9 @@ public class Main {
     }
 
     private static boolean isReleaseContainedIn(Release currRelease, Release iv, Release  fv, boolean extremeIncluded){
-        int ivIndex = iv.index;
-        int fvIndex = fv.index;
-        int i= currRelease.index;
+        int ivIndex = iv.getIndex();
+        int fvIndex = fv.getIndex();
+        int i= currRelease.getIndex();
         boolean contained = false;
 
         if((extremeIncluded && i>=ivIndex && i<=fvIndex) || (!extremeIncluded && i>=ivIndex && i<fvIndex))

@@ -42,7 +42,7 @@ public class Proportion {
             issuePerRelease.add(new ArrayList<>());
         }
         for(Issue i: allIssues){
-            issuePerRelease.get(i.getFixVersion().index).add(i);
+            issuePerRelease.get(i.getFixVersion().getIndex()).add(i);
         }
 
 
@@ -64,9 +64,9 @@ public class Proportion {
                     if (iss.getInjectedVersion() == null) continue;
                     count++;
 
-                    ivIndex = iss.getInjectedVersion().index;
-                    fvIndex = iss.getFixVersion().index;
-                    ovIndex = iss.getOpeningVersion().index;
+                    ivIndex = iss.getInjectedVersion().getIndex();
+                    fvIndex = iss.getFixVersion().getIndex();
+                    ovIndex = iss.getOpeningVersion().getIndex();
 
                     if (fvIndex == ovIndex) denominatore = 1;
                     else denominatore = (float) fvIndex - ovIndex;
@@ -81,10 +81,11 @@ public class Proportion {
 
         }
         if(synBook) {
-            for(int pp: countNotNullIVInAllRelease) System.out.println(pp);
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            for(int pp: countNotNullIVInAllRelease) logger.log(Level.INFO, String.valueOf(pp));
             String out1 = "[Synbook] "+pinc.get(pinc.size()-1);
             String out2 = count+" iv validi";
-            Logger logger = Logger.getLogger(Issue.class.getName());
+
             logger.log(Level.INFO, out1);
             logger.log(Level.INFO, out2);
         }
@@ -147,9 +148,9 @@ public float globalP(List<Issue> allIssues){
             if (iss.getInjectedVersion() == null) continue;
             count++;
 
-            ivIndex = iss.getInjectedVersion().index;
-            fvIndex = iss.getFixVersion().index;
-            ovIndex = iss.getOpeningVersion().index;
+            ivIndex = iss.getInjectedVersion().getIndex();
+            fvIndex = iss.getFixVersion().getIndex();
+            ovIndex = iss.getOpeningVersion().getIndex();
 
             if (fvIndex == ovIndex) denominatore = 1;       // per sicurezza
             else denominatore = (float)  fvIndex - ovIndex;
@@ -178,8 +179,8 @@ public float globalP(List<Issue> allIssues){
             if(iss.getToLabel()) {
 
 
-                fvIndex = iss.getFixVersion().index;
-                ovIndex = iss.getOpeningVersion().index;
+                fvIndex = iss.getFixVersion().getIndex();
+                ovIndex = iss.getOpeningVersion().getIndex();
 
                 int diff;
                 if (fvIndex==ovIndex)       // per sicurezza

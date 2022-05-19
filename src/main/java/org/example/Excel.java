@@ -41,7 +41,7 @@ public class Excel {
 
     private int insertCells(XSSFSheet sheet, int rowCount, Release release){
         String name;
-        for (MyFile myFile : release.files) {
+        for (MyFile myFile : release.getFiles()) {
             name = myFile.getPathname();
             Row row = sheet.createRow(rowCount);
 
@@ -78,12 +78,12 @@ public class Excel {
                 bugCell.setCellValue("Buggy");
             }else {
 
-                releaseCell.setCellValue(release.name);
+                releaseCell.setCellValue(release.getName());
                 shortName = name.substring(rootLen, j);
                 nameCell.setCellValue(shortName);
 
                 boolean bug = false;
-                for (MyFile buggyFile : release.buggyFiles) {
+                for (MyFile buggyFile : release.getBuggyFiles()) {
                     if (buggyFile.getPathname().equalsIgnoreCase(shortName)) {
                         bug = true;
                         break;

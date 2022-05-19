@@ -40,7 +40,7 @@ public class Issue {
         this.injectedVersion = injectedVersion;
     }
 
-    public Boolean getToLabel() {
+    public boolean getToLabel() {
         return toLabel;
     }
 
@@ -49,7 +49,7 @@ public class Issue {
     private Release getReleaseFromDate(Date date){
         int i=0;
         for(Release r: Main.getAllRelease()){
-            if(date.before(r.releaseDate)) break;
+            if(date.before(r.getReleaseDate())) break;
             i++;
         }
         int size = Main.getAllRelease().size();
@@ -64,7 +64,7 @@ public class Issue {
         for(Release r: Main.getAllRelease()){             // il for esterno fa in modo che la lista venga
                                                 // costruita in ordine cronologico
             for(String relString: stringArray){
-                if(r.name.equalsIgnoreCase(relString))
+                if(r.getName().equalsIgnoreCase(relString))
                     releaseArray.add(r);
             }
         }
@@ -72,7 +72,7 @@ public class Issue {
     }
 
     private void consistencyCheck(){
-        if(this.injectedVersion != null && this.openingVersion !=null && this.injectedVersion.index > this.openingVersion.index) {
+        if(this.injectedVersion != null && this.openingVersion !=null && this.injectedVersion.getIndex() > this.openingVersion.getIndex()) {
                 this.injectedVersion = null;
                 this.toLabel = true;
             }
@@ -81,7 +81,7 @@ public class Issue {
     private Release getMinRelease(List<Release> releases){
         Release ret = null;
         for(Release r: releases){
-            if(ret==null || r.releaseDate.before(ret.releaseDate)) ret=r;
+            if(ret==null || r.getReleaseDate().before(ret.getReleaseDate())) ret=r;
         }
         return ret;
     }

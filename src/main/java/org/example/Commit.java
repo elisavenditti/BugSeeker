@@ -20,7 +20,7 @@ public class Commit {
     private Release getReleaseFromDate(){
         int i=0;
         for(Release r: Main.getAllRelease()){
-            if(this.commitDate.before(r.releaseDate)) break;
+            if(this.commitDate.before(r.getReleaseDate())) break;
             i++;
         }
         int size = Main.getAllRelease().size();

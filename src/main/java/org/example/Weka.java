@@ -23,6 +23,8 @@ import weka.filters.supervised.instance.SpreadSubsample;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Weka {
@@ -41,12 +43,12 @@ public class Weka {
     private ArrayList<String> arffTesting;
     private ArrayList<ArrayList<Object>> row;
     private String projName;
-
-    public void createArff(int nRelease, Boolean syncope) {
+    private static final String ROOTPATH = "C:\\Users\\Elisa Venditti\\Desktop\\ISW2\\BugSeeker\\";
+    public void createArff(int nRelease, boolean syncope) {
         String trainingName;
         String format = ".xlsx";
         String testNameAdd = "-testing";
-        String rootPath = "C:\\Users\\Elisa Venditti\\Desktop\\ISW2\\BugSeeker\\";
+        String rootPath = ROOTPATH;
         ArrayList<String> csvNames = new ArrayList<>();
         arffTraining = new ArrayList<>();
         arffTesting = new ArrayList<>();
@@ -106,9 +108,28 @@ public class Weka {
                     double avgChgSetSizeCell = nextRow.getCell(11).getNumericCellValue();
                     String bugCell = nextRow.getCell(12).getStringCellValue();
 
-                    content = content + sizeCell + ","+ locTouchedCell + ","+ nRevCell + ","+ nAuthorsCell +
-                            ","+ locAddedCell + ","+ maxLocAddedCell + ","+ avgLocAddedCell + ","
-                            + chgSetSizeCell + ","+ maxChgSetSizeCell + ","+ avgChgSetSizeCell + ","+ bugCell + "\n";
+                    ArrayList<String> arrayOfStrings = new ArrayList<>();
+                    arrayOfStrings.add(content);
+                    arrayOfStrings.add(String.valueOf(sizeCell));
+                    arrayOfStrings.add(String.valueOf(locTouchedCell));
+                    arrayOfStrings.add(String.valueOf(nRevCell));
+                    arrayOfStrings.add(String.valueOf(nAuthorsCell));
+                    arrayOfStrings.add(String.valueOf(locAddedCell));
+                    arrayOfStrings.add(String.valueOf(maxLocAddedCell));
+                    arrayOfStrings.add(String.valueOf(avgLocAddedCell));
+                    arrayOfStrings.add(String.valueOf(chgSetSizeCell));
+                    arrayOfStrings.add(String.valueOf(maxChgSetSizeCell));
+                    arrayOfStrings.add(String.valueOf(avgChgSetSizeCell));
+                    arrayOfStrings.add(bugCell);
+                    StringBuilder bld = new StringBuilder();
+                    for (int i = 0; i < arrayOfStrings.size(); i++) {
+                        bld.append(arrayOfStrings.get(i));
+                        if(i==arrayOfStrings.size()-1) bld.append("\n");
+                        else if(i!=0) bld.append(",");
+                    }
+                    String str = bld.toString();
+
+                    content = str;
                 }
 
                 String filePath = path.substring(0, path.length()-4)+"arff";
@@ -122,7 +143,8 @@ public class Weka {
                 workbook.close();
 
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Logger logger = Logger.getLogger(Weka.class.getName());
+                logger.log(Level.INFO, e.getMessage());
             }
 
         }
@@ -168,7 +190,17 @@ public class Weka {
         performance.add(projName);
         String trainingReleases = "";
         for(int index=0; index<=trainingIndex; index++){
-            trainingReleases = trainingReleases +", " + Main.getHalfRelease().get(index).name;
+
+            ArrayList<String> arrayOfStrings = new ArrayList<>();
+            arrayOfStrings.add(trainingReleases);
+            arrayOfStrings.add(", ");
+            arrayOfStrings.add(Main.getHalfRelease().get(index).getName());
+            StringBuilder bld = new StringBuilder();
+            for (int i = 0; i < arrayOfStrings.size(); i++) {
+                bld.append(arrayOfStrings.get(i));
+            }
+            String str = bld.toString();
+            trainingReleases = str;
         }
         performance.add(trainingReleases);
         performance.add(classifier);
@@ -183,7 +215,7 @@ public class Weka {
         row.add(performance);
     }
 
-    private void setUp(Boolean syncope){
+    private void setUp(boolean syncope){
         row = new ArrayList<>();
         ArrayList<Object> firstElement = new ArrayList<>();
         firstElement.add("Dataset");
@@ -206,14 +238,14 @@ public class Weka {
 
         for (ArrayList<Object> r: row) {
 
-            Row row = sheet.createRow(rowCount);
-            Cell datasetCell = row.createCell(0);
-            Cell trainingReleaseCell = row.createCell(1);
-            Cell classifierCell = row.createCell(2);
-            Cell precisionCell = row.createCell(3);
-            Cell recallCell = row.createCell(4);
-            Cell aucCell = row.createCell(5);
-            Cell kappaCell = row.createCell(6);
+            Row excelRow = sheet.createRow(rowCount);
+            Cell datasetCell = excelRow.createCell(0);
+            Cell trainingReleaseCell = excelRow.createCell(1);
+            Cell classifierCell = excelRow.createCell(2);
+            Cell precisionCell = excelRow.createCell(3);
+            Cell recallCell = excelRow.createCell(4);
+            Cell aucCell = excelRow.createCell(5);
+            Cell kappaCell = excelRow.createCell(6);
 
             datasetCell.setCellValue((String) r.get(0));
             trainingReleaseCell.setCellValue((String) r.get(1));
@@ -230,7 +262,8 @@ public class Weka {
             workbook.write(outputStream);
             workbook.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Logger logger = Logger.getLogger(Weka.class.getName());
+            logger.log(Level.INFO, e.getMessage());
         }
 
 
@@ -242,33 +275,20 @@ public class Weka {
         for(int i=0; i<numIterations; i++){
             try {
                 walkforwardStep(arffTraining.get(i), arffTesting.get(i), i);
-                System.out.println("[walkforward step] "+i);
+                Logger logger = Logger.getLogger(Weka.class.getName());
+                logger.log(Level.INFO, "[walkforward step] "+i);
             } catch (Exception e) {
-                throw new RuntimeException(e);
+                Logger logger = Logger.getLogger(Weka.class.getName());
+                logger.log(Level.INFO, e.getMessage());
             }
         }
 
         try {
             report();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Logger logger = Logger.getLogger(Weka.class.getName());
+            logger.log(Level.INFO, e.getMessage());
         }
-
-//        double precisionMean=0,recallMean=0, aucMean=0, kappaMean=0;
-//        for(ArrayList<Double> singlePerformance: performances){
-//            precisionMean = precisionMean+singlePerformance.get(0);
-//            recallMean = recallMean+singlePerformance.get(1);
-//            aucMean = aucMean+singlePerformance.get(2);
-//            kappaMean = kappaMean+singlePerformance.get(3);
-//        }
-//        precisionMean = precisionMean/4;
-//        recallMean = recallMean/4;
-//        aucMean = aucMean/4;
-//        kappaMean = kappaMean/4;
-//        System.out.println("PRECISIONE: " + precisionMean + "\nRECALL: " + recallMean +
-//                "\nACCURATEZZA: " + aucMean + "\nKAPPA: " + kappaMean);
-
-
     }
 
 
@@ -348,13 +368,13 @@ public class Weka {
 
 
 
-        RandomForest RandomForest = new RandomForest();
+        RandomForest randomForest = new RandomForest();
 
-        RandomForest.buildClassifier(training);
+        randomForest.buildClassifier(training);
 
 
         Evaluation eval = new Evaluation(testing);
-        eval.evaluateModel(RandomForest, testing); //not sampled
+        eval.evaluateModel(randomForest, testing); //not sampled
 
 
 
@@ -365,8 +385,8 @@ public class Weka {
         FilteredClassifier fc = new FilteredClassifier();
 
 
-        RandomForest RandomForest2 = new RandomForest();
-        fc.setClassifier(RandomForest2);
+        RandomForest randomForest2 = new RandomForest();
+        fc.setClassifier(randomForest2);
 
 				/*fc.setFilter(resample);
 				eventual parameters setting omitted
