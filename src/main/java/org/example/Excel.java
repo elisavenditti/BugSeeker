@@ -42,7 +42,7 @@ public class Excel {
     private int insertCells(XSSFSheet sheet, int rowCount, Release release){
         String name;
         for (MyFile myFile : release.files) {
-            name = myFile.pathname;
+            name = myFile.getPathname();
             Row row = sheet.createRow(rowCount);
 
             int j = name.length();
@@ -84,7 +84,7 @@ public class Excel {
 
                 boolean bug = false;
                 for (MyFile buggyFile : release.buggyFiles) {
-                    if (buggyFile.pathname.equalsIgnoreCase(shortName)) {
+                    if (buggyFile.getPathname().equalsIgnoreCase(shortName)) {
                         bug = true;
                         break;
                     }
@@ -98,30 +98,30 @@ public class Excel {
                 int avgChgSetSize = 0;
                 int maxLocAdded = 0;
                 int maxChgSetSize = 0;
-                if (!myFile.locAddedList.isEmpty()) {
-                    for (Integer add : myFile.locAddedList) {
+                if (!myFile.getLocAddedList().isEmpty()) {
+                    for (Integer add : myFile.getLocAddedList()) {
                         if (add > maxLocAdded) maxLocAdded = add;
                         avgLocAdded = avgLocAdded + add;
                     }
-                    avgLocAdded = avgLocAdded / (myFile.locAddedList.size());
+                    avgLocAdded = avgLocAdded / (myFile.getLocAddedList().size());
                 }
-                if (!myFile.chgSetSizeList.isEmpty()) {
-                    for (Integer add : myFile.chgSetSizeList) {
+                if (!myFile.getChgSetSizeList().isEmpty()) {
+                    for (Integer add : myFile.getChgSetSizeList()) {
                         if (add > maxChgSetSize) maxChgSetSize = add;
                         avgChgSetSize = avgChgSetSize + add;
                     }
-                    avgChgSetSize = avgChgSetSize / (myFile.chgSetSizeList.size());
+                    avgChgSetSize = avgChgSetSize / (myFile.getChgSetSizeList().size());
                 }
 
 
-                sizeCell.setCellValue(myFile.loc);
-                locTouchedCell.setCellValue(myFile.locTouched);
-                nRevCell.setCellValue(myFile.nRevisions);
-                nAuthorsCell.setCellValue(myFile.nAuthors);
-                locAddedCell.setCellValue(myFile.locAdded);
+                sizeCell.setCellValue(myFile.getLoc());
+                locTouchedCell.setCellValue(myFile.getLocTouched());
+                nRevCell.setCellValue(myFile.getnRevisions());
+                nAuthorsCell.setCellValue(myFile.getnAuthors());
+                locAddedCell.setCellValue(myFile.getLocAdded());
                 maxLocAddedCell.setCellValue(maxLocAdded);
                 avgLocAddedCell.setCellValue(avgLocAdded);
-                chgSetSizeCell.setCellValue(myFile.chgSetSize);
+                chgSetSizeCell.setCellValue(myFile.getChgSetSize());
                 maxChgSetSizeCell.setCellValue(maxChgSetSize);
                 avgChgSetSizeCell.setCellValue(avgChgSetSize);
                 bugCell.setCellValue(buggy);

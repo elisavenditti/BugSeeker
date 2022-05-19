@@ -3,24 +3,28 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class MetricsCalculator {
+    private MetricsCalculator(){}
 
     public static void setMetrics(Commit commit){
         int releaseIndex = commit.getReleaseIndex();
         for(MyFile file : commit.getChangedFiles()){
             Release rel = Main.getHalfRelease().get(releaseIndex);
             for(MyFile file2: rel.files){
-                String name = file2.pathname.substring(Main.getRootLen());
-                if(file.pathname.equalsIgnoreCase(name)){
-                    file2.nRevisions =  file2.nRevisions + 1;
-                    file2.authors.add(commit.getAuthor());
-                    file2.locTouched = file2.locTouched + file.locTouched;
-                    file2.locAddedList.add(file.locAdded);
-                    file2.locAdded = file2.locAdded + file.locAdded;
-                    file2.chgSetSize = file2.chgSetSize + commit.getChangedFiles().size() - 1;
-                    file2.chgSetSizeList.add(commit.getChangedFiles().size() - 1);
+                String name = file2.getPathname().substring(Main.getRootLen());
+                if(file.getPathname().equalsIgnoreCase(name)){
+                    file2.setnRevisions(file2.getnRevisions() + 1);
+                    file2.getAuthors().add(commit.getAuthor());
+                    file2.setLocTouched(file2.getLocTouched() + file.getLocTouched());
+
+                    file2.addItemInLocAddedList(file.getLocAdded());
+                    file2.setLocAdded(file2.getLocAdded() + file.getLocAdded());
+                    file2.setChgSetSize(file2.getChgSetSize() + commit.getChangedFiles().size() - 1);
+                    file2.addItemInChgSetSizeList(commit.getChangedFiles().size() - 1);
                     break;
                 }
             }
@@ -36,7 +40,7 @@ public class MetricsCalculator {
 
             for(MyFile f: release.files) {
 
-                reader = new BufferedReader(new FileReader(f.pathname));
+                reader = new BufferedReader(new FileReader(f.getPathname()));
                 int lines = 0;
                 boolean noExit = true;
                 while (noExit) {
@@ -45,10 +49,11 @@ public class MetricsCalculator {
                     else lines++;
                 }
                 reader.close();
-                f.loc = lines;
+                f.setLoc(lines);
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            logger.log(Level.INFO, e.getMessage());
         }
     }
 }

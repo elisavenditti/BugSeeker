@@ -1,8 +1,8 @@
 package org.example;
 
 public class MyException extends Exception{
-    private String message;
-
+    private final String message;
+    @Override
     public String getMessage(){
         return  this.message;
     }

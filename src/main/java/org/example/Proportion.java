@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.example.Jira.getAllRelease;
 import static org.example.Jira.getIssueIdOfProject;
@@ -12,7 +14,7 @@ import static org.example.Main.*;
 public class Proportion {
     private static ArrayList<String> projects;
     private static List<Release> allReleaseToRestore;
-    private static ArrayList<Integer> countNotNullIVInAllRelease;
+    private ArrayList<Integer> countNotNullIVInAllRelease;
 
 
     public static void setUpColdStartProjects(){
@@ -31,7 +33,7 @@ public class Proportion {
     }
 
 
-    public ArrayList<Float> incremental(List<Issue> allIssues, Boolean synBook){
+    public List<Float> incremental(List<Issue> allIssues, boolean synBook){
         // synBook is true if is SYNCOPE or BOOKKEEPER
 
         // entry of array is a list of issue fixed in the i-th release
@@ -46,13 +48,17 @@ public class Proportion {
 
         ArrayList<Float> pinc = new ArrayList<>();
         ArrayList<Integer> countNotNull = new ArrayList<>();
-        int count = 0, ivIndex, ovIndex, fvIndex;
-        float p, denominatore;
+        int count = 0;
+        int ivIndex;
+        int ovIndex;
+        int fvIndex;
+        float p;
+        float denominatore;
         float incrementalMean = 0;
 
         for(ArrayList<Issue> issueInRelease: issuePerRelease) {
 
-            if(issueInRelease.size()!=0) {
+            if(!issueInRelease.isEmpty()) {
                 // calculate p in this release (with all issues fixed here)
                 for (Issue iss : issueInRelease) {
                     if (iss.getInjectedVersion() == null) continue;
@@ -76,8 +82,11 @@ public class Proportion {
         }
         if(synBook) {
             for(int pp: countNotNullIVInAllRelease) System.out.println(pp);
-            System.out.println("[Synbook] "+pinc.get(pinc.size()-1));
-            System.out.println(count+" iv validi");
+            String out1 = "[Synbook] "+pinc.get(pinc.size()-1);
+            String out2 = count+" iv validi";
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            logger.log(Level.INFO, out1);
+            logger.log(Level.INFO, out2);
         }
         return pinc;
     }
@@ -96,12 +105,16 @@ public class Proportion {
                 orderRelease();
                 deleteDuplicate();
                 List<Issue> allIssues  = getIssueIdOfProject(projName);
-                ArrayList<Float> pinc = incremental(allIssues, false);
+                List<Float> pinc = incremental(allIssues, false);
                 int lastIndex = pinc.size()-1;
                 pColdStartList.add(pinc.get(lastIndex));
-                System.out.println("["+projName+"]: "+pinc.get(lastIndex));
+                String out = "["+projName+"]: "+pinc.get(lastIndex);
+                Logger logger = Logger.getLogger(Issue.class.getName());
+                logger.log(Level.INFO, out);
+
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Logger logger = Logger.getLogger(Issue.class.getName());
+                logger.log(Level.INFO, e.getMessage());
             }
         }
 
@@ -120,8 +133,12 @@ public class Proportion {
 
 public float globalP(List<Issue> allIssues){
 
-        int count = 0, ivIndex, ovIndex, fvIndex;
-        float p, denominatore;
+        int count = 0;
+        int ivIndex;
+        int ovIndex;
+        int fvIndex;
+        float p;
+        float denominatore;
         float incrementalMean = 0;
 
         // allIssue contains the issues of the whole project
@@ -146,11 +163,13 @@ public float globalP(List<Issue> allIssues){
     }
 
 
-    public List<Issue> addMissingInjectedVersions(List<Float> p, List<Issue> allIssue, Boolean incremental){
+    public List<Issue> addMissingInjectedVersions(List<Float> p, List<Issue> allIssue, boolean incremental){
         // Boolean incremental true --> the labeling uses an incremental p (es: P[r-1] to label r)
         // Boolean incremental false --> the labeling uses the global p
 
-        int ivIndex, ovIndex, fvIndex;
+        int ivIndex;
+        int ovIndex;
+        int fvIndex;
         float pColdStart = coldStart();
         float pToUse;
 

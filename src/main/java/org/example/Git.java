@@ -156,8 +156,8 @@ public class Git {
                     s = entry.getNewPath().replace("/","\\\\");
 
                 MyFile newFile = new MyFile(s);
-                newFile.locTouched = locTouched;
-                newFile.locAdded = linesAdded;
+                newFile.setLocAdded(locTouched);
+                newFile.setLocAdded(linesAdded);
                 changedFiles.add(newFile);
             }
             return changedFiles;

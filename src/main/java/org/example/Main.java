@@ -1,12 +1,8 @@
 package org.example;
 
-import org.json.JSONException;
-
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
-
 import static org.example.Jira.*;
 
 public class Main {
@@ -66,7 +62,7 @@ public class Main {
         List<Issue> allIssues  = getIssueIdOfProject(projName);
 
         Proportion proportion = new Proportion();
-        ArrayList<Float> pinc = proportion.incremental(allIssues, true);
+        List<Float> pinc = proportion.incremental(allIssues, true);
         allIssues = proportion.addMissingInjectedVersions(pinc, allIssues, true);
 
 
@@ -186,7 +182,7 @@ public class Main {
             }
 
         }
-        allRelease = indexOrderedReleases(orderedRelease);;
+        allRelease = indexOrderedReleases(orderedRelease);
     }
 
     private static boolean isReleaseContainedIn(Release currRelease, Release iv, Release  fv, boolean extremeIncluded){
