@@ -2,6 +2,8 @@ package org.example;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -148,14 +150,15 @@ public class Excel {
             c++;
         }
 
-        System.err.println("[training "+walkforwardStep+"] excel completato");
+        Logger logger = Logger.getLogger(Issue.class.getName());
+        logger.log(Level.INFO, "[training "+walkforwardStep+"] excel completato");
 
 
         try(FileOutputStream outputStream = new FileOutputStream(excelName)) {
             workbook.write(outputStream);
             workbook.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.log(Level.INFO, e.getMessage());
         }
 
     }
@@ -173,41 +176,17 @@ public class Excel {
 
         insertCells(sheet, rowCount, halfRelease.get(testReleaseIndex));
 
-
-        System.err.println("[training "+testReleaseIndex+"] excel completato");
+        Logger logger = Logger.getLogger(Issue.class.getName());
+        logger.log(Level.INFO, "[training "+testReleaseIndex+"] excel completato");
 
 
         try(FileOutputStream outputStream = new FileOutputStream(excelName)) {
             workbook.write(outputStream);
             workbook.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            logger.log(Level.INFO, e.getMessage());
         }
     }
-
-    /*public String populate(String projectName) throws IOException {
-
-        String excelName = projectName.toLowerCase() + walkforwardStep + ".xlsx";
-        XSSFWorkbook workbook;
-        XSSFSheet sheet;
-        int rowCount = 0;
-
-        workbook = new XSSFWorkbook();
-        sheet = workbook.createSheet(projectName + "buggy classes");
-        int c=0;
-        for(Release r: halfRelease){
-            System.out.println(c+"* Popolo celle excel per la release");
-            rowCount = insertCells(sheet, rowCount, r);
-            c++;
-        }
-
-
-        FileOutputStream outputStream = new FileOutputStream(excelName);
-        workbook.write(outputStream);
-        workbook.close();
-        outputStream.close();
-        return excelName;
-    }*/
 
 
 }

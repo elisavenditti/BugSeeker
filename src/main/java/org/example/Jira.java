@@ -6,9 +6,18 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static java.lang.Math.floor;
 
 public class Jira {
+    private static final String FIELD = "field";
+    private Jira() {
+
+    }
+
     private static String readAll(Reader rd) throws IOException {
 	    StringBuilder sb = new StringBuilder();
         int cp;
@@ -19,28 +28,22 @@ public class Jira {
     }
 
     public static JSONArray readJsonArrayFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
-        try {
+        try (InputStream is = new URL(url).openStream()) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
             return new JSONArray(jsonText);
-        } finally {
-            is.close();
         }
     }
 
     public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
-        InputStream is = new URL(url).openStream();
-        try {
+        try (InputStream is = new URL(url).openStream()) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
             String jsonText = readAll(rd);
             return new JSONObject(jsonText);
-        } finally {
-            is.close();
         }
     }
 
-    public static ArrayList<Release> getAllRelease(String projName) throws IOException {
+    public static List<Release> getAllRelease(String projName) throws IOException {
 
         ArrayList<Release> releases = new ArrayList<>();
 
@@ -57,7 +60,8 @@ public class Jira {
                     Release element = new Release(nameRelease, dateRelease);
                     releases.add(element);
                 }catch (JSONException e){
-                    System.out.println("["+projName+"] - una release non possiede la data di rilascio. Release saltata.");
+                    Logger logger = Logger.getLogger(Issue.class.getName());
+                    logger.log(Level.INFO, "["+projName+"] - una release non possiede la data di rilascio. Release saltata.");
                 }
             }
         }
@@ -65,8 +69,10 @@ public class Jira {
         return releases;
     }
 
-    public static ArrayList<Release> getHalfReleases(ArrayList<Release> allRelease){
-        int size, halfSize, i;
+    public static List<Release> getHalfReleases(List<Release> allRelease){
+        int size;
+        int halfSize;
+        int i;
         size = allRelease.size();
         halfSize = (int) floor(size/(double)2);
         ArrayList<Release> halfRelease = new ArrayList<>();
@@ -81,12 +87,15 @@ public class Jira {
     }
 
 
-    public static ArrayList<Issue> getIssueIdOfProject(String projName) throws IOException, JSONException{
+    public static List<Issue> getIssueIdOfProject(String projName) throws IOException, JSONException{
 
         ArrayList<Issue> bugInfo = new ArrayList<>();
-        int len, fixLen;
+        int len;
+        int fixLen;
 
-        int j, i = 0, total;
+        int j;
+        int i = 0;
+        int total;
 
         do {
             j = i + 1000;
@@ -103,10 +112,10 @@ public class Jira {
 
                 JSONObject currentJson = issues.getJSONObject(i%1000);
                 String key = currentJson.get("key").toString();
-                String versionJsonString = currentJson.getJSONObject("fields").get("versions").toString();
-                String fixVersionsJsonString = currentJson.getJSONObject("fields").get("fixVersions").toString();
-                String resolutionDate = currentJson.getJSONObject("fields").get("resolutiondate").toString();
-                String creationDate = currentJson.getJSONObject("fields").get("created").toString();
+                String versionJsonString = currentJson.getJSONObject(FIELD).get("versions").toString();
+                String fixVersionsJsonString = currentJson.getJSONObject(FIELD).get("fixVersions").toString();
+                String resolutionDate = currentJson.getJSONObject(FIELD).get("resolutiondate").toString();
+                String creationDate = currentJson.getJSONObject(FIELD).get("created").toString();
 
                 JSONArray versionJsonArray = new JSONArray(versionJsonString);
                 JSONArray fixVersionJsonArray = new JSONArray(fixVersionsJsonString);
@@ -130,7 +139,9 @@ public class Jira {
                 // discard issues without FV or OV (I can't claculate them in other ways)
                 if(issue.getFixVersion() == null || issue.getOpeningVersion()==null) continue;
 
-                int ivIndex, ovIndex, fvIndex;
+                int ivIndex;
+                int ovIndex;
+                int fvIndex;
                 if (issue.getInjectedVersion() != null)
                     ivIndex = issue.getInjectedVersion().index;
                 else
@@ -139,14 +150,12 @@ public class Jira {
                 fvIndex = issue.getFixVersion().index;
 
                 // discard issues with OV and FV inconsistent (OV>=FV) and issues pre-release (IV=OV=FV)
-                if(!((ivIndex==ovIndex)&&(ovIndex==fvIndex))) {
-                    if (ovIndex < fvIndex)
+                if(!((ivIndex==ovIndex)&&(ovIndex==fvIndex)) && ovIndex < fvIndex)
                         bugInfo.add(issue);
-                }
             }
         } while (i < total);
-
-        System.out.println("ho trovato #bug="+bugInfo.size());
+        Logger logger = Logger.getLogger(Issue.class.getName());
+        logger.log(Level.INFO, "ho trovato #bug="+bugInfo.size());
         return bugInfo;
     }
 

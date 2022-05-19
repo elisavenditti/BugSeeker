@@ -12,8 +12,8 @@ import static org.example.Jira.*;
 
 public class Main {
 
-    public static ArrayList<Release> allRelease;
-    public static ArrayList<Release> halfRelease;
+    public static List<Release> allRelease;
+    public static List<Release> halfRelease;
     public static int rootLen;
 
 
@@ -120,7 +120,7 @@ public class Main {
         orderRelease();
         deleteDuplicate();
         halfRelease = getHalfReleases(allRelease);
-        ArrayList<Issue> allIssues  = getIssueIdOfProject(projName);
+        List<Issue> allIssues  = getIssueIdOfProject(projName);
 
         Proportion proportion = new Proportion();
         ArrayList<Float> pinc = proportion.incremental(allIssues, true);
@@ -133,8 +133,8 @@ public class Main {
 
         int trainingBoundary;
         boolean testing = false;
-        ArrayList<Release> toRestoreAllRelease = allRelease;
-        ArrayList<Release> toRestoreHalfRelease = halfRelease;
+        List<Release> toRestoreAllRelease = allRelease;
+        List<Release> toRestoreHalfRelease = halfRelease;
 
         for(trainingBoundary=0; trainingBoundary< halfRelease.size(); trainingBoundary++) {
             allRelease=toRestoreAllRelease;

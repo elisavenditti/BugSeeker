@@ -3,6 +3,7 @@ package org.example;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import static org.example.Jira.getAllRelease;
 import static org.example.Jira.getIssueIdOfProject;
@@ -10,7 +11,7 @@ import static org.example.Main.*;
 
 public class Proportion {
     private static ArrayList<String> projects;
-    private static ArrayList<Release> allReleaseToRestore;
+    private static List<Release> allReleaseToRestore;
     private static ArrayList<Integer> countNotNullIVInAllRelease;
 
 
@@ -30,7 +31,7 @@ public class Proportion {
     }
 
 
-    public ArrayList<Float> incremental(ArrayList<Issue> allIssues, Boolean synBook){
+    public ArrayList<Float> incremental(List<Issue> allIssues, Boolean synBook){
         // synBook is true if is SYNCOPE or BOOKKEEPER
 
         // entry of array is a list of issue fixed in the i-th release
@@ -94,7 +95,7 @@ public class Proportion {
                 allRelease = getAllRelease(projName);
                 orderRelease();
                 deleteDuplicate();
-                ArrayList<Issue> allIssues  = getIssueIdOfProject(projName);
+                List<Issue> allIssues  = getIssueIdOfProject(projName);
                 ArrayList<Float> pinc = incremental(allIssues, false);
                 int lastIndex = pinc.size()-1;
                 pColdStartList.add(pinc.get(lastIndex));
@@ -117,7 +118,7 @@ public class Proportion {
         return median;
     }
 
-public float globalP(ArrayList<Issue> allIssues){
+public float globalP(List<Issue> allIssues){
 
         int count = 0, ivIndex, ovIndex, fvIndex;
         float p, denominatore;
@@ -145,7 +146,7 @@ public float globalP(ArrayList<Issue> allIssues){
     }
 
 
-    public ArrayList<Issue> addMissingInjectedVersions(ArrayList<Float> p, ArrayList<Issue> allIssue, Boolean incremental){
+    public List<Issue> addMissingInjectedVersions(List<Float> p, List<Issue> allIssue, Boolean incremental){
         // Boolean incremental true --> the labeling uses an incremental p (es: P[r-1] to label r)
         // Boolean incremental false --> the labeling uses the global p
 

@@ -17,6 +17,8 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.example.Main.*;
 import static org.example.MetricsCalculator.setLoc;
@@ -36,7 +38,8 @@ public class Git {
             else releaseAddingName = "release";
 
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            logger.log(Level.INFO, e.getMessage());
         }
     }
 
@@ -46,18 +49,21 @@ public class Git {
             org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
             git.checkout().setName(version).call();
         } catch (GitAPIException e) {
-            System.err.println(e.getMessage());
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            logger.log(Level.INFO, e.getMessage());
         }
     }
 
     public void getReleaseFileList(Excel excel, String projDirName){
         int i=0;
         for(Release r: halfRelease) {
-            System.err.println(i+") checkout to "+r.name+"++++++++++++++++++++++++++++++++++");
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            logger.log(Level.INFO, i+") checkout to "+r.name+"++++++++++++++++++++++++++++++++++");
+
             checkoutTo(this.releaseAddingName + "-" + r.name);
-            System.err.println("inizio a cercare i file");
+            logger.log(Level.INFO, "inizio a cercare i file");
             r.files = excel.listOfJavaFile(projDirName);
-            System.err.println("ho finito di cercare i file");
+            logger.log(Level.INFO, "ho finito di cercare i file");
             i++;
             setLoc(r);
         }
@@ -97,7 +103,8 @@ public class Git {
             return commitIds;
 
         } catch (GitAPIException | IOException e) {
-            System.err.println(e.getMessage());
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            logger.log(Level.INFO, e.getMessage());
         }
         return commitIds;
     }
@@ -155,7 +162,8 @@ public class Git {
             }
             return changedFiles;
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            logger.log(Level.INFO, e.getMessage());
         }
         return changedFiles;
     }
@@ -192,7 +200,8 @@ public class Git {
             }
             return changedFiles;
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            logger.log(Level.INFO, e.getMessage());
         }
         return changedFiles;
     }
@@ -218,7 +227,8 @@ public class Git {
             }
             git.close();
         } catch (GitAPIException | IOException e) {
-            System.err.println(e.getMessage());
+            Logger logger = Logger.getLogger(Issue.class.getName());
+            logger.log(Level.INFO, e.getMessage());
         }
 
 
