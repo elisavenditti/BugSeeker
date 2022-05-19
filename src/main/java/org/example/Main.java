@@ -151,10 +151,10 @@ public class Main {
             ArrayList<Issue> valuableIssue = new ArrayList<>();
             for (Issue i : allIssues) {
                 // for testing set delete issue with IV greater than releases in the first half
-                if(testing && i.injectedVersion.index<=halfRelease.size()-1) valuableIssue.add(i);
+                if(testing && i.getInjectedVersion().index<=halfRelease.size()-1) valuableIssue.add(i);
 
                 // for training set delete issue with FV > trainingBoundary (I CAN'T SEE FUTURE INFORMATION)
-                if (!testing && i.fixVersion.index <= trainingBoundary) valuableIssue.add(i);
+                if (!testing && i.getFixVersion().index <= trainingBoundary) valuableIssue.add(i);
 
             }
 
@@ -168,10 +168,10 @@ public class Main {
             for (Release release : halfRelease) {
 
                 for (Issue i : valuableIssue) {
-                    if (isReleaseContainedIn(release, i.injectedVersion, i.fixVersion, false)) {
+                    if (isReleaseContainedIn(release, i.getInjectedVersion(), i.getFixVersion(), false)) {
                         for (Commit com : commitId) {
 
-                            if (isReleaseContainedIn(com.getRelease(), release.next(), i.fixVersion, true)) {
+                            if (isReleaseContainedIn(com.getRelease(), release.next(), i.getFixVersion(), true)) {
                                 if (com.getChangedFiles() != null && com.getChangedFiles().size() > 0)
                                     release.buggyFiles.addAll(com.getChangedFiles());
                             }

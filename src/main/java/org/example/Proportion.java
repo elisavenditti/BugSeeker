@@ -39,7 +39,7 @@ public class Proportion {
             issuePerRelease.add(new ArrayList<>());
         }
         for(Issue i: allIssues){
-            issuePerRelease.get(i.fixVersion.index).add(i);
+            issuePerRelease.get(i.getFixVersion().index).add(i);
         }
 
 
@@ -54,12 +54,12 @@ public class Proportion {
             if(issueInRelease.size()!=0) {
                 // calculate p in this release (with all issues fixed here)
                 for (Issue iss : issueInRelease) {
-                    if (iss.injectedVersion == null) continue;
+                    if (iss.getInjectedVersion() == null) continue;
                     count++;
 
-                    ivIndex = iss.injectedVersion.index;
-                    fvIndex = iss.fixVersion.index;
-                    ovIndex = iss.openingVersion.index;
+                    ivIndex = iss.getInjectedVersion().index;
+                    fvIndex = iss.getFixVersion().index;
+                    ovIndex = iss.getOpeningVersion().index;
 
                     if (fvIndex == ovIndex) denominatore = 1;
                     else denominatore = (float) fvIndex - ovIndex;
@@ -126,12 +126,12 @@ public float globalP(ArrayList<Issue> allIssues){
         // allIssue contains the issues of the whole project
         for(Issue iss: allIssues) {
              // calculate p in this release (with all issues fixed here)
-            if (iss.injectedVersion == null) continue;
+            if (iss.getInjectedVersion() == null) continue;
             count++;
 
-            ivIndex = iss.injectedVersion.index;
-            fvIndex = iss.fixVersion.index;
-            ovIndex = iss.openingVersion.index;
+            ivIndex = iss.getInjectedVersion().index;
+            fvIndex = iss.getFixVersion().index;
+            ovIndex = iss.getOpeningVersion().index;
 
             if (fvIndex == ovIndex) denominatore = 1;       // per sicurezza
             else denominatore = (float)  fvIndex - ovIndex;
@@ -155,11 +155,11 @@ public float globalP(ArrayList<Issue> allIssues){
 
         for(Issue iss: allIssue) {
 
-            if(iss.toLabel) {
+            if(iss.getToLabel()) {
 
 
-                fvIndex = iss.fixVersion.index;
-                ovIndex = iss.openingVersion.index;
+                fvIndex = iss.getFixVersion().index;
+                ovIndex = iss.getOpeningVersion().index;
 
                 int diff;
                 if (fvIndex==ovIndex)       // per sicurezza
@@ -182,7 +182,7 @@ public float globalP(ArrayList<Issue> allIssues){
 
                 ivIndex = fvIndex - Math.round(diff*pToUse);
                 if(ivIndex<0) ivIndex = 0;
-                iss.injectedVersion = allRelease.get(ivIndex);
+                iss.setInjectedVersion(allRelease.get(ivIndex));
             }
         }
         return allIssue;

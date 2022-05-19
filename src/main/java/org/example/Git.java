@@ -71,9 +71,9 @@ public class Git {
         org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
 
         if(syncope)
-            issueText = "[" + issue.key + "]";
+            issueText = "[" + issue.getKey() + "]";
         else
-            issueText = issue.key+":";
+            issueText = issue.getKey()+":";
 
         try {
             Iterable<RevCommit> log = git.log().all().call();

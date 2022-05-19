@@ -126,17 +126,17 @@ public class Jira {
                         fixVersions.add(curr);
                 }
 
-                Issue issue = new Issue(key, fixVersions, affectedVersions, resolutionDate, creationDate);
+                Issue issue = new Issue(key, affectedVersions, resolutionDate, creationDate);
                 // discard issues without FV or OV (I can't claculate them in other ways)
-                if(issue.fixVersion == null || issue.openingVersion==null) continue;
+                if(issue.getFixVersion() == null || issue.getOpeningVersion()==null) continue;
 
                 int ivIndex, ovIndex, fvIndex;
-                if (issue.injectedVersion != null)
-                    ivIndex = issue.injectedVersion.index;
+                if (issue.getInjectedVersion() != null)
+                    ivIndex = issue.getInjectedVersion().index;
                 else
                     ivIndex = -1;
-                ovIndex = issue.openingVersion.index;
-                fvIndex = issue.fixVersion.index;
+                ovIndex = issue.getOpeningVersion().index;
+                fvIndex = issue.getFixVersion().index;
 
                 // discard issues with OV and FV inconsistent (OV>=FV) and issues pre-release (IV=OV=FV)
                 if(!((ivIndex==ovIndex)&&(ovIndex==fvIndex))) {
