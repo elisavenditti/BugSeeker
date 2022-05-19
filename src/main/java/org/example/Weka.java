@@ -11,12 +11,8 @@ import weka.classifiers.lazy.IBk;
 import weka.classifiers.meta.FilteredClassifier;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instances;
-import weka.core.converters.ConverterUtils;
-import weka.core.Instances;
 import weka.attributeSelection.CfsSubsetEval;
 import weka.attributeSelection.GreedyStepwise;
-import weka.classifiers.Evaluation;
-import weka.classifiers.trees.RandomForest;
 import weka.filters.Filter;
 import weka.filters.supervised.attribute.AttributeSelection;
 import weka.core.converters.ConverterUtils.DataSource;
@@ -28,7 +24,6 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static org.example.Main.halfRelease;
 
 public class Weka {
     /*
@@ -173,7 +168,7 @@ public class Weka {
         performance.add(projName);
         String trainingReleases = "";
         for(int index=0; index<=trainingIndex; index++){
-            trainingReleases = trainingReleases +", " + halfRelease.get(index).name;
+            trainingReleases = trainingReleases +", " + Main.getHalfRelease().get(index).name;
         }
         performance.add(trainingReleases);
         performance.add(classifier);

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.example.Main.allRelease;
 
 public class Issue {
 
@@ -49,20 +48,20 @@ public class Issue {
 
     private Release getReleaseFromDate(Date date){
         int i=0;
-        for(Release r: allRelease){
+        for(Release r: Main.getAllRelease()){
             if(date.before(r.releaseDate)) break;
             i++;
         }
-        int size = allRelease.size();
+        int size = Main.getAllRelease().size();
         if (i==size) return null;
-        return allRelease.get(i);
+        return Main.getAllRelease().get(i);
     }
 
 
     private List<Release> getReleaseArrayFromStringArray(List<String> stringArray){
         ArrayList<Release> releaseArray = new ArrayList<>();
 
-        for(Release r: allRelease){             // il for esterno fa in modo che la lista venga
+        for(Release r: Main.getAllRelease()){             // il for esterno fa in modo che la lista venga
                                                 // costruita in ordine cronologico
             for(String relString: stringArray){
                 if(r.name.equalsIgnoreCase(relString))
@@ -111,7 +110,7 @@ public class Issue {
         this.fixVersion = this.getReleaseFromDate(this.fixDate);
         this.openingVersion = this.getReleaseFromDate(this.creationDate);
 
-        if(this.jiraAffectedVersions.isEmpty()) {
+        if(!this.jiraAffectedVersions.isEmpty()) {
             this.injectedVersion = this.getMinRelease(jiraAffectedVersions);
         }
         else {

@@ -23,11 +23,11 @@ public class Proportion {
         projects.add("STORM");
         projects.add("AVRO");
         projects.add("OPENJPA");
-        allReleaseToRestore = allRelease;
+        allReleaseToRestore = Main.getAllRelease();
 
     }
     public static void restore(){
-        allRelease = allReleaseToRestore;
+        Main.setAllRelease(allReleaseToRestore);
     }
 
 
@@ -36,7 +36,7 @@ public class Proportion {
 
         // entry of array is a list of issue fixed in the i-th release
         ArrayList<ArrayList<Issue>> issuePerRelease = new ArrayList<>();
-        for(int j=0; j< allRelease.size(); j++){
+        for(int j=0; j< Main.getAllRelease().size(); j++){
             issuePerRelease.add(new ArrayList<>());
         }
         for(Issue i: allIssues){
@@ -92,7 +92,7 @@ public class Proportion {
         setUpColdStartProjects();
         for (String projName: projects){
             try {
-                allRelease = getAllRelease(projName);
+                Main.setAllRelease(getAllRelease(projName));
                 orderRelease();
                 deleteDuplicate();
                 List<Issue> allIssues  = getIssueIdOfProject(projName);
@@ -183,7 +183,7 @@ public float globalP(List<Issue> allIssues){
 
                 ivIndex = fvIndex - Math.round(diff*pToUse);
                 if(ivIndex<0) ivIndex = 0;
-                iss.setInjectedVersion(allRelease.get(ivIndex));
+                iss.setInjectedVersion(Main.getAllRelease().get(ivIndex));
             }
         }
         return allIssue;

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.example.Main.allRelease;
-
 public class Release {
 
     public String name;
@@ -19,7 +17,7 @@ public class Release {
     public int index;
 
     public Release next(){
-        return allRelease.get(index+1);
+        return Main.getAllRelease().get(index+1);
 
     }
 

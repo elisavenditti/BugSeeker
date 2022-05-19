@@ -3,8 +3,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static org.example.Main.allRelease;
-
 public class Commit {
     private String commitId;
     private Date commitDate;
@@ -21,17 +19,17 @@ public class Commit {
 
     private Release getReleaseFromDate(){
         int i=0;
-        for(Release r: allRelease){
+        for(Release r: Main.getAllRelease()){
             if(this.commitDate.before(r.releaseDate)) break;
             i++;
         }
-        int size = allRelease.size();
+        int size = Main.getAllRelease().size();
         if (i==size) {
             this.releaseIndex=-1;
             return null;        //il commit appartiene alla release corrente (che ancora deve uscire)
         }
         this.releaseIndex = i;
-        return allRelease.get(i);
+        return Main.getAllRelease().get(i);
     }
 
     public String getCommitSha(){

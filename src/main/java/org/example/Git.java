@@ -56,7 +56,7 @@ public class Git {
 
     public void getReleaseFileList(Excel excel, String projDirName){
         int i=0;
-        for(Release r: halfRelease) {
+        for(Release r: Main.getHalfRelease()) {
             Logger logger = Logger.getLogger(Issue.class.getName());
             logger.log(Level.INFO, i+") checkout to "+r.name+"++++++++++++++++++++++++++++++++++");
 
@@ -217,7 +217,7 @@ public class Git {
                 PersonIdent authorIdentity = i.getAuthorIdent();
                 Commit c = new Commit(i.getId().toString(), authorIdentity.getName(), authorIdentity.getWhen());
                 commitIds.add(c);
-                if(c.getReleaseIndex()==-1 || c.getReleaseIndex() > (halfRelease.size()-1))
+                if(c.getReleaseIndex()==-1 || c.getReleaseIndex() > (Main.getHalfRelease().size()-1))
                     continue;
 
                 String cSha = c.getCommitSha();

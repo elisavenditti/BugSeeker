@@ -4,18 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import static org.example.Main.halfRelease;
-import static org.example.Main.rootLen;
-
 
 public class MetricsCalculator {
 
     public static void setMetrics(Commit commit){
         int releaseIndex = commit.getReleaseIndex();
         for(MyFile file : commit.getChangedFiles()){
-            Release rel = halfRelease.get(releaseIndex);
+            Release rel = Main.getHalfRelease().get(releaseIndex);
             for(MyFile file2: rel.files){
-                String name = file2.pathname.substring(rootLen);
+                String name = file2.pathname.substring(Main.getRootLen());
                 if(file.pathname.equalsIgnoreCase(name)){
                     file2.nRevisions =  file2.nRevisions + 1;
                     file2.authors.add(commit.getAuthor());

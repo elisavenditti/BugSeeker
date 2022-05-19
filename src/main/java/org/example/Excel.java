@@ -10,7 +10,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import static org.example.Main.halfRelease;
 
 public class Excel {
     private String rootDirectory;
@@ -144,7 +143,7 @@ public class Excel {
         workbook = new XSSFWorkbook();
         sheet = workbook.createSheet(projectName + "buggy classes");
         int c=0;
-        for(Release r: halfRelease){
+        for(Release r: Main.getHalfRelease()){
             if(c>walkforwardStep) break;
             rowCount = insertCells(sheet, rowCount, r);
             c++;
@@ -174,7 +173,7 @@ public class Excel {
         workbook = new XSSFWorkbook();
         sheet = workbook.createSheet(projectName + "buggy classes");
 
-        insertCells(sheet, rowCount, halfRelease.get(testReleaseIndex));
+        insertCells(sheet, rowCount, Main.getHalfRelease().get(testReleaseIndex));
 
         Logger logger = Logger.getLogger(Issue.class.getName());
         logger.log(Level.INFO, "[training "+testReleaseIndex+"] excel completato");
