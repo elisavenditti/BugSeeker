@@ -79,8 +79,9 @@ public class Commit {
         return changedFiles;
     }
 
-    public void setChangedFiles(List<MyFile> changedFiles) {
-        this.changedFiles = changedFiles;
+    public void addAllFilesInChangedFiles(List<MyFile> item) {
+        this.changedFiles.addAll(item);
     }
+
 
 }

@@ -81,7 +81,7 @@ public class Proportion {
 
         }
         if(synBook) {
-            Logger logger = Logger.getLogger(Issue.class.getName());
+            Logger logger = Logger.getLogger(Proportion.class.getName());
             for(int pp: countNotNullIVInAllRelease) logger.log(Level.INFO, String.valueOf(pp));
             String out1 = "[Synbook] "+pinc.get(pinc.size()-1);
             String out2 = count+" iv validi";
@@ -110,11 +110,11 @@ public class Proportion {
                 int lastIndex = pinc.size()-1;
                 pColdStartList.add(pinc.get(lastIndex));
                 String out = "["+projName+"]: "+pinc.get(lastIndex);
-                Logger logger = Logger.getLogger(Issue.class.getName());
+                Logger logger = Logger.getLogger(Proportion.class.getName());
                 logger.log(Level.INFO, out);
 
             } catch (IOException e) {
-                Logger logger = Logger.getLogger(Issue.class.getName());
+                Logger logger = Logger.getLogger(Proportion.class.getName());
                 logger.log(Level.INFO, e.getMessage());
             }
         }

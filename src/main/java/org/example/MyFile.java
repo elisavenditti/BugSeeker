@@ -51,12 +51,15 @@ public class MyFile {
     }
 
     public long getnAuthors() {
+
+        nAuthors = getNumberOfAuthors();
         return nAuthors;
     }
 
     public List<String> getAuthors() {
         return authors;
     }
+    public void addItemInAuthors(String item){this.authors.add(item);}
 
     public List<Integer> getLocAddedList() {
         return locAddedList;

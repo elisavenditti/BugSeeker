@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 import static java.lang.Math.floor;
 
 public class Jira {
-    private static final String FIELD = "field";
+    private static final String FIELD = "fields";
     private Jira() {
 
     }
@@ -60,7 +60,7 @@ public class Jira {
                     Release element = new Release(nameRelease, dateRelease);
                     releases.add(element);
                 }catch (JSONException e){
-                    Logger logger = Logger.getLogger(Issue.class.getName());
+                    Logger logger = Logger.getLogger(Jira.class.getName());
                     logger.log(Level.INFO, "["+projName+"] - una release non possiede la data di rilascio. Release saltata.");
                 }
             }
@@ -154,7 +154,7 @@ public class Jira {
                         bugInfo.add(issue);
             }
         } while (i < total);
-        Logger logger = Logger.getLogger(Issue.class.getName());
+        Logger logger = Logger.getLogger(Jira.class.getName());
         logger.log(Level.INFO, "ho trovato #bug="+bugInfo.size());
         return bugInfo;
     }

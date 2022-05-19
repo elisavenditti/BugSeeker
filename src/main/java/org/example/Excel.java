@@ -149,7 +149,7 @@ public class Excel {
             c++;
         }
 
-        Logger logger = Logger.getLogger(Issue.class.getName());
+        Logger logger = Logger.getLogger(Excel.class.getName());
         logger.log(Level.INFO, "[training "+walkforwardStep+"] excel completato");
 
 
@@ -175,7 +175,7 @@ public class Excel {
 
         insertCells(sheet, rowCount, Main.getHalfRelease().get(testReleaseIndex));
 
-        Logger logger = Logger.getLogger(Issue.class.getName());
+        Logger logger = Logger.getLogger(Excel.class.getName());
         logger.log(Level.INFO, "[training "+testReleaseIndex+"] excel completato");
 
 

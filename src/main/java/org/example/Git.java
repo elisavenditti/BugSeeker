@@ -49,7 +49,7 @@ public class Git {
             org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
             git.checkout().setName(version).call();
         } catch (GitAPIException e) {
-            Logger logger = Logger.getLogger(Issue.class.getName());
+            Logger logger = Logger.getLogger(Git.class.getName());
             logger.log(Level.INFO, e.getMessage());
         }
     }
@@ -57,7 +57,7 @@ public class Git {
     public void getReleaseFileList(Excel excel, String projDirName){
         int i=0;
         for(Release r: Main.getHalfRelease()) {
-            Logger logger = Logger.getLogger(Issue.class.getName());
+            Logger logger = Logger.getLogger(Git.class.getName());
             logger.log(Level.INFO, i+") checkout to "+r.getName()+"++++++++++++++++++++++++++++++++++");
 
             checkoutTo(this.releaseAddingName + "-" + r.getName());
@@ -93,7 +93,7 @@ public class Git {
                     String cSha = c.getCommitSha();
 
 
-                    c.getChangedFiles().addAll(compareCommitWithPrevious(cSha));
+                    c.addAllFilesInChangedFiles(compareCommitWithPrevious(cSha));
 
                     if(c.getRelease()!=null)
                         commitIds.add(c);
@@ -103,7 +103,7 @@ public class Git {
             return commitIds;
 
         } catch (GitAPIException | IOException e) {
-            Logger logger = Logger.getLogger(Issue.class.getName());
+            Logger logger = Logger.getLogger(Git.class.getName());
             logger.log(Level.INFO, e.getMessage());
         }
         return commitIds;
@@ -151,18 +151,18 @@ public class Git {
                 locTouched = linesAdded + linesDeleted;
                 String s;
                 if(entry.getChangeType().equals(DiffEntry.ChangeType.DELETE))
-                    s = entry.getOldPath().replace("/","\\\\");
+                    s = entry.getOldPath().replace("/","\\");
                 else
-                    s = entry.getNewPath().replace("/","\\\\");
+                    s = entry.getNewPath().replace("/","\\");
 
                 MyFile newFile = new MyFile(s);
-                newFile.setLocAdded(locTouched);
+                newFile.setLocTouched(locTouched);
                 newFile.setLocAdded(linesAdded);
                 changedFiles.add(newFile);
             }
             return changedFiles;
-        } catch (IOException e) {
-            Logger logger = Logger.getLogger(Issue.class.getName());
+        } catch (Exception e) {
+            Logger logger = Logger.getLogger(Git.class.getName());
             logger.log(Level.INFO, e.getMessage());
         }
         return changedFiles;
@@ -194,13 +194,13 @@ public class Git {
             for( DiffEntry entry : entries ) {
                 if(entry.getChangeType()==DiffEntry.ChangeType.DELETE||
                         entry.getChangeType()==DiffEntry.ChangeType.MODIFY){
-                    String s = entry.getNewPath().replace("/","\\\\");
+                    String s = entry.getNewPath().replace("/","\\");
                     changedFiles.add(new MyFile(s));
                 }
             }
             return changedFiles;
         } catch (IOException e) {
-            Logger logger = Logger.getLogger(Issue.class.getName());
+            Logger logger = Logger.getLogger(Git.class.getName());
             logger.log(Level.INFO, e.getMessage());
         }
         return changedFiles;
@@ -221,13 +221,13 @@ public class Git {
                     continue;
 
                 String cSha = c.getCommitSha();
-                c.getChangedFiles().addAll(getChangedFileWithLOC(cSha));
+                c.addAllFilesInChangedFiles(getChangedFileWithLOC(cSha));
                 setMetrics(c);
 
             }
             git.close();
         } catch (GitAPIException | IOException e) {
-            Logger logger = Logger.getLogger(Issue.class.getName());
+            Logger logger = Logger.getLogger(Git.class.getName());
             logger.log(Level.INFO, e.getMessage());
         }
 

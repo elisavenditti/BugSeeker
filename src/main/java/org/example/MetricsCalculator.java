@@ -14,11 +14,13 @@ public class MetricsCalculator {
         int releaseIndex = commit.getReleaseIndex();
         for(MyFile file : commit.getChangedFiles()){
             Release rel = Main.getHalfRelease().get(releaseIndex);
+
             for(MyFile file2: rel.getFiles()){
+
                 String name = file2.getPathname().substring(Main.getRootLen());
                 if(file.getPathname().equalsIgnoreCase(name)){
                     file2.setnRevisions(file2.getnRevisions() + 1);
-                    file2.getAuthors().add(commit.getAuthor());
+                    file2.addItemInAuthors(commit.getAuthor());
                     file2.setLocTouched(file2.getLocTouched() + file.getLocTouched());
 
                     file2.addItemInLocAddedList(file.getLocAdded());
@@ -52,7 +54,7 @@ public class MetricsCalculator {
                 f.setLoc(lines);
             }
         } catch (IOException e) {
-            Logger logger = Logger.getLogger(Issue.class.getName());
+            Logger logger = Logger.getLogger(MetricsCalculator.class.getName());
             logger.log(Level.INFO, e.getMessage());
         }
     }

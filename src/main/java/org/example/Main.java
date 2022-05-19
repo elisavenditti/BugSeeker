@@ -31,16 +31,12 @@ public class Main {
         return rootLen;
     }
 
-    public static void setRootLen(int rootLen) {
-        Main.rootLen = rootLen;
-    }
-
 
     public static void main(String[] args) throws IOException {
 
         String projName;
         String projDirName;
-        boolean syncope = true;
+        boolean syncope = false;
 
         if(syncope){
             projName ="SYNCOPE";
@@ -112,7 +108,8 @@ public class Main {
 
                             if ((isReleaseContainedIn(com.getRelease(), release.next(), i.getFixVersion(), true)) &&
                                     (com.getChangedFiles() != null && !com.getChangedFiles().isEmpty()))
-                                    release.addAllBuggyFiles(com.getChangedFiles());
+                                release.addAllBuggyFiles(com.getChangedFiles());
+
                         }
                     }
                 }
