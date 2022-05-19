@@ -5,6 +5,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.Math.floor;
 import static org.example.Jira.*;
@@ -159,7 +160,7 @@ public class Main {
 
             ArrayList<Commit> commitId = new ArrayList<>();
             for (Issue i : valuableIssue) {
-                ArrayList<Commit> list = github.getAllCommitsOfIssue(i, syncope);
+                List<Commit> list = github.getAllCommitsOfIssue(i, syncope);
                 commitId.addAll(list);
             }
             github.getMetrics();

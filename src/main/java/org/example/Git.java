@@ -25,10 +25,9 @@ import static org.example.MetricsCalculator.setMetrics;
 
 public class Git {
     private Repository repo;
-    private String issueText;
     private String releaseAddingName;
 
-    public Git(String gitPath, Boolean syncope){
+    public Git(String gitPath, boolean syncope){
 
         try {
             FileRepositoryBuilder b = new FileRepositoryBuilder();
@@ -37,7 +36,7 @@ public class Git {
             else releaseAddingName = "release";
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
@@ -47,18 +46,18 @@ public class Git {
             org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
             git.checkout().setName(version).call();
         } catch (GitAPIException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
     }
 
     public void getReleaseFileList(Excel excel, String projDirName){
         int i=0;
         for(Release r: halfRelease) {
-            System.out.println(i+") checkout to "+r.name+"++++++++++++++++++++++++++++++++++");
+            System.err.println(i+") checkout to "+r.name+"++++++++++++++++++++++++++++++++++");
             checkoutTo(this.releaseAddingName + "-" + r.name);
-            System.out.println("inizio a cercare i file");
+            System.err.println("inizio a cercare i file");
             r.files = excel.listOfJavaFile(projDirName);
-            System.out.println("ho finito di cercare i file");
+            System.err.println("ho finito di cercare i file");
             i++;
             setLoc(r);
         }
@@ -66,30 +65,30 @@ public class Git {
 
     }
 
-    public ArrayList<Commit> getAllCommitsOfIssue(Issue issue, Boolean syncope){
+    public List<Commit> getAllCommitsOfIssue(Issue issue, boolean syncope){
+        String issueText;
         ArrayList<Commit> commitIds = new ArrayList<>();
         org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
 
         if(syncope)
-            this.issueText = "[" + issue.key + "]";
+            issueText = "[" + issue.key + "]";
         else
-            this.issueText = issue.key+":";
+            issueText = issue.key+":";
 
         try {
             Iterable<RevCommit> log = git.log().all().call();
             for(RevCommit i: log){
                 String msg = i.getFullMessage();
-                if(msg.contains(this.issueText)) {
+                if(msg.contains(issueText)) {
                     PersonIdent authorIdentity = i.getAuthorIdent();
                     String author = authorIdentity.getName();
                     Date authorDate = authorIdentity.getWhen();
                     Commit c = new Commit(i.getId().toString(), author, authorDate);
                     String cSha = c.getCommitSha();
-                    try {
-                        c.getChangedFiles().addAll(compareCommitWithPrevious(cSha));
-                    }catch (MyException e) {
-                        System.out.println(e.getMessage());
-                    }
+
+
+                    c.getChangedFiles().addAll(compareCommitWithPrevious(cSha));
+
                     if(c.getRelease()!=null)
                         commitIds.add(c);
                 }
@@ -98,12 +97,13 @@ public class Git {
             return commitIds;
 
         } catch (GitAPIException | IOException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
+        return commitIds;
     }
 
 
-    private List<MyFile> getChangedFileWithLOC(String commitSha) throws MyException{
+    private List<MyFile> getChangedFileWithLOC(String commitSha){
 
         List<MyFile> changedFiles = new ArrayList<>();
         org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
@@ -112,11 +112,8 @@ public class Git {
         ObjectId oldTree;
         try {
             oldTree = git.getRepository().resolve( commitSha+"~1^{tree}" );
-            try{
-                oldTreeIter.reset( reader, oldTree );
-            }catch (Exception e){
-                throw new MyException("Non esiste il commit precedente");
-            }
+            oldTreeIter.reset( reader, oldTree );
+
 
 
             CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
@@ -147,9 +144,9 @@ public class Git {
                 locTouched = linesAdded + linesDeleted;
                 String s;
                 if(entry.getChangeType().equals(DiffEntry.ChangeType.DELETE))
-                    s = entry.getOldPath().replaceAll("/","\\\\");
+                    s = entry.getOldPath().replace("/","\\\\");
                 else
-                    s = entry.getNewPath().replaceAll("/","\\\\");
+                    s = entry.getNewPath().replace("/","\\\\");
 
                 MyFile newFile = new MyFile(s);
                 newFile.locTouched = locTouched;
@@ -158,13 +155,14 @@ public class Git {
             }
             return changedFiles;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
+        return changedFiles;
     }
 
 
 
-    public List<MyFile> compareCommitWithPrevious(String commitSha) throws MyException{
+    public List<MyFile> compareCommitWithPrevious(String commitSha){
 
         List<MyFile> changedFiles = new ArrayList<>();
         org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
@@ -173,11 +171,8 @@ public class Git {
         ObjectId oldTree;
         try {
             oldTree = git.getRepository().resolve( commitSha+"~1^{tree}" );
-            try{
-                oldTreeIter.reset( reader, oldTree );
-            }catch (Exception e){
-                throw new MyException("Non esiste il commit precedente");
-            }
+            oldTreeIter.reset( reader, oldTree );
+
 
             CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
             ObjectId newTree = git.getRepository().resolve( commitSha + "^{tree}" );
@@ -191,18 +186,15 @@ public class Git {
             for( DiffEntry entry : entries ) {
                 if(entry.getChangeType()==DiffEntry.ChangeType.DELETE||
                         entry.getChangeType()==DiffEntry.ChangeType.MODIFY){
-                    String s;
-//                    if(entry.getChangeType().equals(DiffEntry.ChangeType.DELETE))
-//                        s = entry.getOldPath().replaceAll("/","\\\\");
-//                    else
-                        s = entry.getNewPath().replaceAll("/","\\\\");
+                    String s = entry.getNewPath().replace("/","\\\\");
                     changedFiles.add(new MyFile(s));
                 }
             }
             return changedFiles;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
+        return changedFiles;
     }
 
     public void getMetrics() {
@@ -220,19 +212,13 @@ public class Git {
                     continue;
 
                 String cSha = c.getCommitSha();
-
-                try {
-                    c.getChangedFiles().addAll(getChangedFileWithLOC(cSha));
-                } catch (MyException e){
-                    System.out.println(e.getMessage());
-                }
-
+                c.getChangedFiles().addAll(getChangedFileWithLOC(cSha));
                 setMetrics(c);
 
             }
             git.close();
         } catch (GitAPIException | IOException e) {
-            throw new RuntimeException(e);
+            System.err.println(e.getMessage());
         }
 
 
