@@ -82,7 +82,10 @@ public class Proportion {
         }
         if(synBook) {
             Logger logger = Logger.getLogger(Proportion.class.getName());
-            for(int pp: countNotNullIVInAllRelease) logger.log(Level.INFO, String.valueOf(pp));
+            for(int pp: countNotNullIVInAllRelease){
+                String ppstr = String.valueOf(pp);
+                logger.log(Level.INFO, ppstr);
+            }
             String out1 = "[Synbook] "+pinc.get(pinc.size()-1);
             String out2 = count+" iv validi";
 

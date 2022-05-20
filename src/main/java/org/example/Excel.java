@@ -150,7 +150,7 @@ public class Excel {
         }
 
         Logger logger = Logger.getLogger(Excel.class.getName());
-        logger.log(Level.INFO, "[training "+walkforwardStep+"] excel completato");
+        logger.log(Level.INFO, "[training {} excel completato", walkforwardStep);
 
 
         try(FileOutputStream outputStream = new FileOutputStream(excelName)) {
@@ -176,7 +176,7 @@ public class Excel {
         insertCells(sheet, rowCount, Main.getHalfRelease().get(testReleaseIndex));
 
         Logger logger = Logger.getLogger(Excel.class.getName());
-        logger.log(Level.INFO, "[training "+testReleaseIndex+"] excel completato");
+        logger.log(Level.INFO, "[training {}] excel completato", testReleaseIndex);
 
 
         try(FileOutputStream outputStream = new FileOutputStream(excelName)) {

@@ -43,12 +43,15 @@ public class Weka {
     private ArrayList<String> arffTesting;
     private ArrayList<ArrayList<Object>> row;
     private String projName;
-    private static final String ROOTPATH = "C:\\Users\\Elisa Venditti\\Desktop\\ISW2\\BugSeeker\\";
+    private String rootPath;
+
+    public Weka(String rootpath){
+        this.rootPath=rootpath;
+    }
     public void createArff(int nRelease, boolean syncope) {
         String trainingName;
         String format = ".xlsx";
         String testNameAdd = "-testing";
-        String rootPath = ROOTPATH;
         ArrayList<String> csvNames = new ArrayList<>();
         arffTraining = new ArrayList<>();
         arffTesting = new ArrayList<>();
@@ -73,10 +76,10 @@ public class Weka {
 
         // # walkForward step = # releases - 1
         for(int walkStep=0; walkStep < nRelease-1; walkStep++){
-            String train = rootPath+trainingName+walkStep+format;
+            String train = this.rootPath+trainingName+walkStep+format;
             csvNames.add(train);
             arffTraining.add(train.substring(0, train.length()-4)+"arff");
-            String test = rootPath+trainingName+testNameAdd+walkStep+format;
+            String test = this.rootPath+trainingName+testNameAdd+walkStep+format;
             csvNames.add(test);
             arffTesting.add(test.substring(0, test.length()-4)+"arff");
         }
@@ -276,7 +279,7 @@ public class Weka {
             try {
                 walkforwardStep(arffTraining.get(i), arffTesting.get(i), i);
                 Logger logger = Logger.getLogger(Weka.class.getName());
-                logger.log(Level.INFO, "[walkforward step] "+i);
+                logger.log(Level.INFO, "[walkforward step] {}",i);
             } catch (Exception e) {
                 Logger logger = Logger.getLogger(Weka.class.getName());
                 logger.log(Level.INFO, e.getMessage());

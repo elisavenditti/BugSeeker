@@ -19,8 +19,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import static org.example.Main.*;
 import static org.example.MetricsCalculator.setLoc;
 import static org.example.MetricsCalculator.setMetrics;
 
@@ -58,7 +56,7 @@ public class Git {
         int i=0;
         for(Release r: Main.getHalfRelease()) {
             Logger logger = Logger.getLogger(Git.class.getName());
-            logger.log(Level.INFO, i+") checkout to "+r.getName()+"++++++++++++++++++++++++++++++++++");
+            logger.log(Level.INFO, "checkout {}++++++++++++++++++++++++++++++++++", i);
 
             checkoutTo(this.releaseAddingName + "-" + r.getName());
             logger.log(Level.INFO, "inizio a cercare i file");

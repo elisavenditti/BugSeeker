@@ -124,7 +124,7 @@ public class Main {
             }
         }
 
-        Weka w = new Weka();
+        Weka w = new Weka("C:\\Users\\Elisa Venditti\\Desktop\\ISW2\\BugSeeker\\");
         w.createArff(halfRelease.size(), syncope);
         w.walkforward(halfRelease.size(), syncope);
 
