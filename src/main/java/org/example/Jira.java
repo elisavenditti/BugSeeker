@@ -61,7 +61,8 @@ public class Jira {
                     releases.add(element);
                 }catch (JSONException e){
                     Logger logger = Logger.getLogger(Jira.class.getName());
-                    logger.log(Level.INFO, "[{}] - una release non possiede la data di rilascio. Release saltata.", projName);
+                    String out ="["+projName+"] - una release non possiede la data di rilascio. Release saltata.";
+                    logger.log(Level.INFO, out);
                 }
             }
         }
@@ -155,7 +156,8 @@ public class Jira {
             }
         } while (i < total);
         Logger logger = Logger.getLogger(Jira.class.getName());
-        logger.log(Level.INFO, "ho trovato #bug="+bugInfo.size());
+        String out = "ho trovato #bug="+bugInfo.size();
+        logger.log(Level.INFO, out);
         return bugInfo;
     }
 

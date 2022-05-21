@@ -135,38 +135,6 @@ public class Proportion {
         return median;
     }
 
-public float globalP(List<Issue> allIssues){
-
-        int count = 0;
-        int ivIndex;
-        int ovIndex;
-        int fvIndex;
-        float p;
-        float denominatore;
-        float incrementalMean = 0;
-
-        // allIssue contains the issues of the whole project
-        for(Issue iss: allIssues) {
-             // calculate p in this release (with all issues fixed here)
-            if (iss.getInjectedVersion() == null) continue;
-            count++;
-
-            ivIndex = iss.getInjectedVersion().getIndex();
-            fvIndex = iss.getFixVersion().getIndex();
-            ovIndex = iss.getOpeningVersion().getIndex();
-
-            if (fvIndex == ovIndex) denominatore = 1;       // per sicurezza
-            else denominatore = (float)  fvIndex - ovIndex;
-            p = (fvIndex - ivIndex) / denominatore;
-            incrementalMean = incrementalMean + (p - incrementalMean) / count;
-        }
-
-        return incrementalMean;
-
-
-    }
-
-
     public List<Issue> addMissingInjectedVersions(List<Float> p, List<Issue> allIssue, boolean incremental){
         // Boolean incremental true --> the labeling uses an incremental p (es: P[r-1] to label r)
         // Boolean incremental false --> the labeling uses the global p

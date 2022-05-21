@@ -77,10 +77,8 @@ public class Main {
             // the last loop's iteration is dedicated to TESTING
             if(trainingBoundary == halfRelease.size() - 1){
                 testing = true;
-                // testing set must be labeled with the whole information
-                ArrayList<Float> p = new ArrayList<>();
-                p.add(proportion.globalP(allIssues));
-                allIssues = proportion.addMissingInjectedVersions(p, allIssues, false);
+                // p is calculated using the last entry of pinc (so using ALL issues of the project)
+                allIssues = proportion.addMissingInjectedVersions(pinc, allIssues, false);
             }
 
             ArrayList<Issue> valuableIssue = new ArrayList<>();

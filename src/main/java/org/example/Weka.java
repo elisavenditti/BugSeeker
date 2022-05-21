@@ -279,7 +279,8 @@ public class Weka {
             try {
                 walkforwardStep(arffTraining.get(i), arffTesting.get(i), i);
                 Logger logger = Logger.getLogger(Weka.class.getName());
-                logger.log(Level.INFO, "[walkforward step] {}",i);
+                String out ="[walkforward step] "+i;
+                logger.log(Level.INFO, out);
             } catch (Exception e) {
                 Logger logger = Logger.getLogger(Weka.class.getName());
                 logger.log(Level.INFO, e.getMessage());

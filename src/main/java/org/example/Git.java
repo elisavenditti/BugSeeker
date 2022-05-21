@@ -56,12 +56,15 @@ public class Git {
         int i=0;
         for(Release r: Main.getHalfRelease()) {
             Logger logger = Logger.getLogger(Git.class.getName());
-            logger.log(Level.INFO, "checkout {}++++++++++++++++++++++++++++++++++", i);
+            String out = i+")checkout to "+ r.getName()+"++++++++++++++++++++++++++++++++++";
+            logger.log(Level.INFO,out);
 
             checkoutTo(this.releaseAddingName + "-" + r.getName());
-            logger.log(Level.INFO, "inizio a cercare i file");
+            String out2 ="inizio a cercare i file";
+            String out3 = "ho finito di cercare i file";
+            logger.log(Level.INFO, out2);
             r.setFiles(excel.listOfJavaFile(projDirName));
-            logger.log(Level.INFO, "ho finito di cercare i file");
+            logger.log(Level.INFO, out3);
             i++;
             setLoc(r);
         }
@@ -91,7 +94,7 @@ public class Git {
                     String cSha = c.getCommitSha();
 
 
-                    c.addAllFilesInChangedFiles(compareCommitWithPrevious(cSha));
+                    c.addAllFilesInChangedFiles(compareCommitWithPrevious(cSha, false));//compareCommitWithPrevious(cSha));
 
                     if(c.getRelease()!=null)
                         commitIds.add(c);
@@ -108,7 +111,7 @@ public class Git {
     }
 
 
-    private List<MyFile> getChangedFileWithLOC(String commitSha){
+    private List<MyFile> compareCommitWithPrevious(String commitSha, boolean metrics){
 
         List<MyFile> changedFiles = new ArrayList<>();
         org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
@@ -119,44 +122,50 @@ public class Git {
             oldTree = git.getRepository().resolve( commitSha+"~1^{tree}" );
             oldTreeIter.reset( reader, oldTree );
 
-
-
             CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
             ObjectId newTree = git.getRepository().resolve( commitSha + "^{tree}" );
             newTreeIter.reset( reader, newTree );
 
             DiffFormatter diffFormatter = new DiffFormatter( DisabledOutputStream.INSTANCE );
             diffFormatter.setRepository( git.getRepository() );
-            diffFormatter.setDiffComparator(RawTextComparator.DEFAULT);
-            diffFormatter.setDetectRenames(true);
+            if(metrics){
+                diffFormatter.setDiffComparator(RawTextComparator.DEFAULT);
+                diffFormatter.setDetectRenames(true);
+            }
 
-            int linesAdded ;
-            int linesDeleted;
-            int locTouched; // added + modified + deleted
+
 
             List<DiffEntry> entries = diffFormatter.scan( oldTreeIter, newTreeIter );
 
             for( DiffEntry entry : entries ) {
+                if(!metrics && (entry.getChangeType()==DiffEntry.ChangeType.DELETE||
+                            entry.getChangeType()==DiffEntry.ChangeType.MODIFY)){
+                    String s = entry.getNewPath().replace("/","\\");
+                    changedFiles.add(new MyFile(s));
+                } else if(metrics) {
+                    int linesAdded;
+                    int linesDeleted;
+                    int locTouched; // added + modified + deleted
+                    linesAdded = 0;
+                    linesDeleted = 0;
+                    for (Edit edit : diffFormatter.toFileHeader(entry).toEditList()) {
 
-                linesAdded = 0;
-                linesDeleted = 0;
-                for (Edit edit : diffFormatter.toFileHeader(entry).toEditList()) {
+                        linesDeleted += edit.getEndA() - edit.getBeginA();
+                        linesAdded += edit.getEndB() - edit.getBeginB();
+                    }
 
-                    linesDeleted += edit.getEndA() - edit.getBeginA();
-                    linesAdded += edit.getEndB() - edit.getBeginB();
+                    locTouched = linesAdded + linesDeleted;
+                    String s;
+                    if (entry.getChangeType().equals(DiffEntry.ChangeType.DELETE))
+                        s = entry.getOldPath().replace("/", "\\");
+                    else
+                        s = entry.getNewPath().replace("/", "\\");
+
+                    MyFile newFile = new MyFile(s);
+                    newFile.setLocTouched(locTouched);
+                    newFile.setLocAdded(linesAdded);
+                    changedFiles.add(newFile);
                 }
-
-                locTouched = linesAdded + linesDeleted;
-                String s;
-                if(entry.getChangeType().equals(DiffEntry.ChangeType.DELETE))
-                    s = entry.getOldPath().replace("/","\\");
-                else
-                    s = entry.getNewPath().replace("/","\\");
-
-                MyFile newFile = new MyFile(s);
-                newFile.setLocTouched(locTouched);
-                newFile.setLocAdded(linesAdded);
-                changedFiles.add(newFile);
             }
             return changedFiles;
         } catch (Exception e) {
@@ -166,43 +175,6 @@ public class Git {
         return changedFiles;
     }
 
-
-
-    public List<MyFile> compareCommitWithPrevious(String commitSha){
-
-        List<MyFile> changedFiles = new ArrayList<>();
-        org.eclipse.jgit.api.Git git = new org.eclipse.jgit.api.Git(repo);
-        ObjectReader reader = git.getRepository().newObjectReader();
-        CanonicalTreeParser oldTreeIter = new CanonicalTreeParser();
-        ObjectId oldTree;
-        try {
-            oldTree = git.getRepository().resolve( commitSha+"~1^{tree}" );
-            oldTreeIter.reset( reader, oldTree );
-
-
-            CanonicalTreeParser newTreeIter = new CanonicalTreeParser();
-            ObjectId newTree = git.getRepository().resolve( commitSha + "^{tree}" );
-            newTreeIter.reset( reader, newTree );
-
-            DiffFormatter diffFormatter = new DiffFormatter( DisabledOutputStream.INSTANCE );
-            diffFormatter.setRepository( git.getRepository() );
-            List<DiffEntry> entries = diffFormatter.scan( oldTreeIter, newTreeIter );
-
-
-            for( DiffEntry entry : entries ) {
-                if(entry.getChangeType()==DiffEntry.ChangeType.DELETE||
-                        entry.getChangeType()==DiffEntry.ChangeType.MODIFY){
-                    String s = entry.getNewPath().replace("/","\\");
-                    changedFiles.add(new MyFile(s));
-                }
-            }
-            return changedFiles;
-        } catch (IOException e) {
-            Logger logger = Logger.getLogger(Git.class.getName());
-            logger.log(Level.INFO, e.getMessage());
-        }
-        return changedFiles;
-    }
 
     public void getMetrics() {
 
@@ -219,7 +191,7 @@ public class Git {
                     continue;
 
                 String cSha = c.getCommitSha();
-                c.addAllFilesInChangedFiles(getChangedFileWithLOC(cSha));
+                c.addAllFilesInChangedFiles(compareCommitWithPrevious(cSha, true));
                 setMetrics(c);
 
             }
