@@ -94,7 +94,7 @@ public class Git {
                     String cSha = c.getCommitSha();
 
 
-                    c.addAllFilesInChangedFiles(compareCommitWithPrevious(cSha, false));//compareCommitWithPrevious(cSha));
+                    c.addAllFilesInChangedFiles(compareCommitWithPrevious(cSha, false));
 
                     if(c.getRelease()!=null)
                         commitIds.add(c);

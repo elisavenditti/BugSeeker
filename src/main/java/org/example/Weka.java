@@ -325,9 +325,13 @@ public class Weka {
 
         int numAttrFiltered = filteredTraining.numAttributes();
 
+        String out1 = "No filter attr: " + numAttrNoFilter;
+        String out2 = "Filtered attr: " + numAttrFiltered;
 
-        System.out.println("No filter attr: " + numAttrNoFilter);
-        System.out.println("Filtered attr: " + numAttrFiltered);
+        Logger logger = Logger.getLogger(Weka.class.getName());
+        logger.log(Level.INFO, out1);
+        logger.log(Level.INFO, out2);
+
 
         RandomForest classifier = new RandomForest();
 
@@ -337,10 +341,15 @@ public class Weka {
         classifier.buildClassifier(noFilterTraining);
         evalClass.evaluateModel(classifier, testingNoFilter);
 
-        System.out.println("Precision no filter = "+evalClass.precision(0));
-        System.out.println("Recall no filter = "+evalClass.recall(0));
-        System.out.println("AUC no filter = "+evalClass.areaUnderROC(0));
-        System.out.println("Kappa no filter = "+evalClass.kappa());
+
+        String out3 = "Precision no filter = "+evalClass.precision(0);
+        String out4 = "Recall no filter = "+evalClass.recall(0);
+        String out5 = "AUC no filter = "+evalClass.areaUnderROC(0);
+        String out6 = "Kappa no filter = "+evalClass.kappa();
+        logger.log(Level.INFO, out3);
+        logger.log(Level.INFO, out4);
+        logger.log(Level.INFO, out5);
+        logger.log(Level.INFO, out6);
 
         //evaluation with filtered
         filteredTraining.setClassIndex(numAttrFiltered - 1);
@@ -349,10 +358,14 @@ public class Weka {
         classifier.buildClassifier(filteredTraining);
         evalClass.evaluateModel(classifier, testingFiltered);
 
-        System.out.println("Precision filtered = "+evalClass.precision(0));
-        System.out.println("Recall filtered = "+evalClass.recall(0));
-        System.out.println("AUC filtered = "+evalClass.areaUnderROC(1));
-        System.out.println("Kappa filtered = "+evalClass.kappa());
+        String out7 = "Precision filtered = "+evalClass.precision(0);
+        String out8 = "Recall filtered = "+evalClass.recall(0);
+        String out9 = "AUC filtered = "+evalClass.areaUnderROC(1);
+        String out10 = "Kappa filtered = "+evalClass.kappa();
+        logger.log(Level.INFO, out7);
+        logger.log(Level.INFO, out8);
+        logger.log(Level.INFO, out9);
+        logger.log(Level.INFO, out10);
 
 
     }
@@ -410,15 +423,20 @@ public class Weka {
         Evaluation eval2 = new Evaluation(testing);
         eval2.evaluateModel(fc, testing); //sampled
 
-        System.out.println("Correct% nonsampled = "+eval.pctCorrect());
-        System.out.println("Correct% sampled= "+eval2.pctCorrect()+ "\n");
 
-        System.out.println("Precision nonsampled= "+eval.precision(1));
-        System.out.println("Precision sampled= "+eval2.precision(1)+ "\n");
-
-        System.out.println("Recall nonsampled= "+eval.recall(1));
-        System.out.println("Recall sampled= "+eval2.recall(1)+ "\n");
-
+        String out1 = "Correct% nonsampled = "+eval.pctCorrect();
+        String out2 = "Correct% sampled= "+eval2.pctCorrect()+ "\n";
+        String out3 = "Precision nonsampled= "+eval.precision(1);
+        String out4 = "Precision sampled= "+eval2.precision(1)+ "\n";
+        String out5 = "Recall nonsampled= "+eval.recall(1);
+        String out6 = "Recall sampled= "+eval2.recall(1)+ "\n";
+        Logger logger = Logger.getLogger(Weka.class.getName());
+        logger.log(Level.INFO, out1);
+        logger.log(Level.INFO, out2);
+        logger.log(Level.INFO, out3);
+        logger.log(Level.INFO, out4);
+        logger.log(Level.INFO, out5);
+        logger.log(Level.INFO, out6);
 
     }
 
