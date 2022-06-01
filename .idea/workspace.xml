@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="deleting issue #14: ridotta complessità in Jira.java">
+    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="deleting issue #15: ridotta complessità in Proportion.java">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Config.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Jira.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Jira.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Proportion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Proportion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-report.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-report.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing0.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing0.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing1.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing2.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing2.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing3.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing3.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper0.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper0.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper1.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper2.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper2.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper3.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper3.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Weka.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Weka.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -297,7 +306,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654086452469</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="deleting issue #15: ridotta complessità in Proportion.java">
+      <created>1654088152929</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1654088152929</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -336,7 +352,8 @@
     <MESSAGE value="deleting issue #12: ho tolto blocchi di codice commentati e rimpiazzato tutte le printf con stampe sul log" />
     <MESSAGE value="deleting issue #13: ridotta complessità in Excel.java" />
     <MESSAGE value="deleting issue #14: ridotta complessità in Jira.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleting issue #14: ridotta complessità in Jira.java" />
+    <MESSAGE value="deleting issue #15: ridotta complessità in Proportion.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleting issue #15: ridotta complessità in Proportion.java" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

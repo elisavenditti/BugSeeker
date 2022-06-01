@@ -36,15 +36,10 @@ public class Main {
 
         String projName;
         String projDirName;
-        boolean syncope = false;
-
-        if(syncope){
-            projName ="SYNCOPE";
-            projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\syncope 1.2.10\\syncope";
-        }else{
-            projName ="BOOKKEEPER";
-            projDirName = "C:\\Users\\Elisa Venditti\\Desktop\\bookkeeper per bugseeker\\bookkeeper";
-        }
+        // false for bookkeeper, true for syncope
+        Config configuration = new Config(false);
+        projName = configuration.getProjName();
+        projDirName = configuration.getProjDirName();
 
         Excel excel = new Excel(projDirName);
         String rootDir = projDirName + "\\";

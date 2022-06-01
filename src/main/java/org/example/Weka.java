@@ -48,6 +48,13 @@ public class Weka {
     public Weka(String rootpath){
         this.rootPath=rootpath;
     }
+    
+    private String getSeparatorToAppend(int i, int size){
+        String separator = "";
+        if(i==size-1) separator = "\n";
+        else if(i!=0) separator = ",";
+        return separator;
+    }
     public void createArff(int nRelease, boolean syncope) {
         String trainingName;
         String format = ".xlsx";
@@ -127,8 +134,7 @@ public class Weka {
                     StringBuilder bld = new StringBuilder();
                     for (int i = 0; i < arrayOfStrings.size(); i++) {
                         bld.append(arrayOfStrings.get(i));
-                        if(i==arrayOfStrings.size()-1) bld.append("\n");
-                        else if(i!=0) bld.append(",");
+                        bld.append(getSeparatorToAppend(i,arrayOfStrings.size()));
                     }
                     String str = bld.toString();
 
