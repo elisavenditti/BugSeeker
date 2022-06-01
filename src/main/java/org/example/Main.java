@@ -3,6 +3,9 @@ package org.example;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import static org.example.Jira.*;
 
 public class Main {
@@ -127,7 +130,8 @@ public class Main {
                 try {
                     excel.populateTesting(projName, testReleaseIndex);
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    Logger logger = Logger.getLogger(Main.class.getName());
+                    logger.log(Level.INFO, e.getMessage());
                 }
             }
         }
