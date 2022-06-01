@@ -93,7 +93,6 @@ public class Excel {
 
             int j = name.length();
             String shortName;
-            String buggy;
             Cell releaseCell = row.createCell(0);
             Cell nameCell = row.createCell(1);
             Cell sizeCell = row.createCell(2);

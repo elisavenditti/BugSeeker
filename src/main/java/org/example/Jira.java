@@ -102,9 +102,9 @@ public class Jira {
 
 
     private static boolean discardIssue(Issue issue) {
-
+        boolean discard = true;
         // discard issues without FV or OV (I can't claculate them in other ways)
-        if (issue.getFixVersion() == null || issue.getOpeningVersion() == null) return true;
+        if (issue.getFixVersion() == null || issue.getOpeningVersion() == null) return discard;
 
         int ivIndex;
         int ovIndex;
@@ -118,8 +118,8 @@ public class Jira {
 
         // discard issues with OV and FV inconsistent (OV>=FV) and issues pre-release (IV=OV=FV)
         if (!((ivIndex == ovIndex) && (ovIndex == fvIndex)) && ovIndex < fvIndex)
-            return false;
-        return true;
+            discard = false;
+        return discard;
     }
 
 

@@ -6,17 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="deleting issue #14: ridotta complessità in Jira.java">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-report.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-report.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-testing0.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing0.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-testing1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-testing2.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing2.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-testing3.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing3.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper0.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper0.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper2.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper2.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper3.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper3.xlsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Jira.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Jira.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Proportion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Proportion.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -298,7 +290,14 @@
       <option name="project" value="LOCAL" />
       <updated>1654074614447</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="deleting issue #14: ridotta complessità in Jira.java">
+      <created>1654086452469</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1654086452469</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

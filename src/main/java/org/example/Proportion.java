@@ -31,19 +31,31 @@ public class Proportion {
     public static void restore(){
         Main.setAllRelease(allReleaseToRestore);
     }
-
-
-    public List<Float> incremental(List<Issue> allIssues, boolean synBook){
-        // synBook is true if is SYNCOPE or BOOKKEEPER
+    private ArrayList<ArrayList<Issue>> orderReleaseForFixVersion(List<Issue> allIssues) {
 
         // entry of array is a list of issue fixed in the i-th release
+
         ArrayList<ArrayList<Issue>> issuePerRelease = new ArrayList<>();
-        for(int j=0; j< Main.getAllRelease().size(); j++){
+        for (int j = 0; j < Main.getAllRelease().size(); j++) {
+            // initialization loop
             issuePerRelease.add(new ArrayList<>());
         }
-        for(Issue i: allIssues){
+        for (Issue i : allIssues) {
             issuePerRelease.get(i.getFixVersion().getIndex()).add(i);
         }
+        return issuePerRelease;
+    }
+
+    private float getDenominatore(int fvIndex, int ovIndex){
+        float denominatore;
+        if (fvIndex == ovIndex) denominatore = 1;
+        else denominatore = (float) fvIndex - ovIndex;
+        return denominatore;
+    }
+    public List<Float> incremental(List<Issue> allIssues, boolean synBook){
+        // synBook is true if is SYNCOPE or BOOKKEEPER
+        ArrayList<ArrayList<Issue>> issuePerRelease = new ArrayList<>();
+        issuePerRelease.addAll(orderReleaseForFixVersion(allIssues));
 
 
         ArrayList<Float> pinc = new ArrayList<>();
@@ -68,8 +80,8 @@ public class Proportion {
                     fvIndex = iss.getFixVersion().getIndex();
                     ovIndex = iss.getOpeningVersion().getIndex();
 
-                    if (fvIndex == ovIndex) denominatore = 1;
-                    else denominatore = (float) fvIndex - ovIndex;
+                    denominatore = getDenominatore(fvIndex, ovIndex);
+
                     p = (fvIndex - ivIndex) / denominatore;
                     incrementalMean = incrementalMean + (p - incrementalMean) / count;
                 }
@@ -153,11 +165,7 @@ public class Proportion {
                 fvIndex = iss.getFixVersion().getIndex();
                 ovIndex = iss.getOpeningVersion().getIndex();
 
-                int diff;
-                if (fvIndex==ovIndex)       // per sicurezza
-                    diff = 1;
-                else
-                    diff= fvIndex-ovIndex;
+                int diff = getDifference(fvIndex, ovIndex);
 
                 // devo usare il Pincrement calcolato da 0 a R-1
                 // ma se ho meno di 5 issue devo usare coldStart
@@ -180,4 +188,15 @@ public class Proportion {
         return allIssue;
 
     }
+
+
+    private int getDifference(int fvIndex, int ovIndex){
+        int diff = 0;
+        if (fvIndex==ovIndex)       // per sicurezza
+            diff = 1;
+        else
+            diff= fvIndex-ovIndex;
+        return diff;
+    }
+
 }
