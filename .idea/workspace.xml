@@ -4,18 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="deleting issue #16.2: ridotta complessità in Weka.java">
+    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="deleting issue #18.1: tolto catch in Main.java">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-report.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-report.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-testing0.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing0.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-testing1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-testing2.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing2.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper-testing3.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper-testing3.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper0.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper0.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper1.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper1.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper2.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper2.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bookkeeper3.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper3.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -332,7 +322,21 @@
       <option name="project" value="LOCAL" />
       <updated>1654090042896</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="deleting issue #18: ridotta complessità in Main.java">
+      <created>1654093165237</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1654093165237</updated>
+    </task>
+    <task id="LOCAL-00030" summary="deleting issue #18.1: tolto catch in Main.java">
+      <created>1654093501995</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1654093501995</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -347,8 +351,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ho aggiunto il calcolo delle metriche" />
-    <MESSAGE value="walkforward implementato, nel codice ci sono le funzioni (ancora primitive) per il filtering e il sampling" />
     <MESSAGE value="commit di prova per sonar" />
     <MESSAGE value="commit di prova per sonar, ho rimosso dei commenti" />
     <MESSAGE value="bug excel riga 153" />
@@ -372,7 +374,9 @@
     <MESSAGE value="deleting issue #16: ridotta complessità in Weka.java" />
     <MESSAGE value="deleting issue #16.1: ridotta complessità in Weka.java" />
     <MESSAGE value="deleting issue #16.2: ridotta complessità in Weka.java" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleting issue #16.2: ridotta complessità in Weka.java" />
+    <MESSAGE value="deleting issue #18: ridotta complessità in Main.java" />
+    <MESSAGE value="deleting issue #18.1: tolto catch in Main.java" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleting issue #18.1: tolto catch in Main.java" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>

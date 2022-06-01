@@ -411,15 +411,6 @@ public class Weka {
         RandomForest randomForest2 = new RandomForest();
         fc.setClassifier(randomForest2);
 
-				/*fc.setFilter(resample);
-				eventual parameters setting omitted
-				*/
-
-			   /* SMOTE smote = new SMOTE();
-				smote.setInputFormat(training);
-				fc.setFilter(smote);
-				*/
-
         SpreadSubsample spreadSubsample = new SpreadSubsample();
         String[] opts = new String[]{ "-M", "1.0"};
         spreadSubsample.setOptions(opts);
