@@ -36,8 +36,9 @@ public class Main {
 
         String projName;
         String projDirName;
+        boolean syncope = false;
         // false for bookkeeper, true for syncope
-        Config configuration = new Config(false);
+        Config configuration = new Config(syncope);
         projName = configuration.getProjName();
         projDirName = configuration.getProjDirName();
 
