@@ -39,6 +39,52 @@ public class Excel {
 
     }
 
+    private String isBuggy(Release release, String shortName){
+        String buggy = "No";
+        for (MyFile buggyFile : release.getBuggyFiles()) {
+            if (buggyFile.getPathname().equalsIgnoreCase(shortName)) {
+                buggy = "Yes";
+                return buggy;
+            }
+        }
+        return buggy;
+    }
+
+    private List<Integer> computeAvgAndMaxLocAdded(MyFile myFile) {
+        // returns a list: the first element is the average, the second is the maximum
+        int avgLocAdded = 0;
+        int maxLocAdded = 0;
+        List<Integer> ret = new ArrayList<>();
+        for (Integer add : myFile.getLocAddedList()) {
+            if (add > maxLocAdded) maxLocAdded = add;
+            avgLocAdded = avgLocAdded + add;
+        }
+        avgLocAdded = avgLocAdded / (myFile.getLocAddedList().size());
+        ret.add(avgLocAdded);
+        ret.add(maxLocAdded);
+        return ret;
+
+    }
+
+    private List<Integer> computeAvgAndMaxChgSetSize(MyFile myFile) {
+        // returns a list: the first element is the average, the second is the maximum
+        int maxChgSetSize = 0;
+        int avgChgSetSize = 0;
+        List<Integer> ret = new ArrayList<>();
+
+        for (Integer add : myFile.getChgSetSizeList()) {
+            if (add > maxChgSetSize) maxChgSetSize = add;
+            avgChgSetSize = avgChgSetSize + add;
+        }
+        avgChgSetSize = avgChgSetSize / (myFile.getChgSetSizeList().size());
+        ret.add(avgChgSetSize);
+        ret.add(maxChgSetSize);
+        return  ret;
+
+    }
+
+
+
     private int insertCells(XSSFSheet sheet, int rowCount, Release release){
         String name;
         for (MyFile myFile : release.getFiles()) {
@@ -82,35 +128,44 @@ public class Excel {
                 shortName = name.substring(rootLen, j);
                 nameCell.setCellValue(shortName);
 
-                boolean bug = false;
-                for (MyFile buggyFile : release.getBuggyFiles()) {
-                    if (buggyFile.getPathname().equalsIgnoreCase(shortName)) {
-                        bug = true;
-                        break;
-                    }
-                }
-                if (bug)
-                    buggy = "Yes";
-                else
-                    buggy = "No";
+//                boolean bug = false;
+//                for (MyFile buggyFile : release.getBuggyFiles()) {
+//                    if (buggyFile.getPathname().equalsIgnoreCase(shortName)) {
+//                        bug = true;
+//                        break;
+//                    }
+//                }
+//                if (bug)
+//                    buggy = "Yes";
+//                else
+//                    buggy = "No";
 
                 int avgLocAdded = 0;
                 int avgChgSetSize = 0;
                 int maxLocAdded = 0;
                 int maxChgSetSize = 0;
+                List<Integer> avgAndMaxLocAdded = new ArrayList<>();
+                List<Integer> avgAndMaxChgSetSize = new ArrayList<>();
                 if (!myFile.getLocAddedList().isEmpty()) {
-                    for (Integer add : myFile.getLocAddedList()) {
-                        if (add > maxLocAdded) maxLocAdded = add;
-                        avgLocAdded = avgLocAdded + add;
-                    }
-                    avgLocAdded = avgLocAdded / (myFile.getLocAddedList().size());
+                    avgAndMaxLocAdded.addAll(computeAvgAndMaxLocAdded(myFile));
+                    avgLocAdded = avgAndMaxLocAdded.get(0);
+                    maxLocAdded = avgAndMaxLocAdded.get(1);
+
+//                    for (Integer add : myFile.getLocAddedList()) {
+//                        if (add > maxLocAdded) maxLocAdded = add;
+//                        avgLocAdded = avgLocAdded + add;
+//                    }
+//                    avgLocAdded = avgLocAdded / (myFile.getLocAddedList().size());
                 }
                 if (!myFile.getChgSetSizeList().isEmpty()) {
-                    for (Integer add : myFile.getChgSetSizeList()) {
-                        if (add > maxChgSetSize) maxChgSetSize = add;
-                        avgChgSetSize = avgChgSetSize + add;
-                    }
-                    avgChgSetSize = avgChgSetSize / (myFile.getChgSetSizeList().size());
+                    avgAndMaxChgSetSize.addAll(computeAvgAndMaxChgSetSize(myFile));
+                    avgChgSetSize = avgAndMaxChgSetSize.get(0);
+                    maxChgSetSize = avgAndMaxChgSetSize.get(1);
+//                    for (Integer add : myFile.getChgSetSizeList()) {
+//                        if (add > maxChgSetSize) maxChgSetSize = add;
+//                        avgChgSetSize = avgChgSetSize + add;
+//                    }
+//                    avgChgSetSize = avgChgSetSize / (myFile.getChgSetSizeList().size());
                 }
 
 
@@ -119,12 +174,16 @@ public class Excel {
                 nRevCell.setCellValue(myFile.getnRevisions());
                 nAuthorsCell.setCellValue(myFile.getnAuthors());
                 locAddedCell.setCellValue(myFile.getLocAdded());
+//                maxLocAddedCell.setCellValue(maxLocAdded);
+//                avgLocAddedCell.setCellValue(avgLocAdded);
                 maxLocAddedCell.setCellValue(maxLocAdded);
                 avgLocAddedCell.setCellValue(avgLocAdded);
                 chgSetSizeCell.setCellValue(myFile.getChgSetSize());
+//                maxChgSetSizeCell.setCellValue(maxChgSetSize);
+//                avgChgSetSizeCell.setCellValue(avgChgSetSize);
                 maxChgSetSizeCell.setCellValue(maxChgSetSize);
                 avgChgSetSizeCell.setCellValue(avgChgSetSize);
-                bugCell.setCellValue(buggy);
+                bugCell.setCellValue(isBuggy(release, shortName));//buggy);
             }
             rowCount++;
 

@@ -4,11 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="deleting issue #11: ho rimosso dei blocchi duplicati in compareWithPreviousCommit e in Proportion.java (nel calcolo della p globale)">
+    <list default="true" id="54c128dc-5e66-4cda-9e79-0a4b5f53ed9e" name="Changes" comment="deleting issue #12: ho tolto blocchi di codice commentati e rimpiazzato tutte le printf con stampe sul log">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Git.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Git.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Weka.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Weka.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/syncope-testing22.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/syncope-testing22.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-report.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing0.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing0.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing1.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing1.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing2.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing2.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing3.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper-testing3.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper0.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper0.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/bookkeeper0.xlsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper1.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper1.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper2.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper2.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper3.arff" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookkeeper3.xlsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Excel.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -276,7 +291,14 @@
       <option name="project" value="LOCAL" />
       <updated>1653152897878</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="deleting issue #12: ho tolto blocchi di codice commentati e rimpiazzato tutte le printf con stampe sul log">
+      <created>1654071499001</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1654071499001</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -312,7 +334,8 @@
     <MESSAGE value="deleting issue #9.0: adesso il codice funziona. Prima il replace inseriva // invece che / nel path dei file quindi l'algoritmo non riusciva a trovare i matching tra i file dei commit e quelli delle release" />
     <MESSAGE value="deleting issue #10: nel log ho evitato di fare la concatenazione di stringhe" />
     <MESSAGE value="deleting issue #11: ho rimosso dei blocchi duplicati in compareWithPreviousCommit e in Proportion.java (nel calcolo della p globale)" />
-    <option name="LAST_COMMIT_MESSAGE" value="deleting issue #11: ho rimosso dei blocchi duplicati in compareWithPreviousCommit e in Proportion.java (nel calcolo della p globale)" />
+    <MESSAGE value="deleting issue #12: ho tolto blocchi di codice commentati e rimpiazzato tutte le printf con stampe sul log" />
+    <option name="LAST_COMMIT_MESSAGE" value="deleting issue #12: ho tolto blocchi di codice commentati e rimpiazzato tutte le printf con stampe sul log" />
   </component>
   <component name="XDebuggerManager">
     <watches-manager>
