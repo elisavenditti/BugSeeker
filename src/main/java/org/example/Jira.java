@@ -88,6 +88,41 @@ public class Jira {
     }
 
 
+
+    private static List<String> populateArrayFromJsonArray(JSONArray jsonArray, int len) {
+        ArrayList<String> stringArray = new ArrayList<>();
+        for (int k = 0; k < len; k++) {
+            String curr = jsonArray.getJSONObject(k).get("name").toString();
+            if (!stringArray.contains(curr))
+                stringArray.add(curr);
+        }
+        return stringArray;
+    }
+
+
+
+    private static boolean discardIssue(Issue issue) {
+
+        // discard issues without FV or OV (I can't claculate them in other ways)
+        if (issue.getFixVersion() == null || issue.getOpeningVersion() == null) return true;
+
+        int ivIndex;
+        int ovIndex;
+        int fvIndex;
+        if (issue.getInjectedVersion() != null)
+            ivIndex = issue.getInjectedVersion().getIndex();
+        else
+            ivIndex = -1;
+        ovIndex = issue.getOpeningVersion().getIndex();
+        fvIndex = issue.getFixVersion().getIndex();
+
+        // discard issues with OV and FV inconsistent (OV>=FV) and issues pre-release (IV=OV=FV)
+        if (!((ivIndex == ovIndex) && (ovIndex == fvIndex)) && ovIndex < fvIndex)
+            return false;
+        return true;
+    }
+
+
     public static List<Issue> getIssueIdOfProject(String projName) throws IOException, JSONException{
 
         ArrayList<Issue> bugInfo = new ArrayList<>();
@@ -108,7 +143,6 @@ public class Jira {
             JSONObject json = readJsonFromUrl(url);
             JSONArray issues = json.getJSONArray("issues");
             total = json.getInt("total");
-            int k;
             for (; i < total && i < j; i++) {
 
                 JSONObject currentJson = issues.getJSONObject(i%1000);
@@ -120,39 +154,18 @@ public class Jira {
 
                 JSONArray versionJsonArray = new JSONArray(versionJsonString);
                 JSONArray fixVersionJsonArray = new JSONArray(fixVersionsJsonString);
+
+
                 len = versionJsonArray.length();
                 fixLen = fixVersionJsonArray.length();
-
                 ArrayList<String> affectedVersions = new ArrayList<>();
-                for(k = 0; k < len; k++){
-                    String curr = versionJsonArray.getJSONObject(k).get("name").toString();
-                    if(!affectedVersions.contains(curr))
-                        affectedVersions.add(curr);
-                }
                 ArrayList<String> fixVersions = new ArrayList<>();
-                for(k = 0; k < fixLen; k++){
-                    String curr = fixVersionJsonArray.getJSONObject(k).get("name").toString();
-                    if(!fixVersions.contains(curr))
-                        fixVersions.add(curr);
-                }
+
+                affectedVersions.addAll(populateArrayFromJsonArray(versionJsonArray, len));
+                fixVersions.addAll(populateArrayFromJsonArray(fixVersionJsonArray, fixLen));
 
                 Issue issue = new Issue(key, affectedVersions, resolutionDate, creationDate);
-                // discard issues without FV or OV (I can't claculate them in other ways)
-                if(issue.getFixVersion() == null || issue.getOpeningVersion()==null) continue;
-
-                int ivIndex;
-                int ovIndex;
-                int fvIndex;
-                if (issue.getInjectedVersion() != null)
-                    ivIndex = issue.getInjectedVersion().getIndex();
-                else
-                    ivIndex = -1;
-                ovIndex = issue.getOpeningVersion().getIndex();
-                fvIndex = issue.getFixVersion().getIndex();
-
-                // discard issues with OV and FV inconsistent (OV>=FV) and issues pre-release (IV=OV=FV)
-                if(!((ivIndex==ovIndex)&&(ovIndex==fvIndex)) && ovIndex < fvIndex)
-                        bugInfo.add(issue);
+                if(!discardIssue(issue)) bugInfo.add(issue);
             }
         } while (i < total);
         Logger logger = Logger.getLogger(Jira.class.getName());
