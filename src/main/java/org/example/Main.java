@@ -78,44 +78,23 @@ public class Main {
             }
 
             ArrayList<Issue> valuableIssue = new ArrayList<>();
-            for (Issue i : allIssues) {
-                // for testing set delete issue with IV greater than releases in the first half
-                if(testing && i.getInjectedVersion().getIndex()<=halfRelease.size()-1) valuableIssue.add(i);
-
-                // for training set delete issue with FV > trainingBoundary (I CAN'T SEE FUTURE INFORMATION)
-                if (!testing && i.getFixVersion().getIndex() <= trainingBoundary) valuableIssue.add(i);
-
-            }
+            valuableIssue.addAll(getValuableIssue(allIssues, testing, trainingBoundary));
 
             ArrayList<Commit> commitId = new ArrayList<>();
-            for (Issue i : valuableIssue) {
-                List<Commit> list = github.getAllCommitsOfIssue(i, syncope);
-                commitId.addAll(list);
-            }
+            commitId.addAll(getCommits(valuableIssue, syncope, github));
             github.getMetrics();
 
             for (Release release : halfRelease) {
 
                 for (Issue i : valuableIssue) {
                     if (isReleaseContainedIn(release, i.getInjectedVersion(), i.getFixVersion(), false)) {
-                        for (Commit com : commitId) {
-
-                            if ((isReleaseContainedIn(com.getRelease(), release.next(), i.getFixVersion(), true)) &&
-                                    (com.getChangedFiles() != null && !com.getChangedFiles().isEmpty()))
-                                release.addAllBuggyFiles(com.getChangedFiles());
-
-                        }
+                        release.addAllBuggyFiles(getFilesModifiedFromNowToFV(commitId, release, i));
                     }
                 }
             }
 
-            if(trainingBoundary!=halfRelease.size() -1)
-                excel.populate(projName, trainingBoundary);
-            else { //popolare gli excel di testing
-                int testReleaseIndex;
-                for(testReleaseIndex=1; testReleaseIndex< halfRelease.size(); testReleaseIndex++)
-                    excel.populateTesting(projName, testReleaseIndex);
-            }
+            fillExcel(trainingBoundary, projName, excel);
+
         }
 
         Weka w = new Weka("C:\\Users\\Elisa Venditti\\Desktop\\ISW2\\BugSeeker\\");
@@ -126,6 +105,57 @@ public class Main {
     }
 
 
+    private static List<MyFile> getFilesModifiedFromNowToFV(List<Commit> commitId, Release release, Issue i){
+        List<MyFile> modifiedFiles = new ArrayList<>();
+        for (Commit com : commitId) {
+
+            if ((isReleaseContainedIn(com.getRelease(), release.next(), i.getFixVersion(), true)) &&
+                (com.getChangedFiles() != null && !com.getChangedFiles().isEmpty()))
+                modifiedFiles.addAll(com.getChangedFiles());
+        }
+        return modifiedFiles;
+    }
+
+
+    private static void fillExcel(int trainingBoundary, String projName, Excel excel){
+
+        if(trainingBoundary!=halfRelease.size() -1)
+            excel.populate(projName, trainingBoundary);
+        else { //popolare gli excel di testing
+            int testReleaseIndex;
+            for(testReleaseIndex=1; testReleaseIndex< halfRelease.size(); testReleaseIndex++) {
+                try {
+                    excel.populateTesting(projName, testReleaseIndex);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+    }
+
+
+
+    private static List<Issue> getValuableIssue(List<Issue> allIssues, boolean testing, int trainingBoundary) {
+        ArrayList<Issue> valuableIssue = new ArrayList<>();
+        for (Issue i : allIssues) {
+            // for testing set delete issue with IV greater than releases in the first half
+            if (testing && i.getInjectedVersion().getIndex() <= halfRelease.size() - 1) valuableIssue.add(i);
+
+            // for training set delete issue with FV > trainingBoundary (I CAN'T SEE FUTURE INFORMATION)
+            if (!testing && i.getFixVersion().getIndex() <= trainingBoundary) valuableIssue.add(i);
+
+        }
+        return valuableIssue;
+    }
+
+    private static List<Commit> getCommits(List<Issue> valuableIssue, boolean syncope, Git github){
+        List<Commit> commitId = new ArrayList<>();
+        for (Issue i : valuableIssue) {
+            List<Commit> list = github.getAllCommitsOfIssue(i, syncope);
+            commitId.addAll(list);
+        }
+        return commitId;
+    }
 
 
     public static void deleteDuplicate() {
