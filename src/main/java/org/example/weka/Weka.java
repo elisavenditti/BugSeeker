@@ -181,7 +181,7 @@ public class Weka {
         return ret;
     }
 
-    private void addRow(int trainingIndex, Evaluation eval, String classifier, int bugginess[], List<Technique> technique){
+    private void addRow(int trainingIndex, Evaluation eval, String classifier, int[] bugginess, List<Technique> technique){
         ArrayList<Object> performance = new ArrayList<>();
         performance.add(projName);
         List<String> labels = labels(technique);
@@ -384,26 +384,29 @@ public class Weka {
         featureAndOverSampling.add(Technique.FEATURESELECTION);
 
         //IBK
-        build("IBk", none, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("IBk", samplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("IBk", oversamplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("IBk", sensitivityOnly, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("IBk", featureAndOverSampling, trainingNoFilter, testingNoFilter, trainingIndex);
+        String ibk = "IBk";
+        build(ibk, none, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(ibk, samplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(ibk, oversamplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(ibk, sensitivityOnly, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(ibk, featureAndOverSampling, trainingNoFilter, testingNoFilter, trainingIndex);
 
 
         //Random Forest
-        build("RandomForest", none, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("RandomForest", samplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("RandomForest", oversamplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("RandomForest", sensitivityOnly, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("RandomForest", featureAndUnderSampling, trainingNoFilter, testingNoFilter, trainingIndex);
+        String rf = "RandomForest";
+        build(rf, none, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(rf, samplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(rf, oversamplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(rf, sensitivityOnly, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(rf, featureAndUnderSampling, trainingNoFilter, testingNoFilter, trainingIndex);
 
         //Naive Bayes
-        build("NaiveBayes", none, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("NaiveBayes", samplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("NaiveBayes", oversamplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("NaiveBayes", sensitivityOnly, trainingNoFilter, testingNoFilter, trainingIndex);
-        build("NaiveBayes", featureAndsensitivity, trainingNoFilter, testingNoFilter, trainingIndex);
+        String nb = "NaiveBayes";
+        build(nb, none, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(nb, samplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(nb, oversamplingOnly, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(nb, sensitivityOnly, trainingNoFilter, testingNoFilter, trainingIndex);
+        build(nb, featureAndsensitivity, trainingNoFilter, testingNoFilter, trainingIndex);
 
 
     }
@@ -452,8 +455,6 @@ public class Weka {
             training = trainingFiltered;
             testing = testingFiltered;
 
-            // ... stampa di informazioni utili ...
-            System.out.println("[walkforeard step] attributi filtrati: " + numAttrFiltered);
 
         }
 
@@ -518,10 +519,10 @@ public class Weka {
             CostSensitiveClassifier costSensitiveClassifier = new CostSensitiveClassifier();
             costSensitiveClassifier.setClassifier(classifier);
             costSensitiveClassifier.setCostMatrix(cm);
+            boolean minimize = false;
             if(techniqueContains(Technique.SENSITIVETHRESHOLD, technique))
-                costSensitiveClassifier.setMinimizeExpectedCost(true);
-            else
-                costSensitiveClassifier.setMinimizeExpectedCost(false);
+                minimize = true;
+            costSensitiveClassifier.setMinimizeExpectedCost(minimize);
             costSensitiveClassifier.buildClassifier(training);
             classifier = costSensitiveClassifier;
             Evaluation sensitiveEval = new Evaluation(training, cm);
@@ -538,7 +539,7 @@ public class Weka {
         int noBuggyCountTraining = countClassInstances(training, training.numAttributes())[1];
         int buggyCountTesting = countClassInstances(testing, testing.numAttributes())[0];
         int noBuggyCountTesting = countClassInstances(testing, testing.numAttributes())[1];
-        int count[] = {buggyCountTraining,noBuggyCountTraining, buggyCountTesting, noBuggyCountTesting};
+        int[] count = {buggyCountTraining,noBuggyCountTraining, buggyCountTesting, noBuggyCountTesting};
 
 
         // step 6 >> Scrivi i risultati su excel
@@ -548,15 +549,13 @@ public class Weka {
 
     private int[] countClassInstances(Instances training, int numAttrNoFilter){
         AttributeStats stats = training.attributeStats(numAttrNoFilter-1);
-        int sum[] = stats.nominalCounts;
-        return sum;
+        return stats.nominalCounts;
     }
 
     private List<Double> getMetrics(int trainingIndex, int[] bugginess, Evaluation evaluation){
 
         List<Double> metrics = new ArrayList<>();
-        System.out.println(bugginess[0]+" "+bugginess[1]+" "+bugginess[2]+" "+bugginess[3]+" ");
-        int trainingCount = trainingIndex++;    // incremento necessario perchè trainingindex inizia da 0
+        int trainingCount = trainingIndex+1;    // incremento necessario perchè trainingindex inizia da 0
 
         // %training
         double percTraining = (double) trainingCount/(trainingCount+1);
@@ -565,7 +564,6 @@ public class Weka {
         //%defective in training
         double percBuggyTraining = (double) bugginess[0]/(bugginess[0]+bugginess[1]);
         metrics.add(percBuggyTraining);
-        System.out.println(percBuggyTraining);
 
         //%defective in training
         double percBuggyTesting = (double) bugginess[2]/(bugginess[2]+bugginess[3]);
