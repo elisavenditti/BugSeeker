@@ -1,4 +1,8 @@
-package org.example;
+package org.example.core;
+
+import org.example.Main;
+import org.example.entity.Issue;
+import org.example.entity.Release;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,8 +11,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.example.Jira.getAllRelease;
-import static org.example.Jira.getIssueIdOfProject;
+import static org.example.core.Jira.getAllRelease;
+import static org.example.core.Jira.getIssueIdOfProject;
 import static org.example.Main.*;
 
 public class Proportion {

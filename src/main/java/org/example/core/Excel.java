@@ -1,4 +1,4 @@
-package org.example;
+package org.example.core;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.example.Main;
+import org.example.entity.MyFile;
+import org.example.entity.Release;
 
 
 public class Excel {

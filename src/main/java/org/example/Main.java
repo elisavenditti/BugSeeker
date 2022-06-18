@@ -1,12 +1,19 @@
 package org.example;
 
+import org.example.core.Excel;
+import org.example.core.Git;
+import org.example.core.Jira;
+import org.example.core.Proportion;
+import org.example.entity.*;
+import org.example.weka.Weka;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.example.Jira.*;
+import static org.example.core.Jira.*;
 
 public class Main {
 
@@ -39,7 +46,7 @@ public class Main {
 
         String projName;
         String projDirName;
-        boolean syncope = false;
+        boolean syncope = true;
         // false for bookkeeper, true for syncope
         Config configuration = new Config(syncope);
         projName = configuration.getProjName();
@@ -104,29 +111,28 @@ public class Main {
         w.createArff(halfRelease.size(), syncope);
         w.walkforward(halfRelease.size(), syncope);
 
-
     }
 
 
-    private static List<MyFile> getFilesModifiedFromNowToFV(List<Commit> commitId, Release release, Issue i){
+    private static List<MyFile> getFilesModifiedFromNowToFV(List<Commit> commitId, Release release, Issue i) {
         List<MyFile> modifiedFiles = new ArrayList<>();
         for (Commit com : commitId) {
 
             if ((isReleaseContainedIn(com.getRelease(), release.next(), i.getFixVersion(), true)) &&
-                (com.getChangedFiles() != null && !com.getChangedFiles().isEmpty()))
+                    (com.getChangedFiles() != null && !com.getChangedFiles().isEmpty()))
                 modifiedFiles.addAll(com.getChangedFiles());
         }
         return modifiedFiles;
     }
 
 
-    private static void fillExcel(int trainingBoundary, String projName, Excel excel){
+    private static void fillExcel(int trainingBoundary, String projName, Excel excel) {
 
-        if(trainingBoundary!=halfRelease.size() -1)
+        if (trainingBoundary != halfRelease.size() - 1)
             excel.populate(projName, trainingBoundary);
         else { //popolare gli excel di testing
             int testReleaseIndex;
-            for(testReleaseIndex=1; testReleaseIndex< halfRelease.size(); testReleaseIndex++) {
+            for (testReleaseIndex = 1; testReleaseIndex < halfRelease.size(); testReleaseIndex++) {
                 try {
                     excel.populateTesting(projName, testReleaseIndex);
                 } catch (IOException e) {
@@ -136,7 +142,6 @@ public class Main {
             }
         }
     }
-
 
 
     private static List<Issue> getValuableIssue(List<Issue> allIssues, boolean testing, int trainingBoundary) {
@@ -152,7 +157,7 @@ public class Main {
         return valuableIssue;
     }
 
-    private static List<Commit> getCommits(List<Issue> valuableIssue, boolean syncope, Git github){
+    private static List<Commit> getCommits(List<Issue> valuableIssue, boolean syncope, Git github) {
         List<Commit> commitId = new ArrayList<>();
         for (Issue i : valuableIssue) {
             List<Commit> list = github.getAllCommitsOfIssue(i, syncope);
@@ -167,11 +172,11 @@ public class Main {
         int thisIndex;
         int nextIndex;
         int lastIndex;
-        lastIndex = allRelease.size()-1;
-        for(Release r: allRelease){
+        lastIndex = allRelease.size() - 1;
+        for (Release r : allRelease) {
             thisIndex = r.getIndex();
-            nextIndex = thisIndex+1;
-            if(thisIndex == lastIndex ||
+            nextIndex = thisIndex + 1;
+            if (thisIndex == lastIndex ||
                     !allRelease.get(thisIndex).getReleaseDate().equals(allRelease.get(nextIndex).getReleaseDate()))
                 uniqueReleaseList.add(allRelease.get(thisIndex));
 
@@ -179,30 +184,31 @@ public class Main {
         allRelease = indexOrderedReleases(uniqueReleaseList);
     }
 
-    public static List<Release> indexOrderedReleases(List<Release> releaseList){
-        int z=0;
-        for(Release r: releaseList){
+    public static List<Release> indexOrderedReleases(List<Release> releaseList) {
+        int z = 0;
+        for (Release r : releaseList) {
             r.setIndex(z);
             z++;
         }
         return releaseList;
     }
+
     public static void orderRelease() {
         ArrayList<Release> orderedRelease = new ArrayList<>();
-        for(Release rr: allRelease){
+        for (Release rr : allRelease) {
             if (orderedRelease.isEmpty())
                 orderedRelease.add(rr);
-            else{
-                int count=0;
-                while(count< orderedRelease.size()){
-                    if((orderedRelease.get(count).getReleaseDate()).after(rr.getReleaseDate())) break;
+            else {
+                int count = 0;
+                while (count < orderedRelease.size()) {
+                    if ((orderedRelease.get(count).getReleaseDate()).after(rr.getReleaseDate())) break;
                     count++;
                 }
 
-                if(count==orderedRelease.size())
+                if (count == orderedRelease.size())
                     orderedRelease.add(rr);
                 else
-                    orderedRelease.add(count,rr);
+                    orderedRelease.add(count, rr);
 
             }
 
@@ -210,13 +216,13 @@ public class Main {
         allRelease = indexOrderedReleases(orderedRelease);
     }
 
-    private static boolean isReleaseContainedIn(Release currRelease, Release iv, Release  fv, boolean extremeIncluded){
+    private static boolean isReleaseContainedIn(Release currRelease, Release iv, Release fv, boolean extremeIncluded) {
         int ivIndex = iv.getIndex();
         int fvIndex = fv.getIndex();
-        int i= currRelease.getIndex();
+        int i = currRelease.getIndex();
         boolean contained = false;
 
-        if((extremeIncluded && i>=ivIndex && i<=fvIndex) || (!extremeIncluded && i>=ivIndex && i<fvIndex))
+        if ((extremeIncluded && i >= ivIndex && i <= fvIndex) || (!extremeIncluded && i >= ivIndex && i < fvIndex))
             contained = true;
         return contained;
     }

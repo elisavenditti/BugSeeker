@@ -1,4 +1,6 @@
-package org.example;
+package org.example.entity;
+import org.example.Main;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

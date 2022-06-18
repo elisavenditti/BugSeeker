@@ -1,4 +1,6 @@
-package org.example;
+package org.example.entity;
+
+import org.example.Main;
 
 import java.text.DateFormat;
 import java.text.ParseException;

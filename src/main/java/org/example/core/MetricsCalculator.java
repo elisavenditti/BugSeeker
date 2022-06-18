@@ -1,4 +1,9 @@
-package org.example;
+package org.example.core;
+
+import org.example.Main;
+import org.example.entity.Commit;
+import org.example.entity.MyFile;
+import org.example.entity.Release;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

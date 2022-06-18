@@ -1,4 +1,6 @@
-package org.example;
+package org.example.core;
+import org.example.entity.Issue;
+import org.example.entity.Release;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

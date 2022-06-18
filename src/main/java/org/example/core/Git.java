@@ -1,4 +1,4 @@
-package org.example;
+package org.example.core;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.diff.DiffEntry;
 import org.eclipse.jgit.diff.DiffFormatter;
@@ -12,6 +12,8 @@ import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.CanonicalTreeParser;
 import org.eclipse.jgit.util.io.DisabledOutputStream;
+import org.example.Main;
+import org.example.entity.*;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,8 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static org.example.MetricsCalculator.setLoc;
-import static org.example.MetricsCalculator.setMetrics;
+import static org.example.core.MetricsCalculator.setLoc;
+import static org.example.core.MetricsCalculator.setMetrics;
 
 
 public class Git {
